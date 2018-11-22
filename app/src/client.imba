@@ -14,8 +14,8 @@ tag App
 		data:items.push(content: data:content, createdAt: getCurrentTime, done: false)
 		data:content = ""
 
-	def done index
-		data:items[index]:done = true
+	def toggleItem index
+		data:items[index]:done = !data:items[index]:done
 
 	def render
 		<self.vbox>
@@ -23,7 +23,7 @@ tag App
 				<input[data:content] placeholder="New..." :keyup.enter.addItem css:margin-right='10px'>
 				<button :click.addItem> 'Add item'
 			<ul> for item,index in data:items
-				<li :click=['done', index]>
+				<li :click=['toggleItem', index]>
 					<span
 						css:color="{item:done ? '#999' : '#000'}"
 						css:text-decoration="{item:done ? 'line-through' : 'none'}"
