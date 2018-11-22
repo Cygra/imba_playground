@@ -1,9 +1,6 @@
 
 var store = {
-	title: ""
-	items: [
-		{ content: "Example Todo." }
-	]
+	items: []
 }
 
 tag App
@@ -12,18 +9,25 @@ tag App
 		Date()
 
 	def addItem
-		data:items.push(content: data:content, createdAt: getCurrentTime)
+		return if !data:content
+
+		data:items.push(content: data:content, createdAt: getCurrentTime, done: false)
 		data:content = ""
+
+	def done index
+		data:items[index]:done = true
 
 	def render
 		<self.vbox>
 			<header>
 				<input[data:content] placeholder="New..." :keyup.enter.addItem css:margin-right='10px'>
-				<button :tap.addItem> 'Add item'
-			<ul> for item in data:items
-				<li>
-					<span> item:content
-					<span> item:createdAt ? ' ---@' : ''
-					<span css:color='#666'> item:createdAt
+				<button :click.addItem> 'Add item'
+			<ul> for item,index in data:items
+				<li :click=['done', index]>
+					<span
+						css:color="{item:done ? '#999' : '#000'}"
+						css:text-decoration="{item:done ? 'line-through' : 'none'}"
+					>
+						"{item:content} ---@ {item:createdAt}"
 
 Imba.mount <App[store]>
