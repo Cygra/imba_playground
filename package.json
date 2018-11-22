@@ -1,0 +1,20 @@
+{
+  "keywords": [
+    "imba"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "start": "imba app/src/server.imba",
+    "dev":  "webpack-dev-server --content-base app/root/",
+    "build": "webpack",
+    "watch": "webpack --watch --progress --colors --display-modules"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "imba": "^1.4.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
