@@ -23,7 +23,7 @@ tag App
 			<ul> for item in data:items
 				<li>
 					<span> item:content
-					<span> item:createdAt ? '---@' : ''
+					<span> item:createdAt ? ' ---@' : ''
 					<span css:color='#666'> item:createdAt
 
 Imba.mount <App[store]>
