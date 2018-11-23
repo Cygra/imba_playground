@@ -1,5 +1,5 @@
 import 'imba-router'
-import { Todo } from './src/Todo'
+import { Todo } from './Todo'
 
 tag App
 	def render
