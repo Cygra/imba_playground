@@ -14,8 +14,8 @@ tag App
 				'.'
 			<ul>
 				<li>
-					<a route-to='/todo'> 'Todo'
+					<a route-to='/imba_playground/todo'> 'Todo'
 
-			<Todo route='/todo'>
+			<Todo route='/imba_playground/todo'>
 
 Imba.mount <App>
