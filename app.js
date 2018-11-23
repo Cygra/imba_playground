@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -290,75 +290,11 @@ module.exports = Imba;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
-var Imba = __webpack_require__(2), _2 = Imba.createTagList, _1 = Imba.createElement;
-var Title = __webpack_require__(16).Title;
-
-var list = {
-	items: []
-};
-
-var App = Imba.defineTag('App', function(tag){
-	
-	tag.prototype.getCurrentTime = function (){
-		var date = new Date();
-		return ("" + (date.getFullYear()) + "." + (date.getMonth() + 1) + "." + (date.getDate()) + "-" + (date.getHours()) + ":" + (date.getMinutes()));
-	};
-	
-	tag.prototype.addItem = function (){
-		if (!this.data().content) { return };
-		list.items.push({content: this.data().content,createdAt: this.getCurrentTime(),done: false});
-		return this.data().content = "";
-	};
-	
-	tag.prototype.toggleItem = function (index){
-		return list.items[index].done = !list.items[index].done;
-	};
-	
-	tag.prototype.render = function (){
-		var $ = this.$, self = this;
-		return self.$open(0).setChildren($.$ = $.$ || [
-			_1(Title,$,0,self),
-			_1('header',$,1,self).setContent([
-				_1('input',$,2,1).on$(0,['keyup','enter','addItem'],self).setPlaceholder("here").css('margin-right','10px'),
-				_1('button',$,3,1).on$(0,['click','addItem'],self).setText('Add TODO')
-			],2),
-			_1('ul',$,4,self)
-		],2).synced((
-			$[0].end(),
-			$[2].bindData(self.data(),'content').end(),
-			$[4].setContent((function tagLoop($0) {
-				var t0;
-				for (let index = 0, items = iter$(self.data().items), len = $0.taglen = items.length, item; index < len; index++) {
-					item = items[index];
-					(t0 = $0[index] || (t0=_1('li',$0,index)).setContent(
-						t0.$.A || _1('span',t0.$,'A',t0)
-					,2)).on$(0,['click',['toggleItem',index]],self).end((
-						t0.$.A.css('color',("" + (item.done ? '#999' : '#000'))).css('text-decoration',("" + (item.done ? 'line-through' : 'none'))).setContent([
-							item.content,
-							t0.$.B || _1('span',t0.$,'B','A').css('color',"#999")
-						],1).end((
-							t0.$.B.setText(" ---@ " + (item.createdAt)).end()
-						,true))
-					,true));
-				};return $0;
-			})($[5] || _2($,5,$[4])),4)
-		,true));
-	};
-});
-
-Imba.mount((_1(App)).setData(list).end());
+module.exports = __webpack_require__(4);
 
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(5);
-
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Imba = __webpack_require__(0);
@@ -429,15 +365,71 @@ Imba.Pointer.prototype.y = function (){
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(1);
+function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
+var Imba = __webpack_require__(1), _2 = Imba.createTagList, _1 = Imba.createElement;
+var Title = __webpack_require__(15).Title;
+
+var list = {
+	items: []
+};
+
+var App = Imba.defineTag('App', function(tag){
+	
+	tag.prototype.getCurrentTime = function (){
+		var date = new Date();
+		return ("" + (date.getFullYear()) + "." + (date.getMonth() + 1) + "." + (date.getDate()) + "-" + (date.getHours()) + ":" + (date.getMinutes()));
+	};
+	
+	tag.prototype.addItem = function (){
+		if (!this.data().content) { return };
+		list.items.push({content: this.data().content,createdAt: this.getCurrentTime(),done: false});
+		return this.data().content = "";
+	};
+	
+	tag.prototype.toggleItem = function (index){
+		return list.items[index].done = !list.items[index].done;
+	};
+	
+	tag.prototype.render = function (){
+		var $ = this.$, self = this;
+		return self.$open(0).setChildren($.$ = $.$ || [
+			_1(Title,$,0,self),
+			_1('header',$,1,self).setContent([
+				_1('input',$,2,1).on$(0,['keyup','enter','addItem'],self).setPlaceholder("here").css('margin-right','10px'),
+				_1('button',$,3,1).on$(0,['click','addItem'],self).setText('Add TODO')
+			],2),
+			_1('ul',$,4,self)
+		],2).synced((
+			$[0].end(),
+			$[2].bindData(self.data(),'content').end(),
+			$[4].setContent((function tagLoop($0) {
+				var t0;
+				for (let index = 0, items = iter$(self.data().items), len = $0.taglen = items.length, item; index < len; index++) {
+					item = items[index];
+					(t0 = $0[index] || (t0=_1('li',$0,index)).setContent(
+						t0.$.A || _1('span',t0.$,'A',t0)
+					,2)).on$(0,['click',['toggleItem',index]],self).end((
+						t0.$.A.css('color',("" + (item.done ? '#999' : '#000'))).css('text-decoration',("" + (item.done ? 'line-through' : 'none'))).setContent([
+							item.content,
+							t0.$.B || _1('span',t0.$,'B','A').css('color',"#999")
+						],1).end((
+							t0.$.B.setText(" ---@ " + (item.createdAt)).end()
+						,true))
+					,true));
+				};return $0;
+			})($[5] || _2($,5,$[4])),4)
+		,true));
+	};
+});
+
+Imba.mount((_1(App)).setData(list).end());
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var Imba = __webpack_require__(0);
@@ -458,8 +450,8 @@ if (ns && ns.Imba) {
 module.exports = Imba;
 
 if (true) {
+	__webpack_require__(6);
 	__webpack_require__(7);
-	__webpack_require__(8);
 };
 
 if (activate) {
@@ -468,10 +460,10 @@ if (activate) {
 
 if (false) {};
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -498,7 +490,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -845,31 +837,31 @@ Imba.Scheduler.prototype.onevent = function (event){
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Imba = __webpack_require__(0);
 
+__webpack_require__(8);
 __webpack_require__(9);
-__webpack_require__(10);
 
 Imba.TagManager = new Imba.TagManagerClass();
 
+__webpack_require__(10);
 __webpack_require__(11);
+__webpack_require__(2);
 __webpack_require__(12);
-__webpack_require__(3);
 __webpack_require__(13);
-__webpack_require__(14);
 
 if (true) {
-	__webpack_require__(15);
+	__webpack_require__(14);
 };
 
 if (false) {};
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -1006,12 +998,12 @@ Imba.TagManagerClass.prototype.tryUnmount = function (){
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
 var Imba = __webpack_require__(0);
-__webpack_require__(3);
+__webpack_require__(2);
 
 var native$ = [
 	'keydown','keyup','keypress',
@@ -1241,7 +1233,7 @@ Imba.EventManager.prototype.ondisable = function (){
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -2477,7 +2469,7 @@ Imba.Tag;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -2785,7 +2777,7 @@ Imba.extendTag('select', function(tag){
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -3285,7 +3277,7 @@ Imba.TouchGesture.prototype.ontouchend = function (e){
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -3686,7 +3678,7 @@ Imba.Event.prototype.which = function (){
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
@@ -4183,10 +4175,10 @@ if (apple) {
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Imba = __webpack_require__(2);
+var Imba = __webpack_require__(1);
 var Title = Imba.defineTag('Title', function(tag){
 	tag.prototype.render = function (){
 		return this.$open(0).setText("Todo List").synced();
