@@ -6,7 +6,6 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "imba app/server.imba",
     "dev": "webpack-dev-server",
     "build": "webpack",
     "watch": "webpack --watch --progress --colors --display-modules"
