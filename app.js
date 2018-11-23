@@ -385,11 +385,11 @@ var App = Imba.defineTag('App', function(tag){
 			],2),
 			_1('ul',$,3,this).setContent(
 				$[4] || _1('li',$,4,3).setContent(
-					$[5] || _1('a',$,5,4).setRouteTo('/todo').setText('Todo')
+					$[5] || _1('a',$,5,4).setRouteTo('/imba_playground/todo').setText('Todo')
 				,2)
 			,2),
 			
-			_1(Todo,$,6,this).setRoute('/todo')
+			_1(Todo,$,6,this).setRoute('/imba_playground/todo')
 		],2).synced((
 			$[1].end(),
 			$[2].end(),
