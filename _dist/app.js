@@ -368,64 +368,38 @@ Imba.Pointer.prototype.y = function (){
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
-var Imba = __webpack_require__(1), _2 = Imba.createTagList, _1 = Imba.createElement;
-var Title = __webpack_require__(15).Title;
-
-var list = {
-	items: []
-};
+var Imba = __webpack_require__(1), _1 = Imba.createElement;
+__webpack_require__(15);
+var Todo = __webpack_require__(17).Todo;
 
 var App = Imba.defineTag('App', function(tag){
-	
-	tag.prototype.getCurrentTime = function (){
-		var date = new Date();
-		return ("" + (date.getFullYear()) + "." + (date.getMonth() + 1) + "." + (date.getDate()) + "-" + (date.getHours()) + ":" + (date.getMinutes()));
-	};
-	
-	tag.prototype.addItem = function (){
-		if (!this.data().content) { return };
-		list.items.push({content: this.data().content,createdAt: this.getCurrentTime(),done: false});
-		return this.data().content = "";
-	};
-	
-	tag.prototype.toggleItem = function (index){
-		return list.items[index].done = !list.items[index].done;
-	};
-	
 	tag.prototype.render = function (){
-		var $ = this.$, self = this;
-		return self.$open(0).setChildren($.$ = $.$ || [
-			_1(Title,$,0,self),
-			_1('header',$,1,self).setContent([
-				_1('input',$,2,1).on$(0,['keyup','enter','addItem'],self).setPlaceholder("here").css('margin-right','10px'),
-				_1('button',$,3,1).on$(0,['click','addItem'],self).setText('Add TODO')
+		var $ = this.$;
+		return this.$open(0).setChildren($.$ = $.$ || [
+			_1('p',$,0,this).setContent([
+				'Web playground built on ',
+				_1('a',$,1,0).setHref('http://imba.io/').setText('imba'),
+				'. Source code see ',
+				_1('a',$,2,0).setHref('https://github.com/Cygra/imba_playground').setText('Github'),
+				'.'
 			],2),
-			_1('ul',$,4,self)
+			_1('ul',$,3,this).setContent(
+				$[4] || _1('li',$,4,3).setContent(
+					$[5] || _1('a',$,5,4).setRouteTo('/todo').setText('Todo')
+				,2)
+			,2),
+			
+			_1(Todo,$,6,this).setRoute('/todo')
 		],2).synced((
-			$[0].end(),
-			$[2].bindData(self.data(),'content').end(),
-			$[4].setContent((function tagLoop($0) {
-				var t0;
-				for (let index = 0, items = iter$(self.data().items), len = $0.taglen = items.length, item; index < len; index++) {
-					item = items[index];
-					(t0 = $0[index] || (t0=_1('li',$0,index)).setContent(
-						t0.$.A || _1('span',t0.$,'A',t0)
-					,2)).on$(0,['click',['toggleItem',index]],self).end((
-						t0.$.A.css('color',("" + (item.done ? '#999' : '#000'))).css('text-decoration',("" + (item.done ? 'line-through' : 'none'))).setContent([
-							item.content,
-							t0.$.B || _1('span',t0.$,'B','A').css('color',"#999")
-						],1).end((
-							t0.$.B.setText(" ---@ " + (item.createdAt)).end()
-						,true))
-					,true));
-				};return $0;
-			})($[5] || _2($,5,$[4])),4)
+			$[1].end(),
+			$[2].end(),
+			$[5].end(),
+			$[6].end()
 		,true));
 	};
 });
 
-Imba.mount((_1(App)).setData(list).end());
+Imba.mount((_1(App)).end());
 
 
 /***/ }),
@@ -4178,10 +4152,619 @@ if (apple) {
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
+function len$(a){
+	return a && (a.len instanceof Function ? a.len() : a.length) || 0;
+};
+var Imba = __webpack_require__(1);
+var Route = __webpack_require__(16).Route;
+
+// check if is web
+
+var isWeb = typeof window !== 'undefined';
+
+function Router(o){
+	if(o === undefined) o = {};
+	this._url = o.url || '';
+	this._hash = '';
+	this._routes = {};
+	this._options = o;
+	this._redirects = o.redirects || {};
+	this._aliases = o.aliases || {};
+	this._busy = [];
+	this._root = o.root || '';
+	this.setMode(o.mode || 'history');
+	this.setup();
+	this;
+};
+
+exports.Router = Router; // export class 
+Router._instance = null;
+
+Router.prototype.__mode = {watch: 'modeDidSet',chainable: true,name: 'mode'};
+Router.prototype.mode = function(v){ return v !== undefined ? (this.setMode(v),this) : this._mode; }
+Router.prototype.setMode = function(v){
+	var a = this.mode();
+	if(v != a) { this._mode = v; }
+	if(v != a) { this.modeDidSet && this.modeDidSet(v,a,this.__mode) }
+	return this;
+};
+Router.prototype.busy = function(v){ return this._busy; }
+Router.prototype.setBusy = function(v){ this._busy = v; return this; };
+Router.prototype.root = function(v){ return this._root; }
+Router.prototype.setRoot = function(v){ this._root = v; return this; };
+
+// support redirects
+Router.prototype.option = function (key,value){
+	if (value == undefined) {
+		return this._options[key];
+	} else {
+		this._options[key] = value;
+	};
+	return this;
+};
+
+Router.prototype.location = function (){
+	return document.location;
+};
+
+Router.prototype.setup = function (){
+	var self = this;
+	if (isWeb) {
+		// let url = location:pathname
+		// temporary hack to support scrimba out-of-the-box
+		if (!self._root && window.SCRIMBA_ROOT && self.mode() != 'hash') {
+			self._root = window.SCRIMBA_ROOT.replace(/\/$/,'');
+		};
+		
+		let url = self.path();
+		// if url and @redirects[url]
+		self.history().replaceState({},null,self.normalize(url));
+		
+		self._hash = self.location().hash;
+		window.addEventListener('hashchange',function(e) {
+			self.emit('hashchange',self._hash = self.location().hash);
+			return Imba.commit();
+		});
+	};
+	return self;
+};
+
+Router.prototype.path = function (){
+	let url = this._url || (isWeb ? (((this.mode() == 'hash') ? (this.hash() || '').slice(1) : this.location().pathname)) : '');
+	if (this._root && url.indexOf(this._root) == 0) {
+		url = url.slice(this._root.length);
+	};
+	if (url == '') { url = '/' };
+	url = this._redirects[url] || url;
+	url = this._aliases[url] || url;
+	return url;
+};
+
+Router.prototype.url = function (){
+	var url = this.path();
+	if (isWeb && this.mode() != 'hash') {
+		url += this.location().hash;
+	};
+	return url;
+};
+
+Router.prototype.hash = function (){
+	return isWeb ? this.location().hash : '';
+};
+
+Router.instance = function (){
+	return this._instance || (this._instance = new this());
+};
+
+Router.prototype.history = function (){
+	return window.history;
+};
+
+Router.prototype.match = function (pattern){
+	var route = this._routes[pattern] || (this._routes[pattern] = new Route(this,pattern));
+	return route.test();
+};
+
+Router.prototype.go = function (url,state){
+	// remove hash if we are hash-based and url includes hash
+	var self = this;
+	if(state === undefined) state = {};
+	url = self._redirects[url] || url;
+	
+	self.history().pushState(state,null,self.normalize(url));
+	// now commit and schedule events afterwards
+	Imba.commit();
+	
+	isWeb && self.onReady(function() {
+		let hash = self.location().hash;
+		if (hash != self._hash) {
+			return self.emit('hashchange',self._hash = hash);
+		};
+	});
+	return self;
+};
+
+Router.prototype.replace = function (url,state){
+	if(state === undefined) state = {};
+	url = this._redirects[url] || url;
+	return this.history().replaceState(state,null,this.normalize(url));
+};
+
+Router.prototype.normalize = function (url){
+	if (this.mode() == 'hash') {
+		url = ("#" + url);
+	} else if (this.root()) {
+		url = this.root() + url;
+	};
+	return url;
+};
+
+Router.prototype.onReady = function (cb){
+	var self = this;
+	return Imba.ticker().add(function() {
+		return (len$(self._busy) == 0) ? cb(self) : Imba.once(self,'ready',cb);
+	});
+};
+
+Router.prototype.emit = function (name){
+	var $0 = arguments, i = $0.length;
+	var params = new Array(i>1 ? i-1 : 0);
+	while(i>1) params[--i - 1] = $0[i];
+	return Imba.emit(this,name,params);
+};
+Router.prototype.on = function (name){
+	var Imba_;
+	var $0 = arguments, i = $0.length;
+	var params = new Array(i>1 ? i-1 : 0);
+	while(i>1) params[--i - 1] = $0[i];
+	return Imba.listen.apply(Imba,[].concat([this,name], [].slice.call(params)));
+};
+Router.prototype.once = function (name){
+	var Imba_;
+	var $0 = arguments, i = $0.length;
+	var params = new Array(i>1 ? i-1 : 0);
+	while(i>1) params[--i - 1] = $0[i];
+	return Imba.once.apply(Imba,[].concat([this,name], [].slice.call(params)));
+};
+Router.prototype.un = function (name){
+	var Imba_;
+	var $0 = arguments, i = $0.length;
+	var params = new Array(i>1 ? i-1 : 0);
+	while(i>1) params[--i - 1] = $0[i];
+	return Imba.unlisten.apply(Imba,[].concat([this,name], [].slice.call(params)));
+};
+
+const LinkExtend = {
+	inject: function(node,opts){
+		let render = node.render;
+		node.resolveRoute = this.resolveRoute;
+		node.beforeRender = this.beforeRender;
+		return node.ontap || (node.ontap = this.ontap);
+	},
+	
+	beforeRender: function(){
+		this.resolveRoute();
+		return true;
+	},
+	
+	ontap: function(e){
+		var href = this._route.resolve();
+		
+		if (!href) { return };
+		
+		if (this._route.option('sticky')) {
+			let prev = this._route.params().url;
+			if (prev && prev.indexOf(href) == 0) {
+				href = prev;
+			};
+		};
+		
+		if ((href[0] != '#' && href[0] != '/')) {
+			e._responder = null;
+			e.prevent().stop();
+			// need to respect target
+			return window.open(href,'_blank');
+		};
+		
+		if (e.meta() || e.alt()) {
+			e._responder = null;
+			e.prevent().stop();
+			return window.open(this.router().root() + href,'_blank');
+		};
+		
+		e.prevent().stop();
+		return this.router().go(href,{});
+	},
+	
+	resolveRoute: function(){
+		let match = this._route.test();
+		this.setAttribute('href',this.router().root() + this._route.resolve());
+		return this.flagIf('active',this._route.test());
+	}
+};
+
+
+const RoutedExtend = {
+	
+	inject: function(node){
+		node._params = {};
+		node.resolveRoute = this.resolveRoute;
+		node.beforeRender = this.beforeRender;
+		return node.detachFromParent();
+	},
+	
+	beforeRender: function(){
+		this.resolveRoute();
+		if (!this._params._active) { return false };
+		
+		let status = this._route.status();
+		
+		if (this[("render" + status)]) {
+			this[("render" + status)]();
+			return false;
+		};
+		
+		if (status >= 200) {
+			return true;
+		};
+		
+		return false;
+	},
+	
+	resolveRoute: function(next){
+		var self = this;
+		let prev = self._params;
+		let match = self._route.test();
+		
+		if (match) {
+			if (match != prev) {
+				self.setParams(match);
+				if (self.load) {
+					self.route().load(function() { return self.load(self.params()); });
+				};
+			};
+			// call method every time if the actual url has changed - even if match is the same?
+			
+			if (!match._active) {
+				match._active = true;
+				// should happen after load?
+				return self.attachToParent();
+			};
+		} else if (prev._active) {
+			prev._active = false;
+			return self.detachFromParent();
+		};
+	}
+};
+
+
+Imba.extendTag('element', function(tag){
+	tag.prototype.__params = {watch: 'paramsDidSet',name: 'params'};
+	tag.prototype.params = function(v){ return this._params; }
+	tag.prototype.setParams = function(v){
+		var a = this.params();
+		if(v != a) { this._params = v; }
+		if(v != a) { this.paramsDidSet && this.paramsDidSet(v,a,this.__params) }
+		return this;
+	};
+	
+	tag.prototype.route = function (){
+		return this._route;
+	};
+	
+	tag.prototype.setRoute = function (path,mods){
+		let prev = this._route;
+		
+		if (!prev) {
+			path = String(path);
+			let par = (path[0] != '/') ? this.getParentRoute() : null;
+			let opts = mods || {};
+			opts.node = this;
+			this._route = new Route(this.router(),path,par,opts);
+			if (opts.link) {
+				LinkExtend.inject(this,opts);
+			} else {
+				RoutedExtend.inject(this);
+			};
+		} else if (String(path) != prev._raw) {
+			prev.setPath(String(path));
+		};
+		return this;
+	};
+	
+	tag.prototype.setRouteTo = function (path,mods){
+		if (this._route) {
+			return this.setRoute(path);
+		} else {
+			mods || (mods = {});
+			mods.link = true;
+			return this.setRoute(path,mods);
+		};
+	};
+	
+	// for server
+	tag.prototype.setRouterUrl = function (url){
+		this._router || (this._router = new Router(url));
+		return this;
+	};
+	
+	tag.prototype.setRouterRoot = function (url){
+		this.router().setRoot(url);
+		return this;
+	};
+	
+	tag.prototype.getParentRoute = function (){
+		var route = null;
+		var par = this._owner_;
+		while (par){
+			if (par._route) {
+				return par._route;
+			};
+			par = par._owner_;
+		};
+		return null;
+	};
+	
+	tag.prototype.setRouter = function (router){
+		this._router = router;
+		return this;
+	};
+	
+	tag.prototype.router = function (){
+		return this._router || (this._router = (this._owner_ && this._owner_.router() || new Router()));
+		// isWeb ? Router.instance : (@router or (@owner_ ? @owner_.router : (@router ||= Router.new)))
+	};
+});
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
+var Imba = __webpack_require__(1);
+var isWeb = typeof window !== 'undefined';
+
+function Route(router,str,parent,options){
+	this._parent = parent;
+	this._router = router;
+	this._options = options || {};
+	this._node = this._options.node;
+	this._status = 200;
+	this.setPath(str);
+};
+
+exports.Route = Route; // export class 
+Route.prototype.raw = function(v){ return this._raw; }
+Route.prototype.setRaw = function(v){ this._raw = v; return this; };
+Route.prototype.params = function(v){ return this._params; }
+Route.prototype.setParams = function(v){ this._params = v; return this; };
+Route.prototype.__status = {watch: 'statusDidSet',name: 'status'};
+Route.prototype.status = function(v){ return this._status; }
+Route.prototype.setStatus = function(v){
+	var a = this.status();
+	if(v != a) { this._status = v; }
+	if(v != a) { this.statusDidSet && this.statusDidSet(v,a,this.__status) }
+	return this;
+};
+
+Route.prototype.option = function (key){
+	return this._options[key];
+};
+
+Route.prototype.setPath = function (path){
+	var self = this;
+	self._raw = path;
+	self._groups = [];
+	self._params = {};
+	self._cache = {};
+	path = path.replace(/\:(\w+|\*)(\.)?/g,function(m,id,dot) {
+		// what about :id.:format?
+		if (id != '*') { self._groups.push(id) };
+		if (dot) {
+			return "([^\/\#\.\?]+)\.";
+		} else {
+			return "([^\/\#\?]+)";
+		};
+	});
+	
+	path = '^' + path;
+	if (self._options.exact && path[path.length - 1] != '$') {
+		path = path + '(?=[\#\?]|$)';
+	} else {
+		// we only want to match end OR /
+		path = path + '(?=[\/\#\?]|$)';
+	};
+	self._regex = new RegExp(path);
+	return self;
+};
+
+Route.prototype.test = function (url){
+	var m, match;
+	url || (url = this._router.url()); // should include hash?
+	if (url == this._cache.url) { return this._cache.match };
+	
+	let prefix = '';
+	let matcher = this._cache.url = url;
+	this._cache.match = null;
+	
+	if (this._parent && this._raw[0] != '/') {
+		if (m = this._parent.test(url)) {
+			if (url.indexOf(m.path) == 0) {
+				prefix = m.path + '/';
+				matcher = url.slice(m.path.length + 1);
+			};
+		};
+	};
+	
+	if (match = matcher.match(this._regex)) {
+		let path = prefix + match[0];
+		if (path == this._params.path) {
+			this._params.url = url;
+			return this._cache.match = this._params;
+		};
+		
+		this._params = {path: path,url: url};
+		if (this._groups.length) {
+			for (let i = 0, items = iter$(match), len = items.length, item, name; i < len; i++) {
+				item = items[i];
+				if (name = this._groups[i - 1]) {
+					this._params[name] = item;
+				};
+			};
+		};
+		
+		return this._cache.match = this._params;
+	};
+	
+	return this._cache.match = null;
+};
+
+// should split up the Route types
+Route.prototype.statusDidSet = function (status,prev){
+	let idx = this._router.busy().indexOf(this);
+	clearTimeout(this._statusTimeout);
+	
+	if (status < 200) {
+		if (idx == -1) { this._router.busy().push(this) };
+		this._statusTimeout = setTimeout(function() { return status = 408; },25000);
+	} else if (idx >= 0 && status >= 200) {
+		this._router.busy().splice(idx,1);
+		
+		// immediately to be able to kick of nested routes
+		// is not commit more natural?
+		this._node && this._node.commit  &&  this._node.commit();
+		// Imba.commit
+		if (this._router.busy().length == 0) {
+			Imba.emit(this._router,'ready',[this._router]);
+		};
+	};
+	
+	return this._node && this._node.setFlag  &&  this._node.setFlag('route-status',("status-" + status));
+};
+
+Route.prototype.load = function (cb){
+	var self = this;
+	self.setStatus(102);
+	
+	var handler = self._handler = function(res) {
+		var v_;
+		if (handler != self._handler) {
+			console.log("another load has started after this");
+			return;
+		};
+		
+		self._handler = null;
+		return (self.setStatus(v_ = ((typeof res=='number'||res instanceof Number)) ? res : 200),v_);
+	};
+	
+	if (cb instanceof Function) {
+		cb = cb(handler);
+	};
+	
+	if (cb && cb.then) {
+		cb.then(handler,handler);
+	} else {
+		handler(cb);
+	};
+	return self;
+};
+
+Route.prototype.resolve = function (url){
+	var m;
+	url || (url = this._router.url());
+	if (this._cache.resolveUrl == url) {
+		return this._cache.resolved;
+	};
+	
+	// let base = @router.root or ''
+	let base = '';
+	this._cache.resolveUrl = url; // base + url
+	
+	if (this._parent && this._raw[0] != '/') {
+		if (m = this._parent.test()) {
+			this._cache.resolved = base + m.path + '/' + this._raw; // .replace('$','')
+		};
+	} else {
+		// FIXME what if the url has some unknowns?
+		this._cache.resolved = base + this._raw; // .replace(/[\@\$]/g,'')
+	};
+	
+	return this._cache.resolved;
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
+var Imba = __webpack_require__(1), _2 = Imba.createTagList, _1 = Imba.createElement;
+var Title = __webpack_require__(18).Title;
+
+var list = {
+	items: []
+};
+
+var Todo = Imba.defineTag('Todo', function(tag){
+	
+	tag.prototype.getCurrentTime = function (){
+		var date = new Date();
+		return ("" + (date.getFullYear()) + "." + (date.getMonth() + 1) + "." + (date.getDate()) + "-" + (date.getHours()) + ":" + (date.getMinutes()));
+	};
+	
+	tag.prototype.addItem = function (){
+		if (!this.data().content) { return };
+		list.items.push({content: this.data().content,createdAt: this.getCurrentTime(),done: false});
+		return this.data().content = '';
+	};
+	
+	tag.prototype.toggleItem = function (index){
+		return list.items[index].done = !list.items[index].done;
+	};
+	
+	tag.prototype.render = function (){
+		var $ = this.$, self = this;
+		return self.$open(0).setData(list).setChildren($.$ = $.$ || [
+			_1(Title,$,0,self),
+			_1('header',$,1,self).setContent([
+				_1('input',$,2,1).on$(0,['keyup','enter','addItem'],self).setPlaceholder('here').css('margin-right','10px'),
+				_1('button',$,3,1).on$(0,['click','addItem'],self).setText('Add TODO')
+			],2),
+			_1('ul',$,4,self)
+		],2).synced((
+			$[0].end(),
+			$[2].bindData(self.data(),'content').end(),
+			$[4].setContent((function tagLoop($0) {
+				var t0;
+				for (let index = 0, items = iter$(self.data().items), len = $0.taglen = items.length, item; index < len; index++) {
+					item = items[index];
+					(t0 = $0[index] || (t0=_1('li',$0,index)).setContent(
+						t0.$.A || _1('span',t0.$,'A',t0)
+					,2)).on$(0,['click',['toggleItem',index]],self).end((
+						t0.$.A.css('color',("" + (item.done ? '#999' : '#000'))).css('text-decoration',("" + (item.done ? 'line-through' : 'none'))).setContent([
+							item.content,
+							t0.$.B || _1('span',t0.$,'B','A').css('color','#999')
+						],1).end((
+							t0.$.B.setText(" ---@ " + (item.createdAt)).end()
+						,true))
+					,true));
+				};return $0;
+			})($[5] || _2($,5,$[4])),4)
+		,true));
+	};
+})
+exports.Todo = Todo;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var Imba = __webpack_require__(1);
 var Title = Imba.defineTag('Title', function(tag){
 	tag.prototype.render = function (){
-		return this.$open(0).setText("Todo List").synced();
+		return this.$open(0).setText('Todo List').synced();
 	};
 })
 exports.Title = Title;
