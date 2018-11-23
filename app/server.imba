@@ -1,7 +1,7 @@
 var express = require 'express'
 var server = express()
 
-server.use(express.static('./app/root'))
+server.use(express.static('./app'))
 
 server.get '/' do |req,res|
 	var html = <html>
@@ -9,7 +9,7 @@ server.get '/' do |req,res|
 			<title> "Imba - Hello World"
 			<meta charset="utf-8">
 		<body>
-			<script src="/client.js">
+			<script src="/app.js">
 
 	return res.send html.toString
 

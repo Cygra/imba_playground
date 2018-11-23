@@ -1,4 +1,4 @@
-import { Title } from "./Title"
+import { Title } from "./src/components/Title"
 
 var list = {
 	items: []

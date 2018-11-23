@@ -10,6 +10,6 @@ module.exports = {
 	resolve: {
 		extensions: [".imba",".js", ".json"]
 	},
-	entry: "./app/src/client.imba",
-	output: {  path: __dirname + '/dist', filename: "client.js" }
+	entry: "./app/app.imba",
+	output: {  path: __dirname + '/_dist', filename: "app.js" }
 }
