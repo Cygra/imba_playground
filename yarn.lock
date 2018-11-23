@@ -1546,7 +1546,14 @@ ignore-walk@^3.0.1:
   dependencies:
     minimatch "^3.0.4"
 
-imba@^1.4.0:
+imba-router@^0.2.0:
+  version "0.2.0"
+  resolved "http://registry.npm.taobao.org/imba-router/download/imba-router-0.2.0.tgz#28c066d9e4c3a119533479491a6b0f66c89519a9"
+  integrity sha1-KMBm2eTDoRlTNHlJGmsPZsiVGak=
+  dependencies:
+    imba "1.x"
+
+imba@1.x, imba@^1.4.0:
   version "1.4.1"
   resolved "http://registry.npm.taobao.org/imba/download/imba-1.4.1.tgz#8ae39e5d64be1ecbe192edad31a8fb539434d38d"
   integrity sha1-iuOeXWS+Hsvhku2tMaj7U5Q0040=

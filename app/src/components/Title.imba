@@ -1,3 +1,3 @@
 export tag Title
   def render
-    <self> "Todo List"
+    <self> 'Todo List'

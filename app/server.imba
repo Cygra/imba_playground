@@ -6,10 +6,10 @@ server.use(express.static('./app'))
 server.get '/' do |req,res|
 	var html = <html>
 		<head>
-			<title> "Imba - Hello World"
-			<meta charset="utf-8">
+			<title> 'Imba - Hello World'
+			<meta charset='utf-8'>
 		<body>
-			<script src="/app.js">
+			<script src='/app.js'>
 
 	return res.send html.toString
 
