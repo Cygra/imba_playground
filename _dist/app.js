@@ -1,3 +1,5209 @@
-"use strict";function _defineProperty(t,e,n){return e in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t};!function(t){function e(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return t[r].call(o.exports,o,o.exports,e),o.l=!0,o.exports}var n={};e.m=t,e.c=n,e.d=function(t,n,r){e.o(t,n)||Object.defineProperty(t,n,{configurable:!1,enumerable:!0,get:r})},e.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(n,"a",n),n},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=3)}([function(t,e){var n={VERSION:"1.4.0"};n.setTimeout=function(t,e){return setTimeout(function(){return e(),n.commit()},t)},n.setInterval=function(t,e){return setInterval(function(){return e(),n.commit()},t)},n.clearInterval=function(t){return clearInterval(t)},n.clearTimeout=function(t){return clearTimeout(t)},n.subclass=function(t,e){for(var n in e){var r=void 0;r=e[n],e.hasOwnProperty(n)&&(t[n]=r)}return t.prototype=Object.create(e.prototype),t.__super__=t.prototype.__super__=e.prototype,t.prototype.initialize=t.prototype.constructor=t,t},n.iterable=function(t){return t?t.toArray?t.toArray():t:[]},n.await=function(t){return t instanceof Array?(console.warn("await (Array) is deprecated - use await Promise.all(Array)"),Promise.all(t)):t&&t.then?t:Promise.resolve(t)};var r=/-./g,o={};n.toCamelCase=function(t){return t.indexOf("-")>=0?t.replace(r,function(t){return t.charAt(1).toUpperCase()}):t},n.toSetter=function(t){return o[t]||(o[t]=n.toCamelCase("set-"+t))},n.indexOf=function(t,e){return e&&e.indexOf?e.indexOf(t):[].indexOf.call(t,e)},n.len=function(t){return t&&(t.len instanceof Function?t.len.call(t):t.length)||0},n.prop=function(t,e,n){if(t.defineProperty)return t.defineProperty(e,n)},n.attr=function(t,e,r){if(void 0===r&&(r={}),t.defineAttribute)return t.defineAttribute(e,r);var o=n.toCamelCase(e),i=n.toCamelCase("set-"+e),s=t.prototype;r.dom?(s[o]=function(){return this.dom()[e]},s[i]=function(t){return t!=this[e]()&&(this.dom()[e]=t),this}):(s[o]=function(){return this.getAttribute(e)},s[i]=function(t){return this.setAttribute(e,t),this})},n.propDidSet=function(t,e,n,r){var o=e.watch;o instanceof Function?o.call(t,n,r,e):("string"==typeof o||o instanceof String)&&t[o]&&t[o](n,r,e)};var i=function(t,e,n){for(var r,o;(r=n)&&(n=n.next);)(o=n.listener)&&(n.path&&o[n.path]?e?o[n.path].apply(o,e):o[n.path]():e?o.apply(n,e):o.call(n)),n.times&&--n.times<=0&&(r.next=n.next,n.listener=null)};n.listen=function(t,e,n,r){var o,i,s;return o=t.__listeners__||(t.__listeners__={}),i=o[e]||(o[e]={}),s=i.tail||(i.tail=i.next={}),s.listener=n,s.path=r,i.tail=s.next={},s},n.once=function(t,e,r){var o=n.listen(t,e,r);return o.times=1,o},n.unlisten=function(t,e,n,r){var o,i,s=t.__listeners__;if(s&&(o=s[e]))for(;(i=o)&&(o=o.next);)if(o==n||o.listener==n){i.next=o.next,o.listener=null;break}},n.emit=function(t,e,n){var r;(r=t.__listeners__)&&(r[e]&&i(0,n,r[e]),r.all&&i(0,[e,n],r.all))},n.observeProperty=function(t,e,r,o,i){return i&&"object"==(void 0===i?"undefined":_typeof(i))&&n.unlisten(i,"all",t,r),o&&"object"==(void 0===o?"undefined":_typeof(o))&&n.listen(o,"all",t,r),this},t.exports=n},function(t,e,n){t.exports=n(4)},function(t,e,n){var r=n(0);r.Pointer=function(){return this._button=-1,this._event={x:0,y:0,type:"uninitialized"},this},r.Pointer.prototype.button=function(){return this._button},r.Pointer.prototype.touch=function(){return this._touch},r.Pointer.prototype.update=function(t){return this._event=t,this._dirty=!0,this},r.Pointer.prototype.process=function(){var t=this._event;if(this._dirty)if(this._prevEvent=t,this._dirty=!1,"mousedown"==t.type){if(this._button=t.button,this._touch&&0!=this._button)return;this._touch&&this._touch.cancel(),this._touch=new r.Touch(t,this),this._touch.mousedown(t,t)}else"mousemove"==t.type?this._touch&&this._touch.mousemove(t,t):"mouseup"==t.type&&(this._button=-1,this._touch&&this._touch.button()==t.button&&(this._touch.mouseup(t,t),this._touch=null));else this._touch&&this._touch.idle();return this},r.Pointer.prototype.x=function(){return this._event.x},r.Pointer.prototype.y=function(){return this._event.y}},function(t,e,n){var r=n(1),o=r.createElement;n(15);var i=n(17).Todo,s=r.defineTag("App",function(t){t.prototype.render=function(){var t=this.$;return this.$open(0).setChildren(t.$=t.$||[o("p",t,0,this).setContent(["Web playground built on ",o("a",t,1,0).setHref("http://imba.io/").setText("imba"),". Source code see ",o("a",t,2,0).setHref("https://github.com/Cygra/imba_playground").setText("Github"),"."],2),o("ul",t,3,this).setContent(t[4]||o("li",t,4,3).setContent(t[5]||o("a",t,5,4).setRouteTo("/imba_playground/todo").setText("Todo"),2),2),o(i,t,6,this).setRoute("/imba_playground/todo")],2).synced((t[1].end(),t[2].end(),t[5].end(),t[6].end(),!0))}});r.mount(o(s).end())},function(t,e,n){(function(e){var r=n(0),o=!1,i="undefined"!=typeof window?window:void 0!==e?e:null;i&&i.Imba?(console.warn("Imba v"+i.Imba.VERSION+" is already loaded."),r=i.Imba):i&&(i.Imba=r,o=!0,i.define&&i.define.amd&&i.define("imba",[],function(){return r})),t.exports=r,n(6),n(7),o&&r.EventManager.activate()}).call(e,n(5))},function(t,e){var n;n=function(){return this}();try{n=n||Function("return this")()||(0,eval)("this")}catch(t){"object"===("undefined"==typeof window?"undefined":_typeof(window))&&(n=window)}t.exports=n},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}function o(){var t=this;t._queue=[],t._stage=-1,t._scheduled=!1,t._ticker=function(e){return t._scheduled=!1,t.tick(e)}}var i,s,u=n(0);s=window.cancelAnimationFrame||window.mozCancelAnimationFrame||window.webkitRequestAnimationFrame,i=window.requestAnimationFrame,i||(i=window.webkitRequestAnimationFrame),i||(i=window.mozRequestAnimationFrame),i||(i=function(t){return setTimeout(t,1e3/60)}),o.prototype.stage=function(t){return this._stage},o.prototype.setStage=function(t){return this._stage=t,this},o.prototype.queue=function(t){return this._queue},o.prototype.setQueue=function(t){return this._queue=t,this},o.prototype.add=function(t,e){if((e||-1==this._queue.indexOf(t))&&this._queue.push(t),!this._scheduled)return this.schedule()},o.prototype.tick=function(t){var e=this._queue;if(this._ts||(this._ts=t),this._dt=t-this._ts,this._ts=t,this._queue=[],this._stage=1,this.before(),e.length)for(var n,o=0,i=r(e),s=i.length;o<s;o++)n=i[o],n instanceof Function?n(this._dt,this):n.tick&&n.tick(this._dt,this);return this._stage=2,this.after(),this._stage=this._scheduled?0:-1,this},o.prototype.schedule=function(){return this._scheduled||(this._scheduled=!0,-1==this._stage&&(this._stage=0),i(this._ticker)),this},o.prototype.before=function(){return this},o.prototype.after=function(){return u.TagManager&&u.TagManager.refresh(),this},u.TICKER=new o,u.SCHEDULERS=[],u.ticker=function(){return u.TICKER},u.requestAnimationFrame=function(t){return i(t)},u.cancelAnimationFrame=function(t){return s(t)};var a=0;u.commit=function(t){a++,u.emit(u,"commit",void 0!=t?[t]:void 0),0==--a&&u.TagManager&&u.TagManager.refresh()},u.Scheduler=function(t){var e=this;e._id=h++,e._target=t,e._marked=!1,e._active=!1,e._marker=function(){return e.mark()},e._ticker=function(t){return e.tick(t)},e._dt=0,e._frame={},e._scheduled=!1,e._timestamp=0,e._ticks=0,e._flushes=0,e.onevent=e.onevent.bind(e)};var h=0;u.Scheduler.event=function(t){return u.emit(u,"event",t)},u.Scheduler.prototype.__raf={watch:"rafDidSet",name:"raf"},u.Scheduler.prototype.raf=function(t){return this._raf},u.Scheduler.prototype.setRaf=function(t){var e=this.raf();return t!=e&&(this._raf=t),t!=e&&this.rafDidSet&&this.rafDidSet(t,e,this.__raf),this},u.Scheduler.prototype.__interval={watch:"intervalDidSet",name:"interval"},u.Scheduler.prototype.interval=function(t){return this._interval},u.Scheduler.prototype.setInterval=function(t){var e=this.interval();return t!=e&&(this._interval=t),t!=e&&this.intervalDidSet&&this.intervalDidSet(t,e,this.__interval),this},u.Scheduler.prototype.__events={watch:"eventsDidSet",name:"events"},u.Scheduler.prototype.events=function(t){return this._events},u.Scheduler.prototype.setEvents=function(t){var e=this.events();return t!=e&&(this._events=t),t!=e&&this.eventsDidSet&&this.eventsDidSet(t,e,this.__events),this},u.Scheduler.prototype.marked=function(t){return this._marked},u.Scheduler.prototype.setMarked=function(t){return this._marked=t,this},u.Scheduler.prototype.rafDidSet=function(t){return t&&this._active&&this.requestTick(),this},u.Scheduler.prototype.intervalDidSet=function(t){return clearInterval(this._intervalId),this._intervalId=null,t&&this._active&&(this._intervalId=setInterval(this.oninterval.bind(this),t)),this},u.Scheduler.prototype.eventsDidSet=function(t,e){return this._active&&t&&!e?u.listen(u,"commit",this,"onevent"):!t&&e?u.unlisten(u,"commit",this,"onevent"):void 0},u.Scheduler.prototype.active=function(){return this._active},u.Scheduler.prototype.dt=function(){return this._dt},u.Scheduler.prototype.configure=function(t){return void 0===t&&(t={}),void 0!=t.raf&&this.setRaf(t.raf),void 0!=t.interval&&this.setInterval(t.interval),void 0!=t.events&&this.setEvents(t.events),this},u.Scheduler.prototype.mark=function(){return this._marked=!0,this._scheduled||this.requestTick(),this},u.Scheduler.prototype.flush=function(){return this._flushes++,this._target.tick(this),this._marked=!1,this},u.Scheduler.prototype.tick=function(t,e){return this._ticks++,this._dt=t,e&&(this._scheduled=!1),this.flush(),this._raf&&this._active&&this.requestTick(),this},u.Scheduler.prototype.requestTick=function(){return this._scheduled||(this._scheduled=!0,u.TICKER.add(this)),this},u.Scheduler.prototype.activate=function(t){return void 0===t&&(t=!0),this._active||(this._active=!0,this._commit=this._target.commit,this._target.commit=function(){return this},this._target&&this._target.flag&&this._target.flag("scheduled_"),u.SCHEDULERS.push(this),this._events&&u.listen(u,"commit",this,"onevent"),this._interval&&!this._intervalId&&(this._intervalId=setInterval(this.oninterval.bind(this),this._interval)),t?this.tick(0):this._raf&&this.requestTick()),this},u.Scheduler.prototype.deactivate=function(){if(this._active){this._active=!1,this._target.commit=this._commit;var t=u.SCHEDULERS.indexOf(this);t>=0&&u.SCHEDULERS.splice(t,1),this._events&&u.unlisten(u,"commit",this,"onevent"),this._intervalId&&(clearInterval(this._intervalId),this._intervalId=null),this._target&&this._target.unflag&&this._target.unflag("scheduled_")}return this},u.Scheduler.prototype.track=function(){return this._marker},u.Scheduler.prototype.oninterval=function(){return this.tick(),u.TagManager.refresh(),this},u.Scheduler.prototype.onevent=function(t){return!this._events||this._marked?this:(this._events instanceof Function?this._events(t,this)&&this.mark():this._events instanceof Array?this._events.indexOf(t&&t.type||t)>=0&&this.mark():this.mark(),this)}},function(t,e,n){var r=n(0);n(8),n(9),r.TagManager=new r.TagManagerClass,n(10),n(11),n(2),n(12),n(13),n(14)},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}var o=n(0);o.TagManagerClass=function(){this._inserts=0,this._removes=0,this._mounted=[],this._mountables=0,this._unmountables=0,this._unmounting=0},o.TagManagerClass.prototype.mounted=function(){return this._mounted},o.TagManagerClass.prototype.insert=function(t,e){this._inserts++,t&&t.mount&&this.regMountable(t)},o.TagManagerClass.prototype.remove=function(t,e){return this._removes++},o.TagManagerClass.prototype.changes=function(){return this._inserts+this._removes},o.TagManagerClass.prototype.mount=function(t){},o.TagManagerClass.prototype.refresh=function(t){if(void 0===t&&(t=!1),t||0!=this.changes())return(this._inserts&&this._mountables>this._mounted.length||t)&&this.tryMount(),(this._removes||t)&&this._mounted.length&&this.tryUnmount(),this._inserts=0,this._removes=0,this},o.TagManagerClass.prototype.unmount=function(t){return this},o.TagManagerClass.prototype.regMountable=function(t){if(!(t.FLAGS&o.TAG_MOUNTABLE))return t.FLAGS|=o.TAG_MOUNTABLE,this._mountables++},o.TagManagerClass.prototype.tryMount=function(){for(var t,e=document.body,n=e.querySelectorAll(".__mount"),o=0,i=r(n),s=i.length;o<s;o++)(t=i[o])&&t._tag&&-1==this._mounted.indexOf(t._tag)&&this.mountNode(t._tag);return this},o.TagManagerClass.prototype.mountNode=function(t){-1==this._mounted.indexOf(t)&&(this.regMountable(t),this._mounted.push(t),t.FLAGS|=o.TAG_MOUNTED,t.mount&&t.mount())},o.TagManagerClass.prototype.tryUnmount=function(){this._unmounting++;for(var t,e=[],n=(document.body,0),i=r(this._mounted),s=i.length;n<s;n++)(t=i[n])&&(document.documentElement.contains(t._dom)||(e.push(t),this._mounted[n]=null));if(this._unmounting--,e.length){this._mounted=this._mounted.filter(function(t){return t&&-1==e.indexOf(t)});for(var u,a=0,h=e.length;a<h;a++)u=e[a],u.FLAGS=u.FLAGS&~o.TAG_MOUNTED,u.unmount&&u._dom?u.unmount():u._scheduler&&u.unschedule()}return this}},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}var o=n(0);n(2);var i=["keydown","keyup","keypress","textInput","input","change","submit","focusin","focusout","focus","blur","contextmenu","selectstart","dblclick","selectionchange","mousewheel","wheel","scroll","beforecopy","copy","beforepaste","paste","beforecut","cut","dragstart","drag","dragend","dragenter","dragover","dragleave","dragexit","drop","mouseup","mousedown","mouseenter","mouseleave","mouseout","mouseover","mousemove"];o.EventManager=function(t,e){var n=this;e&&e.constructor===Object||(e={});var o=void 0!==e.events?e.events:[];n._shimFocusEvents=window.netscape&&void 0===t.onfocusin,n.setRoot(t),n.setListeners([]),n.setDelegators({}),n.setDelegator(function(t){return n.delegate(t),!0});for(var i=0,s=r(o),u=s.length;i<u;i++)n.register(s[i]);return n},o.EventManager.prototype.root=function(t){return this._root},o.EventManager.prototype.setRoot=function(t){return this._root=t,this},o.EventManager.prototype.count=function(t){return this._count},o.EventManager.prototype.setCount=function(t){return this._count=t,this},o.EventManager.prototype.__enabled={default:!1,watch:"enabledDidSet",name:"enabled"},o.EventManager.prototype.enabled=function(t){return this._enabled},o.EventManager.prototype.setEnabled=function(t){var e=this.enabled();return t!=e&&(this._enabled=t),t!=e&&this.enabledDidSet&&this.enabledDidSet(t,e,this.__enabled),this},o.EventManager.prototype._enabled=!1,o.EventManager.prototype.listeners=function(t){return this._listeners},o.EventManager.prototype.setListeners=function(t){return this._listeners=t,this},o.EventManager.prototype.delegators=function(t){return this._delegators},o.EventManager.prototype.setDelegators=function(t){return this._delegators=t,this},o.EventManager.prototype.delegator=function(t){return this._delegator},o.EventManager.prototype.setDelegator=function(t){return this._delegator=t,this};var s=[];o.EventManager.prototype.enabledDidSet=function(t){return t?this.onenable():this.ondisable(),this},o.EventManager.bind=function(t){return o.Events?o.Events.autoregister(t):-1==s.indexOf(t)&&i.indexOf(t)>=0?s.push(t):void 0},o.EventManager.activate=function(){return o.Events?o.Events:(o.Events=new o.EventManager(o.document(),{events:[]}),o.POINTER||(o.POINTER=new o.Pointer),window&&void 0!==window.ontouchstart&&(o.Events.listen("touchstart",function(t){return o.Touch.ontouchstart(t)}),o.Events.listen("touchmove",function(t){return o.Touch.ontouchmove(t)}),o.Events.listen("touchend",function(t){return o.Touch.ontouchend(t)}),o.Events.listen("touchcancel",function(t){return o.Touch.ontouchcancel(t)})),o.Events.register("click",function(t){if(t.timeStamp-o.Touch.LastTimestamp>o.Touch.TapTimeout){t._imbaSimulatedTap=!0;var e=new o.Event(t);if(e.setType("tap"),e.process(),e._responder&&e.defaultPrevented)return t.preventDefault()}return o.Events.delegate(t)}),o.Events.listen("mousedown",function(t){if(t.timeStamp-o.Touch.LastTimestamp>o.Touch.TapTimeout&&o.POINTER)return o.POINTER.update(t).process()}),o.Events.listen("mouseup",function(t){if(t.timeStamp-o.Touch.LastTimestamp>o.Touch.TapTimeout&&o.POINTER)return o.POINTER.update(t).process()}),o.Events.register(["mousedown","mouseup"]),o.Events.register(s),o.Events.setEnabled(!0),o.Events)},o.EventManager.prototype.register=function(t,e){if(void 0===e&&(e=!0),t instanceof Array){for(var n=0,o=r(t),i=o.length;n<i;n++)this.register(o[n],e);return this}if(this.delegators()[t])return this;var s=this.delegators()[t]=e instanceof Function?e:this.delegator();return this.enabled()?this.root().addEventListener(t,s,!0):void 0},o.EventManager.prototype.autoregister=function(t){return-1==i.indexOf(t)?this:this.register(t)},o.EventManager.prototype.listen=function(t,e,n){return void 0===n&&(n=!0),this.listeners().push([t,e,n]),this.enabled()&&this.root().addEventListener(t,e,n),this},o.EventManager.prototype.delegate=function(t){return o.Event.wrap(t).process(),this._shimFocusEvents&&("focus"==t.type?o.Event.wrap(t).setType("focusin").process():"blur"==t.type&&o.Event.wrap(t).setType("focusout").process()),this},o.EventManager.prototype.create=function(t,e,n){n&&n.constructor===Object||(n={});var r=void 0!==n.data?n.data:null,i=void 0!==n.source?n.source:null,s=o.Event.wrap({type:t,target:e});return r&&s.setData(r),i&&s.setSource(i),s},o.EventManager.prototype.trigger=function(){return this.create.apply(this,arguments).process()},o.EventManager.prototype.onenable=function(){for(var t,e,n=this.delegators(),i=0,s=Object.keys(n),u=s.length;i<u;i++)e=s[i],t=n[e],this.root().addEventListener(e,t,!0);for(var a,h=0,c=r(this.listeners()),p=c.length;h<p;h++)a=c[h],this.root().addEventListener(a[0],a[1],a[2]);return window.addEventListener("hashchange",o.commit),window.addEventListener("popstate",o.commit),this},o.EventManager.prototype.ondisable=function(){for(var t,e,n=this.delegators(),i=0,s=Object.keys(n),u=s.length;i<u;i++)e=s[i],t=n[e],this.root().removeEventListener(e,t,!0);for(var a,h=0,c=r(this.listeners()),p=c.length;h<p;h++)a=c[h],this.root().removeEventListener(a[0],a[1],a[2]);return window.removeEventListener("hashchange",o.commit),window.removeEventListener("popstate",o.commit),this}},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}function o(){return function(t,e){return this.initialize(t,e),this}}function i(t){this._tag=t}function s(t,e,n){this.cache$=t,this.key$=e,this.par$=n,this.i$=0}var u,a=n(0);a.CSSKeyMap={},a.TAG_BUILT=1,a.TAG_SETUP=2,a.TAG_MOUNTING=4,a.TAG_MOUNTED=8,a.TAG_SCHEDULED=16,a.TAG_AWAKENED=32,a.TAG_MOUNTABLE=64,a.document=function(){return window.document},a.root=function(){return a.getTagForDom(a.document().body)},a.static=function(t,e,n){return t._type=e,t.static=n,t},a.mount=function(t,e){return e||(e=a.document().body),e.appendChild(t.dom()),a.TagManager.insert(t,e),t.scheduler().configure({events:!0}).activate(!1),a.TagManager.refresh(),t},a.createTextNode=function(t){return t&&3==t.nodeType?t:a.document().createTextNode(t)},a.Tag=function(t,e){this.setDom(t),this.$=i.build(this),this.$up=this._owner_=e,this._tree_=null,this.FLAGS=0,this.build()},a.Tag.buildNode=function(){var t=a.document().createElement(this._nodeType||"div");if(this._classes){var e=this._classes.join(" ");e&&(t.className=e)}return t},a.Tag.createNode=function(){return(this._protoDom||(this._protoDom=this.buildNode())).cloneNode(!1)},a.Tag.build=function(t){return new this(this.createNode(),t)},a.Tag.dom=function(){return this._protoDom||(this._protoDom=this.buildNode())},a.Tag.end=function(){return this.commit(0)},a.Tag.inherit=function(t){return t._protoDom=null,this._nodeType?(t._nodeType=this._nodeType,t._classes=this._classes.slice(),t._flagName?t._classes.push(t._flagName):void 0):(t._nodeType=t._name,t._flagName=null,t._classes=[])},a.Tag.prototype.optimizeTagStructure=function(){var t=this.constructor,e=Object.keys(this);e.indexOf("mount")>=0&&(t._classes&&-1==t._classes.indexOf("__mount")&&t._classes.push("__mount"),t._protoDom&&t._protoDom.classList.add("__mount"));for(var n,o=0,i=r(e),s=i.length;o<s;o++)n=i[o],/^on/.test(n)&&a.EventManager.bind(n.slice(2));return this},a.attr(a.Tag,"name"),a.attr(a.Tag,"role"),a.attr(a.Tag,"tabindex"),a.Tag.prototype.title=function(t){return this.getAttribute("title")},a.Tag.prototype.setTitle=function(t){return this.setAttribute("title",t),this},a.Tag.prototype.dom=function(){return this._dom},a.Tag.prototype.setDom=function(t){return t._tag=this,this._dom=this._slot_=t,this},a.Tag.prototype.ref=function(){return this._ref},a.Tag.prototype.root=function(){return this._owner_?this._owner_.root():this},a.Tag.prototype.ref_=function(t){return this.flag(this._ref=t),this},a.Tag.prototype.setData=function(t){return this._data=t,this},a.Tag.prototype.data=function(){return this._data},a.Tag.prototype.bindData=function(t,e,n){return this.setData(n?t[e].apply(t,n):t[e])},a.Tag.prototype.setHtml=function(t){return this.html()!=t&&(this._dom.innerHTML=t),this},a.Tag.prototype.html=function(){return this._dom.innerHTML},a.Tag.prototype.on$=function(t,e,n){var r=this._on_||(this._on_=[]),o=r[t];return t<0&&(t=void 0==o?r[t]=r.length:o,o=r[t]),r[t]=e,o?e.state=o.state:(e.state={context:n},a.EventManager.bind(e[0])),this},a.Tag.prototype.setId=function(t){return null!=t&&(this.dom().id=t),this},a.Tag.prototype.id=function(){return this.dom().id},a.Tag.prototype.setAttribute=function(t,e){return this.dom().getAttribute(t)==e||(null!=e&&!1!==e?this.dom().setAttribute(t,e):this.dom().removeAttribute(t)),this},a.Tag.prototype.setNestedAttr=function(t,e,n,r){return this[t+"SetAttribute"]?this[t+"SetAttribute"](e,n,r):this.setAttributeNS(t,e,n),this},a.Tag.prototype.setAttributeNS=function(t,e,n){return this.getAttributeNS(t,e)!=n&&(null!=n&&!1!==n?this.dom().setAttributeNS(t,e,n):this.dom().removeAttributeNS(t,e)),this},a.Tag.prototype.removeAttribute=function(t){return this.dom().removeAttribute(t)},a.Tag.prototype.getAttribute=function(t){return this.dom().getAttribute(t)},a.Tag.prototype.getAttributeNS=function(t,e){return this.dom().getAttributeNS(t,e)},a.Tag.prototype.set=function(t,e,n){var r=a.toSetter(t);return this[r]instanceof Function?this[r](e,n):this._dom.setAttribute(t,e),this},a.Tag.prototype.get=function(t){return this._dom.getAttribute(t)},a.Tag.prototype.setContent=function(t,e){return this.setChildren(t,e),this},a.Tag.prototype.setChildren=function(t,e){return this._tree_=t,this},a.Tag.prototype.setTemplate=function(t){return this._template||this.render==a.Tag.prototype.render&&(this.render=this.renderTemplate),this.template=this._template=t,this},a.Tag.prototype.template=function(){return null},a.Tag.prototype.renderTemplate=function(){var t=this.template();return t!=this&&this.setChildren(t),this},a.Tag.prototype.removeChild=function(t){var e=this.dom(),n=t._slot_||t;return n&&n.parentNode==e&&(a.TagManager.remove(n._tag||n,this),e.removeChild(n)),this},a.Tag.prototype.removeAllChildren=function(){if(this._dom.firstChild)for(var t;t=this._dom.firstChild;)a.TagManager.remove(t._tag||t,this),this._dom.removeChild(t);return this._tree_=this._text_=null,this},a.Tag.prototype.appendChild=function(t){return"string"==typeof t||t instanceof String?this.dom().appendChild(a.document().createTextNode(t)):t&&(this.dom().appendChild(t._slot_||t),a.TagManager.insert(t._tag||t,this)),this},a.Tag.prototype.insertBefore=function(t,e){return("string"==typeof t||t instanceof String)&&(t=a.document().createTextNode(t)),t&&e&&(this.dom().insertBefore(t._slot_||t,e._slot_||e),a.TagManager.insert(t._tag||t,this)),this},a.Tag.prototype.detachFromParent=function(){return this._slot_==this._dom&&(this._slot_=this._dom._placeholder_||(this._dom._placeholder_=a.document().createComment("node")),this._slot_._tag||(this._slot_._tag=this),this._dom.parentNode&&(a.TagManager.remove(this,this._dom.parentNode),this._dom.parentNode.replaceChild(this._slot_,this._dom))),this},a.Tag.prototype.attachToParent=function(){if(this._slot_!=this._dom){var t=this._slot_;this._slot_=this._dom,t&&t.parentNode&&(a.TagManager.insert(this),t.parentNode.replaceChild(this._dom,t))}return this},a.Tag.prototype.orphanize=function(){var t;return(t=this.parent())&&t.removeChild(this),this},a.Tag.prototype.text=function(t){return this._dom.textContent},a.Tag.prototype.setText=function(t){return this._tree_=t,this._dom.textContent=null==t||!1===this.text()?"":t,this},a.Tag.prototype.dataset=function(t,e){if(t instanceof Object){for(var n,o,i=0,s=Object.keys(t),u=s.length;i<u;i++)o=s[i],n=t[o],this.dataset(o,n);return this}if(2==arguments.length)return this.setAttribute("data-"+t,e),this;if(t)return this.getAttribute("data-"+t);var h=this.dom().dataset;if(!h){h={};for(var c,p=0,l=r(this.dom().attributes),d=l.length;p<d;p++)c=l[p],"data-"==c.name.substr(0,5)&&(h[a.toCamelCase(c.name.slice(5))]=c.value)}return h},a.Tag.prototype.render=function(){return this},a.Tag.prototype.build=function(){return this},a.Tag.prototype.setup=function(){return this},a.Tag.prototype.commit=function(){return!1!==this.beforeRender()&&this.render(),this},a.Tag.prototype.beforeRender=function(){return this},a.Tag.prototype.tick=function(){return!1!==this.beforeRender()&&this.render(),this},a.Tag.prototype.end=function(){return this.setup(),this.commit(0),this.end=a.Tag.end,this},a.Tag.prototype.$open=function(t){return t!=this._context_&&(this._tree_=null,this._context_=t),this},a.Tag.prototype.synced=function(){return this},a.Tag.prototype.awaken=function(){return this},a.Tag.prototype.flags=function(){return this._dom.classList},a.Tag.prototype.flag=function(t,e){return 2==arguments.length?this._dom.classList.contains(t)!=!!e&&this._dom.classList.toggle(t):this._dom.classList.contains(t)||this._dom.classList.add(t),this},a.Tag.prototype.unflag=function(t){return this._dom.classList.remove(t),this},a.Tag.prototype.toggleFlag=function(t){return this._dom.classList.toggle(t),this},a.Tag.prototype.hasFlag=function(t){return this._dom.classList.contains(t)},a.Tag.prototype.flagIf=function(t,e){var n=this._flags_||(this._flags_={}),r=n[t];return e&&!r?(this._dom.classList.add(t),n[t]=!0):r&&!e&&(this._dom.classList.remove(t),n[t]=!1),this},a.Tag.prototype.setFlag=function(t,e){var n=this._namedFlags_||(this._namedFlags_={}),r=n[t];return r!=e&&(r&&this.unflag(r),e&&this.flag(e),n[t]=e),this},a.Tag.prototype.scheduler=function(){return null==this._scheduler?this._scheduler=new a.Scheduler(this):this._scheduler},a.Tag.prototype.schedule=function(t){return void 0===t&&(t={events:!0}),this.scheduler().configure(t).activate(),this},a.Tag.prototype.unschedule=function(){return this._scheduler&&this.scheduler().deactivate(),this},a.Tag.prototype.parent=function(){return a.getTagForDom(this.dom().parentNode)},a.Tag.prototype.children=function(t){for(var e,n=[],o=0,i=r(this._dom.children),s=i.length;o<s;o++)e=i[o],n.push(e._tag||a.getTagForDom(e));return n},a.Tag.prototype.querySelector=function(t){return a.getTagForDom(this._dom.querySelector(t))},a.Tag.prototype.querySelectorAll=function(t){for(var e=[],n=0,o=r(this._dom.querySelectorAll(t)),i=o.length;n<i;n++)e.push(a.getTagForDom(o[n]));return e},a.Tag.prototype.matches=function(t){var e;return t instanceof Function?t(this):(t.query instanceof Function&&(t=t.query()),(e=this._dom.matches||this._dom.matchesSelector||this._dom.webkitMatchesSelector||this._dom.msMatchesSelector||this._dom.mozMatchesSelector)?e.call(this._dom,t):void 0)},a.Tag.prototype.closest=function(t){return a.getTagForDom(this._dom.closest(t))},a.Tag.prototype.contains=function(t){return this.dom().contains(t._dom||t)},a.Tag.prototype.log=function(){for(var t=arguments,e=t.length,n=new Array(e>0?e:0);e>0;)n[e-1]=t[--e];return n.unshift(console),Function.prototype.call.apply(console.log,n),this},a.Tag.prototype.css=function(t,e,n){if(t instanceof Object){for(var r,o,i=0,s=Object.keys(t),u=s.length;i<u;i++)o=s[i],r=t[o],this.css(o,r);return this}var h=a.CSSKeyMap[t]||t;if(null==e)this.dom().style.removeProperty(h);else{if(void 0==e&&1==arguments.length)return this.dom().style[h];h.match(/^--/)?this.dom().style.setProperty(h,e):("number"==typeof e||e instanceof Number)&&(h.match(/width|height|left|right|top|bottom/)||n&&n.px)?this.dom().style[h]=e+"px":this.dom().style[h]=e}return this},a.Tag.prototype.setStyle=function(t){return this.setAttribute("style",t)},a.Tag.prototype.style=function(){return this.getAttribute("style")},a.Tag.prototype.trigger=function(t,e){return void 0===e&&(e={}),a.Events.trigger(t,this,{data:e})},a.Tag.prototype.focus=function(){return this.dom().focus(),this},a.Tag.prototype.blur=function(){return this.dom().blur(),this},a.Tag.prototype.toString=function(){return this.dom().outerHTML},a.Tag.prototype.initialize=a.Tag,a.SVGTag=function(){return a.Tag.apply(this,arguments)},a.subclass(a.SVGTag,a.Tag),a.SVGTag.namespaceURI=function(){return"http://www.w3.org/2000/svg"},a.SVGTag.buildNode=function(){var t=a.document().createElementNS(this.namespaceURI(),this._nodeType);if(this._classes){var e=this._classes.join(" ");e&&(t.className.baseVal=e)}return t},a.SVGTag.inherit=function(t){if(t._protoDom=null,this==a.SVGTag)return t._nodeType=t._name,t._classes=[];t._nodeType=this._nodeType;var e="_"+t._name.replace(/_/g,"-");return t._classes=(this._classes||[]).concat(e)},a.HTML_TAGS="a abbr address area article aside audio b base bdi bdo big blockquote body br button canvas caption cite code col colgroup data datalist dd del details dfn div dl dt em embed fieldset figcaption figure footer form h1 h2 h3 h4 h5 h6 head header hr html i iframe img input ins kbd keygen label legend li link main map mark menu menuitem meta meter nav noscript object ol optgroup option output p param pre progress q rp rt ruby s samp script section select small source span strong style sub summary sup table tbody td textarea tfoot th thead time title tr track u ul var video wbr".split(" "),a.HTML_TAGS_UNSAFE="article aside header section".split(" "),a.HTML_ATTRS={a:"href target hreflang media download rel type ping referrerpolicy",audio:"autoplay controls crossorigin loop muted preload src",area:"alt coords download href hreflang ping referrerpolicy rel shape target",base:"href target",video:"autoplay buffered controls crossorigin height loop muted preload poster src width playsinline",fieldset:"disabled form name",form:"method action enctype autocomplete target",button:"autofocus type form formaction formenctype formmethod formnovalidate formtarget value name",embed:"height src type width",input:"accept disabled form list max maxlength min minlength pattern required size step type",label:"accesskey for form",img:"alt src srcset crossorigin decoding height importance intrinsicsize ismap referrerpolicy sizes width usemap",link:"rel type href media",iframe:"allow allowfullscreen allowpaymentrequest height importance name referrerpolicy sandbox src srcdoc width",meta:"property content charset desc",map:"name",optgroup:"label",option:"label",output:"for form",object:"type data width height",param:"name type value valuetype",progress:"max",script:"src type async defer crossorigin integrity nonce language nomodule",select:"size form multiple",source:"sizes src srcset type media",textarea:"rows cols minlength maxlength form wrap",track:"default kind label src srclang",td:"colspan rowspan headers",th:"colspan rowspan"},a.HTML_PROPS=(u={input:"autofocus autocomplete autocapitalize autocorrect value placeholder required disabled multiple checked readOnly spellcheck",textarea:"autofocus autocomplete autocapitalize autocorrect value placeholder required disabled multiple checked readOnly spellcheck",form:"novalidate",fieldset:"disabled",button:"disabled",select:"autofocus disabled required readOnly multiple",
-option:"disabled selected value",optgroup:"disabled",progress:"value"},_defineProperty(u,"fieldset","disabled"),_defineProperty(u,"canvas","width height"),u);var h=function(t,e){for(var n,r,o=0,i=Object.keys(e),s=i.length;o<s;o++)r=i[o],n=e[r],null==t[r]?t[r]=n:t[r];return t.prototype=Object.create(e.prototype),t.__super__=t.prototype.__super__=e.prototype,t.prototype.constructor=t,e.inherit&&e.inherit(t),t};a.Tags=function(){},a.Tags.prototype.__clone=function(t){var e=Object.create(this);return e._parent=this,e},a.Tags.prototype.ns=function(t){return this["_"+t.toUpperCase()]||this.defineNamespace(t)},a.Tags.prototype.defineNamespace=function(t){var e=Object.create(this);return e._parent=this,e._ns=t,this["_"+t.toUpperCase()]=e,e},a.Tags.prototype.baseType=function(t,e){return a.indexOf(t,a.HTML_TAGS)>=0?"element":"div"},a.Tags.prototype.defineTag=function(t,e,n){void 0==n&&"function"==typeof e&&(n=e,e=""),void 0==e&&(e=""),n&&n._nodeType&&(e=n,n=null),this[t]&&console.log("tag already exists?",t);var r,i=t,s=i.indexOf(":");s>=0&&(r=t.substr(0,s),i=t.substr(s+1),"svg"!=r||e||(e="svg:element")),e||(e=this.baseType(t));var u="string"==typeof e||e instanceof String?this.findTagType(e):e,c=o();return c._name=i,c._flagName=null,"#"==i[0]?(a.SINGLETONS[i.slice(1)]=c,this[i]=c):i[0]==i[0].toUpperCase()?c._flagName=i:(c._flagName="_"+t.replace(/[_\:]/g,"-"),this[t]=c),h(c,u),n&&(n.call(c,c,c.TAGS||this),c.defined&&c.defined(),this.optimizeTag(c)),c},a.Tags.prototype.defineSingleton=function(t,e,n){return this.defineTag(t,e,n)},a.Tags.prototype.extendTag=function(t,e,n){void 0==n&&"function"==typeof e&&(n=e,e=""),void 0==e&&(e="");var r="string"==typeof t||t instanceof String?this.findTagType(t):t;return n&&n&&n.call(r,r,r.prototype),r.extended&&r.extended(),this.optimizeTag(r),r},a.Tags.prototype.optimizeTag=function(t){var e;return(e=t.prototype)&&e.optimizeTagStructure&&e.optimizeTagStructure()},a.Tags.prototype.findTagType=function(t){var e,n,o=this[t];if(!o)if("svg:"==t.substr(0,4))o=this.defineTag(t,"svg:element");else if(a.HTML_TAGS.indexOf(t)>=0){if(o=this.defineTag(t,"element"),e=a.HTML_ATTRS[t])for(var i=0,s=r(e.split(" ")),u=s.length;i<u;i++)a.attr(o,s[i]);if(n=a.HTML_PROPS[t])for(var h=0,c=r(n.split(" ")),p=c.length;h<p;h++)a.attr(o,c[h],{dom:!0})}return o},a.createElement=function(t,e,n,r){var o,i=t;i=t instanceof Function?t:a.TAGS.findTagType(t),o=e instanceof s?e.par$:r instanceof a.Tag?r:e&&void 0!=r?e[r]:e&&e._tag||e;var u=i.build(o);return e instanceof s&&(e.i$++,u.$key=n),e&&void 0!=n&&(e[n]=u),u},a.createTagCache=function(t){var e=[];return e._tag=t,e},a.createTagMap=function(t,e,n){var r=void 0!=n?n:t._tag,o=new s(t,e,r);return t[e]=o,o},a.createTagList=function(t,e,n){var r=[];return r._type=4,r._tag=void 0!=n?n:t._tag,t[e]=r,r},a.createTagLoopResult=function(t,e,n){var r=[];return r._type=5,r.cache={i$:0},r},i.build=function(t){var e=[];return e._tag=t,e},s.prototype.$iter=function(){var t=[];return t._type=5,t.cache=this,t},s.prototype.$prune=function(t){for(var e,n=this.cache$,o=this.key$,i=new s(n,o,this.par$),u=0,a=r(t),h=a.length;u<h;u++)e=a[u],i[e.key$]=e;return i.i$=t.length,n[o]=i},a.TagMap=s,a.TagCache=i,a.SINGLETONS={},a.TAGS=new a.Tags,a.TAGS.element=a.TAGS.htmlelement=a.Tag,a.TAGS["svg:element"]=a.SVGTag,a.defineTag=function(t,e,n){return void 0==n&&"function"==typeof e&&(n=e,e=""),void 0==e&&(e=""),a.TAGS.defineTag(t,e,n)},a.defineSingletonTag=function(t,e,n){return void 0==n&&"function"==typeof e&&(n=e,e="div"),void 0==e&&(e="div"),a.TAGS.defineTag(this.name(),e,n)},a.extendTag=function(t,e){return a.TAGS.extendTag(t,e)},a.getTagSingleton=function(t){var e,n,r;return(e=a.SINGLETONS[t])?e&&e.Instance?e.Instance:(n=a.document().getElementById(t))?(r=e.Instance=new e(n),r.awaken(n),r):(n=e.createNode(),n.id=t,r=e.Instance=new e(n),r.end().awaken(n),r):(n=a.document().getElementById(t))?a.getTagForDom(n):void 0};var c="undefined"!=typeof SVGElement;a.getTagForDom=function(t){if(!t)return null;if(t._dom)return t;if(t._tag)return t._tag;if(!t.nodeName)return null;var e=t.nodeName.toLowerCase(),n=e,r=a.TAGS;return t.id&&a.SINGLETONS[t.id]?a.getTagSingleton(t.id):(n=c&&t instanceof SVGElement?r.findTagType("svg:"+e):a.HTML_TAGS.indexOf(e)>=0?r.findTagType(e):a.Tag,new n(t,null).awaken(t))};a.Tag},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}function o(t,e,n){this._node=t,this._path=e,this._args=n,this._args&&(this._setter=i.toSetter(this._path))}var i=n(0);i.defineTag("fragment","element",function(t){t.createNode=function(){return i.document().createDocumentFragment()}}),i.extendTag("html",function(t){t.prototype.parent=function(){return null}}),i.extendTag("canvas",function(t){t.prototype.context=function(t){return void 0===t&&(t="2d"),this.dom().getContext(t)}}),o.bind=function(t,e,n,r){return(t._data||(t._data=new this(t,n,r))).bind(e,n,r),t},o.prototype.bind=function(t,e,n){return t!=this._data&&(this._data=t),this},o.prototype.getFormValue=function(){return this._setter?this._data[this._path]():this._data[this._path]},o.prototype.setFormValue=function(t){return this._setter?this._data[this._setter](t):this._data[this._path]=t};var s=function(t){return t&&t.splice&&t.sort},u=function(t,e){var n=t.length,r=0;if(n!=e.length)return!1;for(;r++<n;)if(t[r]!=e[r])return!1;return!0};i.extendTag("input",function(t){t.prototype.lazy=function(t){return this._lazy},t.prototype.setLazy=function(t){return this._lazy=t,this},t.prototype.number=function(t){return this._number},t.prototype.setNumber=function(t){return this._number=t,this},t.prototype.bindData=function(t,e,n){return o.bind(this,t,e,n),this},t.prototype.checked=function(){return this._dom.checked},t.prototype.setChecked=function(t){return!!t!=this._dom.checked&&(this._dom.checked=!!t),this},t.prototype.setValue=function(t,e){return void 0!=this._localValue&&void 0!=e||(this.dom().value=this._value=t,this._localValue=void 0),this},t.prototype.setType=function(t){return this.dom().type=this._type=t,this},t.prototype.value=function(){var t=this._dom.value;return this._number&&t?parseFloat(t):t},t.prototype.oninput=function(t){var e=this._dom.value;this._localValue=e,this._data&&!this.lazy()&&"radio"!=this.type()&&"checkbox"!=this.type()&&this._data.setFormValue(this.value(),this)},t.prototype.onchange=function(t){if(this._modelValue=this._localValue=void 0,this.data()){if("radio"!=this.type()&&"checkbox"!=this.type())return this._data.setFormValue(this.value());var e=this.checked(),n=this._data.getFormValue(this),r=void 0!=this._value?this._value:this.value();if("radio"==this.type())return this._data.setFormValue(r,this);if("on"==this.dom().value||void 0==this.dom().value)return this._data.setFormValue(!!e,this);if(!s(n))return this._data.setFormValue(r,this);var o=n.indexOf(r);return e&&-1==o?n.push(r):!e&&o>=0?n.splice(o,1):void 0}},t.prototype.onblur=function(t){return this._localValue=void 0},t.prototype.end=function(){if(void 0!==this._localValue||!this._data)return this;var t=this._data.getFormValue(this);if(t==this._modelValue)return this;if(s(t)||(this._modelValue=t),"radio"==this.type()||"checkbox"==this.type()){var e=this._value,n=s(t)?t.indexOf(e)>=0:"on"==this.dom().value||void 0==this.dom().value?!!t:t==this._value;this.setChecked(n)}else this._dom.value=t;return this}}),i.extendTag("textarea",function(t){t.prototype.lazy=function(t){return this._lazy},t.prototype.setLazy=function(t){return this._lazy=t,this},t.prototype.bindData=function(t,e,n){return o.bind(this,t,e,n),this},t.prototype.setValue=function(t,e){return void 0!=this._localValue&&void 0!=e||(this.dom().value=t,this._localValue=void 0),this},t.prototype.oninput=function(t){var e=this._dom.value;if(this._localValue=e,this._data&&!this.lazy())return this._data.setFormValue(this.value(),this)},t.prototype.onchange=function(t){if(this._localValue=void 0,this._data)return this._data.setFormValue(this.value(),this)},t.prototype.onblur=function(t){return this._localValue=void 0},t.prototype.render=function(){if(void 0==this._localValue&&this._data){if(this._data){var t=this._data.getFormValue(this);this._dom.value=void 0!=t?t:""}return this}}}),i.extendTag("option",function(t){t.prototype.setValue=function(t){return t!=this._value&&(this.dom().value=this._value=t),this},t.prototype.value=function(){return this._value||this.dom().value}}),i.extendTag("select",function(t){t.prototype.bindData=function(t,e,n){return o.bind(this,t,e,n),this},t.prototype.setValue=function(t,e){this._value;return this._value=t,e||this.syncValue(t),this},t.prototype.syncValue=function(t){var e=this._syncValue;if(this.multiple()&&t instanceof Array){if(e instanceof Array&&u(e,t))return this;t=t.slice()}if(this._syncValue=t,"object"==(void 0===t?"undefined":_typeof(t)))for(var n,o=this.multiple()&&t instanceof Array,i=0,s=r(this.dom().options),a=s.length;i<a;i++){n=s[i];var h=n._tag?n._tag.value():n.value;if(o)n.selected=t.indexOf(h)>=0;else if(t==h){this.dom().selectedIndex=i;break}}else this.dom().value=t;return this},t.prototype.value=function(){if(this.multiple()){for(var t,e=[],n=0,o=r(this.dom().selectedOptions),i=o.length;n<i;n++)t=o[n],e.push(t._tag?t._tag.value():t.value);return e}var s=this.dom().selectedOptions[0];return s?s._tag?s._tag.value():s.value:null},t.prototype.onchange=function(t){if(this._data)return this._data.setFormValue(this.value(),this)},t.prototype.end=function(){return this._data&&this.setValue(this._data.getFormValue(this),1),this._value!=this._syncValue&&this.syncValue(this._value),this}})},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}var o=n(0);o.Touch=function(t,e){return this.setEvent(t),this.setData({}),this.setActive(!0),this._button=t&&t.button||0,this._suppress=!1,this._captured=!1,this.setBubble(!1),e=e,this.setUpdates(0),this},o.Touch.LastTimestamp=0,o.Touch.TapTimeout=50;var i=[],s=0,u={};o.Touch.count=function(){return s},o.Touch.lookup=function(t){return t&&(t.__touch__||u[t.identifier])},o.Touch.release=function(t,e){u[t.identifier],delete u[t.identifier],t.__touch__,delete t.__touch__},o.Touch.ontouchstart=function(t){for(var e,n=0,o=r(t.changedTouches),a=o.length;n<a;n++)if(e=o[n],!this.lookup(e)){var h=u[e.identifier]=new this(t);e.__touch__=h,i.push(h),s++,h.touchstart(t,e)}return this},o.Touch.ontouchmove=function(t){for(var e,n,o=0,i=r(t.changedTouches),s=i.length;o<s;o++)n=i[o],(e=this.lookup(n))&&e.touchmove(t,n);return this},o.Touch.ontouchend=function(t){for(var e,n,o=0,i=r(t.changedTouches),u=i.length;o<u;o++)n=i[o],(e=this.lookup(n))&&(e.touchend(t,n),this.release(n,e),s--);return this},o.Touch.ontouchcancel=function(t){for(var e,n,o=0,i=r(t.changedTouches),u=i.length;o<u;o++)n=i[o],(e=this.lookup(n))&&(e.touchcancel(t,n),this.release(n,e),s--);return this},o.Touch.onmousedown=function(t){return this},o.Touch.onmousemove=function(t){return this},o.Touch.onmouseup=function(t){return this},o.Touch.prototype.phase=function(t){return this._phase},o.Touch.prototype.setPhase=function(t){return this._phase=t,this},o.Touch.prototype.active=function(t){return this._active},o.Touch.prototype.setActive=function(t){return this._active=t,this},o.Touch.prototype.event=function(t){return this._event},o.Touch.prototype.setEvent=function(t){return this._event=t,this},o.Touch.prototype.pointer=function(t){return this._pointer},o.Touch.prototype.setPointer=function(t){return this._pointer=t,this},o.Touch.prototype.target=function(t){return this._target},o.Touch.prototype.setTarget=function(t){return this._target=t,this},o.Touch.prototype.handler=function(t){return this._handler},o.Touch.prototype.setHandler=function(t){return this._handler=t,this},o.Touch.prototype.updates=function(t){return this._updates},o.Touch.prototype.setUpdates=function(t){return this._updates=t,this},o.Touch.prototype.suppress=function(t){return this._suppress},o.Touch.prototype.setSuppress=function(t){return this._suppress=t,this},o.Touch.prototype.data=function(t){return this._data},o.Touch.prototype.setData=function(t){return this._data=t,this},o.Touch.prototype.__bubble={chainable:!0,name:"bubble"},o.Touch.prototype.bubble=function(t){return void 0!==t?(this.setBubble(t),this):this._bubble},o.Touch.prototype.setBubble=function(t){return this._bubble=t,this},o.Touch.prototype.timestamp=function(t){return this._timestamp},o.Touch.prototype.setTimestamp=function(t){return this._timestamp=t,this},o.Touch.prototype.gestures=function(t){return this._gestures},o.Touch.prototype.setGestures=function(t){return this._gestures=t,this},o.Touch.prototype.capture=function(){return this._captured=!0,this._event&&this._event.stopPropagation(),this._selblocker||(this._selblocker=function(t){return t.preventDefault()},o.document().addEventListener("selectstart",this._selblocker,!0)),this},o.Touch.prototype.isCaptured=function(){return!!this._captured},o.Touch.prototype.extend=function(t){return this._gestures||(this._gestures=[]),this._gestures.push(t),this},o.Touch.prototype.redirect=function(t){return this._redirect=t,this},o.Touch.prototype.suppress=function(){return this._active=!1,this},o.Touch.prototype.setSuppress=function(t){return console.warn("Imba.Touch#suppress= is deprecated"),this._supress=t,this},o.Touch.prototype.touchstart=function(t,e){return this._event=t,this._touch=e,this._button=0,this._x=e.clientX,this._y=e.clientY,this.began(),this.update(),t&&this.isCaptured()&&t.preventDefault(),this},o.Touch.prototype.touchmove=function(t,e){return this._event=t,this._x=e.clientX,this._y=e.clientY,this.update(),t&&this.isCaptured()&&t.preventDefault(),this},o.Touch.prototype.touchend=function(t,e){if(this._event=t,this._x=e.clientX,this._y=e.clientY,this.ended(),o.Touch.LastTimestamp=t.timeStamp,this._maxdr<20){var n=new o.Event(t);n.setType("tap"),n.process()}return t&&this.isCaptured()&&t.preventDefault(),this},o.Touch.prototype.touchcancel=function(t,e){return this.cancel()},o.Touch.prototype.mousedown=function(t,e){var n=this;return n._event=t,n._button=t.button,n._x=e.clientX,n._y=e.clientY,n.began(),n.update(),n._mousemove=function(t){return n.mousemove(t,t)},o.document().addEventListener("mousemove",n._mousemove,!0),n},o.Touch.prototype.mousemove=function(t,e){return this._x=e.clientX,this._y=e.clientY,this._event=t,this.isCaptured()&&t.preventDefault(),this.update(),this.move(),this},o.Touch.prototype.mouseup=function(t,e){return this._x=e.clientX,this._y=e.clientY,this.ended(),this},o.Touch.prototype.idle=function(){return this.update()},o.Touch.prototype.began=function(){this._timestamp=Date.now(),this._maxdr=this._dr=0,this._x0=this._x,this._y0=this._y;var t=this.event().target,e=null;for(this._sourceTarget=t&&o.getTagForDom(t);t&&(!(e=o.getTagForDom(t))||!e.ontouchstart||(this._bubble=!1,this.setTarget(e),this.target().ontouchstart(this),this._bubble));)t=t.parentNode;return this._updates++,this},o.Touch.prototype.update=function(){var t;if(!this._active||this._cancelled)return this;var e=Math.sqrt(this.dx()*this.dx()+this.dy()*this.dy());if(e>this._dr&&(this._maxdr=e),this._dr=e,this._redirect&&(this._target&&this._target.ontouchcancel&&this._target.ontouchcancel(this),this.setTarget(this._redirect),this._redirect=null,this.target().ontouchstart&&this.target().ontouchstart(this),this._redirect))return this.update();if(this._updates++,this._gestures)for(var n=0,o=r(this._gestures),i=o.length;n<i;n++)o[n].ontouchupdate(this);return(t=this.target())&&t.ontouchupdate&&t.ontouchupdate(this),this._redirect&&this.update(),this},o.Touch.prototype.move=function(){var t;if(!this._active||this._cancelled)return this;if(this._gestures)for(var e,n=0,o=r(this._gestures),i=o.length;n<i;n++)e=o[n],e.ontouchmove&&e.ontouchmove(this,this._event);return(t=this.target())&&t.ontouchmove&&t.ontouchmove(this,this._event),this},o.Touch.prototype.ended=function(){var t;if(!this._active||this._cancelled)return this;if(this._updates++,this._gestures)for(var e=0,n=r(this._gestures),o=n.length;e<o;e++)n[e].ontouchend(this);return(t=this.target())&&t.ontouchend&&t.ontouchend(this),this.cleanup_(),this},o.Touch.prototype.cancel=function(){return this._cancelled||(this._cancelled=!0,this.cancelled(),this.cleanup_()),this},o.Touch.prototype.cancelled=function(){var t;if(!this._active)return this;if(this._cancelled=!0,this._updates++,this._gestures)for(var e,n=0,o=r(this._gestures),i=o.length;n<i;n++)e=o[n],e.ontouchcancel&&e.ontouchcancel(this);return(t=this.target())&&t.ontouchcancel&&t.ontouchcancel(this),this},o.Touch.prototype.cleanup_=function(){return this._mousemove&&(o.document().removeEventListener("mousemove",this._mousemove,!0),this._mousemove=null),this._selblocker&&(o.document().removeEventListener("selectstart",this._selblocker,!0),this._selblocker=null),this},o.Touch.prototype.dr=function(){return this._dr},o.Touch.prototype.dx=function(){return this._x-this._x0},o.Touch.prototype.dy=function(){return this._y-this._y0},o.Touch.prototype.x0=function(){return this._x0},o.Touch.prototype.y0=function(){return this._y0},o.Touch.prototype.x=function(){return this._x},o.Touch.prototype.y=function(){return this._y},o.Touch.prototype.tx=function(){return this._targetBox||(this._targetBox=this._target.dom().getBoundingClientRect()),this._x-this._targetBox.left},o.Touch.prototype.ty=function(){return this._targetBox||(this._targetBox=this._target.dom().getBoundingClientRect()),this._y-this._targetBox.top},o.Touch.prototype.button=function(){return this._button},o.Touch.prototype.sourceTarget=function(){return this._sourceTarget},o.Touch.prototype.elapsed=function(){return Date.now()-this._timestamp},o.TouchGesture=function(){},o.TouchGesture.prototype.__active={default:!1,name:"active"},o.TouchGesture.prototype.active=function(t){return this._active},o.TouchGesture.prototype.setActive=function(t){return this._active=t,this},o.TouchGesture.prototype._active=!1,o.TouchGesture.prototype.ontouchstart=function(t){return this},o.TouchGesture.prototype.ontouchupdate=function(t){return this},o.TouchGesture.prototype.ontouchend=function(t){return this}},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}var o=n(0),i={esc:27,tab:9,enter:13,space:32,up:38,down:40},s=o.Tag.prototype;s.stopModifier=function(t){return t.stop()||!0},s.preventModifier=function(t){return t.prevent()||!0},s.silenceModifier=function(t){return t.silence()||!0},s.bubbleModifier=function(t){return t.bubble(!0)||!0},s.ctrlModifier=function(t){return 1==t.event().ctrlKey},s.altModifier=function(t){return 1==t.event().altKey},s.shiftModifier=function(t){return 1==t.event().shiftKey},s.metaModifier=function(t){return 1==t.event().metaKey},s.keyModifier=function(t,e){return!e.keyCode()||e.keyCode()==t},s.delModifier=function(t){return!t.keyCode()||(8==t.keyCode()||46==t.keyCode())},s.selfModifier=function(t){return t.event().target==this._dom},s.leftModifier=function(t){return void 0!=t.button()?0===t.button():s.keyModifier(37,t)},s.rightModifier=function(t){return void 0!=t.button()?2===t.button():s.keyModifier(39,t)},s.middleModifier=function(t){return void 0==t.button()||1===t.button()},s.getHandler=function(t,e){if(this[t])return this},o.Event=function(t){this.setEvent(t),this._bubble=!0},o.Event.prototype.event=function(t){return this._event},o.Event.prototype.setEvent=function(t){return this._event=t,this},o.Event.prototype.prefix=function(t){return this._prefix},o.Event.prototype.setPrefix=function(t){return this._prefix=t,this},o.Event.prototype.source=function(t){return this._source},o.Event.prototype.setSource=function(t){return this._source=t,this},o.Event.prototype.data=function(t){return this._data},o.Event.prototype.setData=function(t){return this._data=t,this},o.Event.prototype.responder=function(t){return this._responder},o.Event.prototype.setResponder=function(t){return this._responder=t,this},o.Event.wrap=function(t){return new this(t)},o.Event.prototype.setType=function(t){return this._type=t,this},o.Event.prototype.type=function(){return this._type||this.event().type},o.Event.prototype.native=function(){return this._event},o.Event.prototype.name=function(){return this._name||(this._name=this.type().toLowerCase().replace(/\:/g,""))},o.Event.prototype.bubble=function(t){return void 0!=t?(this.setBubble(t),this):this._bubble},o.Event.prototype.setBubble=function(t){return this._bubble=t,this},o.Event.prototype.stop=function(){return this.setBubble(!1),this},o.Event.prototype.stopPropagation=function(){return this.stop()},o.Event.prototype.halt=function(){return this.stop()},o.Event.prototype.prevent=function(){return this.event().preventDefault?this.event().preventDefault():this.event().defaultPrevented=!0,this.defaultPrevented=!0,this},o.Event.prototype.preventDefault=function(){return console.warn("Event#preventDefault is deprecated - use Event#prevent"),this.prevent()},o.Event.prototype.isPrevented=function(){return this.event()&&this.event().defaultPrevented},o.Event.prototype.cancel=function(){return console.warn("Event#cancel is deprecated - use Event#prevent"),this.prevent()},o.Event.prototype.silence=function(){return this._silenced=!0,this},o.Event.prototype.isSilenced=function(){return!!this._silenced},o.Event.prototype.target=function(){return o.getTagForDom(this.event()._target||this.event().target)},o.Event.prototype.responder=function(){return this._responder},o.Event.prototype.redirect=function(t){return this._redirect=t,this},o.Event.prototype.processHandlers=function(t,e){var n=1,r=e.length,s=this._bubble,u=e.state||(e.state={});for(s&&(this._bubble=1);n<r;){var a=!1,h=e[n++],c=null,p=t;if(h instanceof Array&&(c=h.slice(1),h=h[0]),"string"==typeof h){i[h]&&(c=[i[h]],h="key");var l=h+"Modifier";t[l]&&(a=!0,c=(c||[]).concat([this,u]),h=t[l])}if("string"==typeof h){var d=null,f=u.context;f&&(f.getHandler instanceof Function&&(f=f.getHandler(h,this)),f[h]instanceof Function&&(h=d=f[h],p=f)),d||console.warn("event "+this.type()+": could not find '"+h+"' in context",f)}if(h instanceof Function){var _=h.apply(p,c||[this]);if(a||this._responder||(this._responder=t),0==_)break;_&&!this._silenced&&_.then instanceof Function&&_.then(o.commit)}}return 1===this._bubble&&(this._bubble=s),null},o.Event.prototype.process=function(){for(var t,e,n=this.name(),o="on"+(this._prefix||"")+n,i=this.event()._target||this.event().target,s=i._responder||i;s;){this._redirect=null;var u=s._dom?s:s._tag;if(u){if(e=u._on_){for(var a,h=0,c=r(e),p=c.length;h<p;h++)if(a=c[h]){a[0];n==a[0]&&this.bubble()&&this.processHandlers(u,a)}if(!this.bubble())break}this.bubble()&&u[o]instanceof Function&&(this._responder||(this._responder=u),this._silenced=!1,t=u[o](this,this.data())),u.onevent&&u.onevent(this)}if(!this.bubble()||!(s=this._redirect||(u?u.parent():s.parentNode)))break}return this.processed(),t&&t.then instanceof Function&&t.then(this.processed.bind(this)),this},o.Event.prototype.processed=function(){return!this._silenced&&this._responder&&(o.emit(o,"event",[this]),o.commit(this.event())),this},o.Event.prototype.x=function(){return this.native().x},o.Event.prototype.y=function(){return this.native().y},o.Event.prototype.button=function(){return this.native().button},o.Event.prototype.keyCode=function(){return this.native().keyCode},o.Event.prototype.ctrl=function(){return this.native().ctrlKey},o.Event.prototype.alt=function(){return this.native().altKey},o.Event.prototype.shift=function(){return this.native().shiftKey},o.Event.prototype.meta=function(){return this.native().metaKey},o.Event.prototype.key=function(){return this.native().key},o.Event.prototype.which=function(){return this.event().which}},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}var o={},i=n(0),s=function t(e,n,o){if(n instanceof Array)for(var i=0,s=r(n),u=s.length;i<u;i++)t(e,s[i],o);else if(n&&n._slot_)e.removeChild(n);else if(null!=n){var a=o?o.nextSibling:e._dom.firstChild;if(!(a instanceof Text&&a.textContent==n))throw"cannot remove string";e.removeChild(a)}return o},u=function t(e,n){if(n instanceof Array)for(var r=0,o=n.taglen,s=null!=o?n.domlen=o:n.length;r<s;)t(e,n[r++]);else n&&n._dom?e.appendChild(n):null!=n&&!1!==n&&e.appendChild(i.createTextNode(n))},a=function t(e,n,r){if(n instanceof Array)for(var o=0,s=n.taglen,u=null!=s?n.domlen=s:n.length;o<u;)t(e,n[o++],r);else n&&n._dom?e.insertBefore(n,r):null!=n&&!1!==n&&e.insertBefore(i.createTextNode(n),r);return r};o.insertNestedAfter=function(t,e,n){var r=n?n.nextSibling:t._dom.firstChild;return r?(a(t,e,r),r.previousSibling):(u(t,e),t._dom.lastChild)};var h=function(t,e,n,s){for(var u,a,h=e.length,c=e[h-1],p=[],l=[],d=[],f=0,_=0,v=0,m=r(n),y=m.length;v<y;v++)if(a=m[v],a&&3==a.nodeType?(u=e.indexOf(a.textContent),u>=0&&(e[u]=a),!0):u=e.indexOf(a),p.push(u),-1!=u){for(var g=p.length-2;g>=0;)if(-1==p[g])g--;else{if(u>p[g])break;g=l[g]}l.push(g);var T=-1==g?0:d[g]+1;T>f&&(f=T,_=v),d.push(T)}else t.removeChild(a),l.push(-1),d.push(-1);for(var b=[],S=p.length-1;S>=0;)S==_&&-1!=p[S]&&(b[p[S]]=!0,_=l[_]),S-=1;for(var x,E=0,w=r(e),A=w.length;E<A;E++){if(x=w[E],!b[E]){x&&x._dom||(x=e[E]=i.createTextNode(x));var C=e[E-1];o.insertNestedAfter(t,x,C&&C._slot_||C||s)}s=x._slot_||s&&s.nextSibling||t._dom.firstChild}return c&&c._slot_||s},c=function(t,e,n,r){var o=e.length,i=o,s=e[o-1];if(o==n.length&&e[0]===n[0])for(;i--&&e[i]===n[i];);return-1==i?s&&s._slot_||s||r:h(t,e,n,r)},p=function(t,e,n,r){for(var o=e.length,i=n.length,s=e.cache.i$,u=0,a=o-i;u<i&&u<o&&e[u]===n[u];)u++;if(s>1e3&&s-o>500&&e.cache.$prune(e),!(a>0&&u==i)){if(a>0){for(var c=o;c>u&&e[c-1]===n[c-1-a];)c--;if(a==c-u){for(var p=n[u]._slot_;u<c;)t.insertBefore(e[u++],p);return}}else{if(a<0&&u==o){for(;u<i;)t.removeChild(n[u++]);return}if(a<0){for(var l=i;l>u&&e[l-1+a]===n[l-1];)l--;if(a==u-l){for(;u<l;)t.removeChild(n[u++]);return}}else if(u==o)return}return h(t,e,n,r)}for(;u<o;)t.appendChild(e[u++])},l=function(t,e,n,r){var o=e.taglen,i=e.domlen||0,s=o?e[o-1]:null;if(i>o)for(;i>o;){var u=e[--i];t.removeChild(u._slot_)}else if(o>i)for(var a=i?e[i-1]._slot_:r,h=a?a.nextSibling:t._dom.firstChild;i<o;){var c=e[i++];h?t.insertBefore(c._slot_,h):t.appendChild(c._slot_)}return e.domlen=o,s?s._slot_:r},d=function t(e,n,i,u){var a=null==n||!1===n,h=null==i||!1===i;if(n===i)return a?u:n._slot_?n._slot_:n instanceof Array&&null!=n.taglen?l(e,n,0,u):u?u.nextSibling:e._dom.firstChild;if(n instanceof Array){if(i instanceof Array){var p=n.static;if(!p&&!i.static)return c(e,n,i,u);if(p==i.static){for(var d=0,f=r(n),_=f.length;d<_;d++)u=t(e,f[d],i[d],u);return u}s(e,i,u)}else h||(i._slot_?e.removeChild(i):e.removeChild(u?u.nextSibling:e._dom.firstChild));return o.insertNestedAfter(e,n,u)}if(!a&&n._slot_)return h||s(e,i,u),o.insertNestedAfter(e,n,u);if(a)return h||s(e,i,u),u;var v=void 0;if(i instanceof Array)s(e,i,u);else if(i&&i._slot_)e.removeChild(i);else if(!h&&(v=u?u.nextSibling:e._dom.firstChild)instanceof Text&&v.textContent!=n)return v.textContent=n,v;return o.insertNestedAfter(e,n,u)};i.extendTag("element",function(t){t.prototype.setChildren=function(t,e){var n=this._tree_;if(t===n&&(!t||void 0==t.taglen))return this;if(n||3==e)if(1==e)for(var o=null,i=0,s=r(t),a=s.length;i<a;i++)o=d(this,s[i],n[i],o);else{if(2==e)return this;if(3==e){var h=void 0===t?"undefined":_typeof(t);if("object"!=h)return this.setText(t);if(t&&t._dom)this.removeAllChildren(),this.appendChild(t);else{if(!(t instanceof Array))return this.setText(t);5==t._type&&n&&5==n._type?p(this,t,n,null):n instanceof Array?d(this,t,n,null):(this.removeAllChildren(),u(this,t))}}else 4==e?l(this,t,0,null):5==e?p(this,t,n,null):t instanceof Array&&n instanceof Array?d(this,t,n,null):(this.removeAllChildren(),u(this,t))}else this.removeAllChildren(),u(this,t);return this._tree_=t,this},t.prototype.content=function(){return this._content||this.children().toArray()},t.prototype.setText=function(t){if(t!=this._tree_){var e=null===t||!1===t?"":t;(this._text_||this._dom).textContent=e,this._text_||(this._text_=this._dom.firstChild),this._tree_=t}return this}});var f=i.Tag.prototype;f.setContent=f.setChildren,"undefined"!=typeof navigator&&0==(navigator.vendor||"").indexOf("Apple")&&(f.setText=function(t){return t!=this._tree_&&(this._dom.textContent=null===t||!1===t?"":t,this._tree_=t),this})},function(t,e,n){function r(t){return t&&(t.len instanceof Function?t.len():t.length)||0}function o(t){void 0===t&&(t={}),this._url=t.url||"",this._hash="",this._routes={},this._options=t,this._redirects=t.redirects||{},this._aliases=t.aliases||{},this._busy=[],this._root=t.root||"",this.setMode(t.mode||"history"),this.setup()}var i=n(1),s=n(16).Route,u="undefined"!=typeof window;e.Router=o,o._instance=null,o.prototype.__mode={watch:"modeDidSet",chainable:!0,name:"mode"},o.prototype.mode=function(t){return void 0!==t?(this.setMode(t),this):this._mode},o.prototype.setMode=function(t){var e=this.mode();return t!=e&&(this._mode=t),t!=e&&this.modeDidSet&&this.modeDidSet(t,e,this.__mode),this},o.prototype.busy=function(t){return this._busy},o.prototype.setBusy=function(t){return this._busy=t,this},o.prototype.root=function(t){return this._root},o.prototype.setRoot=function(t){return this._root=t,this},o.prototype.option=function(t,e){return void 0==e?this._options[t]:(this._options[t]=e,this)},o.prototype.location=function(){return document.location},o.prototype.setup=function(){var t=this;if(u){!t._root&&window.SCRIMBA_ROOT&&"hash"!=t.mode()&&(t._root=window.SCRIMBA_ROOT.replace(/\/$/,""));var e=t.path();t.history().replaceState({},null,t.normalize(e)),t._hash=t.location().hash,window.addEventListener("hashchange",function(e){return t.emit("hashchange",t._hash=t.location().hash),i.commit()})}return t},o.prototype.path=function(){var t=this._url||(u?"hash"==this.mode()?(this.hash()||"").slice(1):this.location().pathname:"");return this._root&&0==t.indexOf(this._root)&&(t=t.slice(this._root.length)),""==t&&(t="/"),t=this._redirects[t]||t,t=this._aliases[t]||t},o.prototype.url=function(){var t=this.path();return u&&"hash"!=this.mode()&&(t+=this.location().hash),t},o.prototype.hash=function(){return u?this.location().hash:""},o.instance=function(){return this._instance||(this._instance=new this)},o.prototype.history=function(){return window.history},o.prototype.match=function(t){return(this._routes[t]||(this._routes[t]=new s(this,t))).test()},o.prototype.go=function(t,e){var n=this;return void 0===e&&(e={}),t=n._redirects[t]||t,n.history().pushState(e,null,n.normalize(t)),i.commit(),u&&n.onReady(function(){var t=n.location().hash;if(t!=n._hash)return n.emit("hashchange",n._hash=t)}),n},o.prototype.replace=function(t,e){return void 0===e&&(e={}),t=this._redirects[t]||t,this.history().replaceState(e,null,this.normalize(t))},o.prototype.normalize=function(t){return"hash"==this.mode()?t="#"+t:this.root()&&(t=this.root()+t),t},o.prototype.onReady=function(t){var e=this;return i.ticker().add(function(){return 0==r(e._busy)?t(e):i.once(e,"ready",t)})},o.prototype.emit=function(t){for(var e=arguments,n=e.length,r=new Array(n>1?n-1:0);n>1;)r[--n-1]=e[n];return i.emit(this,t,r)},o.prototype.on=function(t){for(var e=arguments,n=e.length,r=new Array(n>1?n-1:0);n>1;)r[--n-1]=e[n];return i.listen.apply(i,[].concat([this,t],[].slice.call(r)))},o.prototype.once=function(t){for(var e=arguments,n=e.length,r=new Array(n>1?n-1:0);n>1;)r[--n-1]=e[n];return i.once.apply(i,[].concat([this,t],[].slice.call(r)))},o.prototype.un=function(t){for(var e=arguments,n=e.length,r=new Array(n>1?n-1:0);n>1;)r[--n-1]=e[n];return i.unlisten.apply(i,[].concat([this,t],[].slice.call(r)))};var a={inject:function(t,e){t.render;return t.resolveRoute=this.resolveRoute,t.beforeRender=this.beforeRender,t.ontap||(t.ontap=this.ontap)},beforeRender:function(){return this.resolveRoute(),!0},ontap:function(t){var e=this._route.resolve();if(e){if(this._route.option("sticky")){var n=this._route.params().url;n&&0==n.indexOf(e)&&(e=n)}return"#"!=e[0]&&"/"!=e[0]?(t._responder=null,t.prevent().stop(),window.open(e,"_blank")):t.meta()||t.alt()?(t._responder=null,t.prevent().stop(),
-window.open(this.router().root()+e,"_blank")):(t.prevent().stop(),this.router().go(e,{}))}},resolveRoute:function(){this._route.test();return this.setAttribute("href",this.router().root()+this._route.resolve()),this.flagIf("active",this._route.test())}},h={inject:function(t){return t._params={},t.resolveRoute=this.resolveRoute,t.beforeRender=this.beforeRender,t.detachFromParent()},beforeRender:function(){if(this.resolveRoute(),!this._params._active)return!1;var t=this._route.status();return this["render"+t]?(this["render"+t](),!1):t>=200},resolveRoute:function(t){var e=this,n=e._params,r=e._route.test();if(r){if(r!=n&&(e.setParams(r),e.load&&e.route().load(function(){return e.load(e.params())})),!r._active)return r._active=!0,e.attachToParent()}else if(n._active)return n._active=!1,e.detachFromParent()}};i.extendTag("element",function(t){t.prototype.__params={watch:"paramsDidSet",name:"params"},t.prototype.params=function(t){return this._params},t.prototype.setParams=function(t){var e=this.params();return t!=e&&(this._params=t),t!=e&&this.paramsDidSet&&this.paramsDidSet(t,e,this.__params),this},t.prototype.route=function(){return this._route},t.prototype.setRoute=function(t,e){var n=this._route;if(n)String(t)!=n._raw&&n.setPath(String(t));else{t=String(t);var r="/"!=t[0]?this.getParentRoute():null,o=e||{};o.node=this,this._route=new s(this.router(),t,r,o),o.link?a.inject(this,o):h.inject(this)}return this},t.prototype.setRouteTo=function(t,e){return this._route?this.setRoute(t):(e||(e={}),e.link=!0,this.setRoute(t,e))},t.prototype.setRouterUrl=function(t){return this._router||(this._router=new o(t)),this},t.prototype.setRouterRoot=function(t){return this.router().setRoot(t),this},t.prototype.getParentRoute=function(){for(var t=this._owner_;t;){if(t._route)return t._route;t=t._owner_}return null},t.prototype.setRouter=function(t){return this._router=t,this},t.prototype.router=function(){return this._router||(this._router=this._owner_&&this._owner_.router()||new o)}})},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}function o(t,e,n,r){this._parent=n,this._router=t,this._options=r||{},this._node=this._options.node,this._status=200,this.setPath(e)}var i=n(1);e.Route=o,o.prototype.raw=function(t){return this._raw},o.prototype.setRaw=function(t){return this._raw=t,this},o.prototype.params=function(t){return this._params},o.prototype.setParams=function(t){return this._params=t,this},o.prototype.__status={watch:"statusDidSet",name:"status"},o.prototype.status=function(t){return this._status},o.prototype.setStatus=function(t){var e=this.status();return t!=e&&(this._status=t),t!=e&&this.statusDidSet&&this.statusDidSet(t,e,this.__status),this},o.prototype.option=function(t){return this._options[t]},o.prototype.setPath=function(t){var e=this;return e._raw=t,e._groups=[],e._params={},e._cache={},t=t.replace(/\:(\w+|\*)(\.)?/g,function(t,n,r){return"*"!=n&&e._groups.push(n),r?"([^/#.?]+).":"([^/#?]+)"}),t="^"+t,e._options.exact&&"$"!=t[t.length-1]?t+="(?=[#?]|$)":t+="(?=[/#?]|$)",e._regex=new RegExp(t),e},o.prototype.test=function(t){var e,n;if(t||(t=this._router.url()),t==this._cache.url)return this._cache.match;var o="",i=this._cache.url=t;if(this._cache.match=null,this._parent&&"/"!=this._raw[0]&&(e=this._parent.test(t))&&0==t.indexOf(e.path)&&(o=e.path+"/",i=t.slice(e.path.length+1)),n=i.match(this._regex)){var s=o+n[0];if(s==this._params.path)return this._params.url=t,this._cache.match=this._params;if(this._params={path:s,url:t},this._groups.length)for(var u,a,h=0,c=r(n),p=c.length;h<p;h++)u=c[h],(a=this._groups[h-1])&&(this._params[a]=u);return this._cache.match=this._params}return this._cache.match=null},o.prototype.statusDidSet=function(t,e){var n=this._router.busy().indexOf(this);return clearTimeout(this._statusTimeout),t<200?(-1==n&&this._router.busy().push(this),this._statusTimeout=setTimeout(function(){return t=408},25e3)):n>=0&&t>=200&&(this._router.busy().splice(n,1),this._node&&this._node.commit&&this._node.commit(),0==this._router.busy().length&&i.emit(this._router,"ready",[this._router])),this._node&&this._node.setFlag&&this._node.setFlag("route-status","status-"+t)},o.prototype.load=function(t){var e=this;e.setStatus(102);var n=e._handler=function(t){var r;return n!=e._handler?void console.log("another load has started after this"):(e._handler=null,e.setStatus(r="number"==typeof t||t instanceof Number?t:200),r)};return t instanceof Function&&(t=t(n)),t&&t.then?t.then(n,n):n(t),e},o.prototype.resolve=function(t){var e;if(t||(t=this._router.url()),this._cache.resolveUrl==t)return this._cache.resolved;return this._cache.resolveUrl=t,this._parent&&"/"!=this._raw[0]?(e=this._parent.test())&&(this._cache.resolved=e.path+"/"+this._raw):this._cache.resolved=""+this._raw,this._cache.resolved}},function(t,e,n){function r(t){return t?t.toArray?t.toArray():t:[]}var o=n(1),i=o.createTagList,s=o.createElement,u=n(18).Title,a={items:[]},h=o.defineTag("Todo",function(t){t.prototype.getCurrentTime=function(){var t=new Date;return t.getFullYear()+"."+(t.getMonth()+1)+"."+t.getDate()+"-"+t.getHours()+":"+t.getMinutes()},t.prototype.addItem=function(){if(this.data().content)return a.items.push({content:this.data().content,createdAt:this.getCurrentTime(),done:!1}),this.data().content=""},t.prototype.toggleItem=function(t){return a.items[t].done=!a.items[t].done},t.prototype.render=function(){var t=this.$,e=this;return e.$open(0).setData(a).setChildren(t.$=t.$||[s(u,t,0,e),s("header",t,1,e).setContent([s("input",t,2,1).on$(0,["keyup","enter","addItem"],e).setPlaceholder("here").css("margin-right","10px"),s("button",t,3,1).on$(0,["click","addItem"],e).setText("Add TODO")],2),s("ul",t,4,e)],2).synced((t[0].end(),t[2].bindData(e.data(),"content").end(),t[4].setContent(function(t){for(var n,o,i=0,u=r(e.data().items),a=t.taglen=u.length;i<a;i++)o=u[i],(n=t[i]||(n=s("li",t,i)).setContent(n.$.A||s("span",n.$,"A",n),2)).on$(0,["click",["toggleItem",i]],e).end((n.$.A.css("color",o.done?"#999":"#000").css("text-decoration",o.done?"line-through":"none").setContent([o.content,n.$.B||s("span",n.$,"B","A").css("color","#999")],1).end((n.$.B.setText(" ---@ "+o.createdAt).end(),!0)),!0));return t}(t[5]||i(t,5,t[4])),4),!0))}});e.Todo=h},function(t,e,n){var r=n(1),o=r.defineTag("Title",function(t){t.prototype.render=function(){return this.$open(0).setText("Todo List").synced()}});e.Title=o}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+var Imba = {
+  VERSION: '1.4.0'
+};
+
+Imba.setTimeout = function (delay, block) {
+  return setTimeout(function () {
+    block();
+    return Imba.commit();
+  }, delay);
+};
+
+Imba.setInterval = function (interval, block) {
+  return setInterval(function () {
+    block();
+    return Imba.commit();
+  }, interval);
+};
+
+Imba.clearInterval = function (id) {
+  return clearInterval(id);
+};
+
+Imba.clearTimeout = function (id) {
+  return clearTimeout(id);
+};
+
+Imba.subclass = function (obj, sup) {
+  for (let k in sup) {
+    let v;
+    v = sup[k];
+
+    if (sup.hasOwnProperty(k)) {
+      obj[k] = v;
+    }
+
+    ;
+  }
+
+  ;
+  obj.prototype = Object.create(sup.prototype);
+  obj.__super__ = obj.prototype.__super__ = sup.prototype;
+  obj.prototype.initialize = obj.prototype.constructor = obj;
+  return obj;
+};
+
+Imba.iterable = function (o) {
+  return o ? o.toArray ? o.toArray() : o : [];
+};
+
+Imba.await = function (value) {
+  if (value instanceof Array) {
+    console.warn("await (Array) is deprecated - use await Promise.all(Array)");
+    return Promise.all(value);
+  } else if (value && value.then) {
+    return value;
+  } else {
+    return Promise.resolve(value);
+  }
+
+  ;
+};
+
+var dashRegex = /-./g;
+var setterCache = {};
+
+Imba.toCamelCase = function (str) {
+  if (str.indexOf('-') >= 0) {
+    return str.replace(dashRegex, function (m) {
+      return m.charAt(1).toUpperCase();
+    });
+  } else {
+    return str;
+  }
+
+  ;
+};
+
+Imba.toSetter = function (str) {
+  return setterCache[str] || (setterCache[str] = Imba.toCamelCase('set-' + str));
+};
+
+Imba.indexOf = function (a, b) {
+  return b && b.indexOf ? b.indexOf(a) : [].indexOf.call(a, b);
+};
+
+Imba.len = function (a) {
+  return a && (a.len instanceof Function ? a.len.call(a) : a.length) || 0;
+};
+
+Imba.prop = function (scope, name, opts) {
+  if (scope.defineProperty) {
+    return scope.defineProperty(name, opts);
+  }
+
+  ;
+  return;
+};
+
+Imba.attr = function (scope, name, opts) {
+  if (opts === undefined) opts = {};
+
+  if (scope.defineAttribute) {
+    return scope.defineAttribute(name, opts);
+  }
+
+  ;
+  let getName = Imba.toCamelCase(name);
+  let setName = Imba.toCamelCase('set-' + name);
+  let proto = scope.prototype;
+
+  if (opts.dom) {
+    proto[getName] = function () {
+      return this.dom()[name];
+    };
+
+    proto[setName] = function (value) {
+      if (value != this[name]()) {
+        this.dom()[name] = value;
+      }
+
+      ;
+      return this;
+    };
+  } else {
+    proto[getName] = function () {
+      return this.getAttribute(name);
+    };
+
+    proto[setName] = function (value) {
+      this.setAttribute(name, value);
+      return this;
+    };
+  }
+
+  ;
+  return;
+};
+
+Imba.propDidSet = function (object, property, val, prev) {
+  let fn = property.watch;
+
+  if (fn instanceof Function) {
+    fn.call(object, val, prev, property);
+  } else if ((typeof fn == 'string' || fn instanceof String) && object[fn]) {
+    object[fn](val, prev, property);
+  }
+
+  ;
+  return;
+};
+
+var emit__ = function (event, args, node) {
+  // var node = cbs[event]
+  var prev, cb, ret;
+
+  while ((prev = node) && (node = node.next)) {
+    if (cb = node.listener) {
+      if (node.path && cb[node.path]) {
+        ret = args ? cb[node.path].apply(cb, args) : cb[node.path]();
+      } else {
+        // check if it is a method?
+        ret = args ? cb.apply(node, args) : cb.call(node);
+      }
+
+      ;
+    }
+
+    ;
+
+    if (node.times && --node.times <= 0) {
+      prev.next = node.next;
+      node.listener = null;
+    }
+
+    ;
+  }
+
+  ;
+  return;
+};
+
+Imba.listen = function (obj, event, listener, path) {
+  var cbs, list, tail;
+  cbs = obj.__listeners__ || (obj.__listeners__ = {});
+  list = cbs[event] || (cbs[event] = {});
+  tail = list.tail || (list.tail = list.next = {});
+  tail.listener = listener;
+  tail.path = path;
+  list.tail = tail.next = {};
+  return tail;
+};
+
+Imba.once = function (obj, event, listener) {
+  var tail = Imba.listen(obj, event, listener);
+  tail.times = 1;
+  return tail;
+};
+
+Imba.unlisten = function (obj, event, cb, meth) {
+  var node, prev;
+  var meta = obj.__listeners__;
+
+  if (!meta) {
+    return;
+  }
+
+  ;
+
+  if (node = meta[event]) {
+    while ((prev = node) && (node = node.next)) {
+      if (node == cb || node.listener == cb) {
+        prev.next = node.next;
+        node.listener = null;
+        break;
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  return;
+};
+
+Imba.emit = function (obj, event, params) {
+  var cb;
+
+  if (cb = obj.__listeners__) {
+    if (cb[event]) {
+      emit__(event, params, cb[event]);
+    }
+
+    ;
+
+    if (cb.all) {
+      emit__(event, [event, params], cb.all);
+    }
+
+    ;
+  }
+
+  ;
+  return;
+};
+
+Imba.observeProperty = function (observer, key, trigger, target, prev) {
+  if (prev && typeof prev == 'object') {
+    Imba.unlisten(prev, 'all', observer, trigger);
+  }
+
+  ;
+
+  if (target && typeof target == 'object') {
+    Imba.listen(target, 'all', observer, trigger);
+  }
+
+  ;
+  return this;
+};
+
+module.exports = Imba;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(4);
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Imba = __webpack_require__(0);
+
+Imba.Pointer = function Pointer() {
+  this._button = -1;
+  this._event = {
+    x: 0,
+    y: 0,
+    type: 'uninitialized'
+  };
+  return this;
+};
+
+Imba.Pointer.prototype.button = function () {
+  return this._button;
+};
+
+Imba.Pointer.prototype.touch = function () {
+  return this._touch;
+};
+
+Imba.Pointer.prototype.update = function (e) {
+  this._event = e;
+  this._dirty = true;
+  return this;
+};
+
+Imba.Pointer.prototype.process = function () {
+  var e1 = this._event;
+
+  if (this._dirty) {
+    this._prevEvent = e1;
+    this._dirty = false;
+
+    if (e1.type == 'mousedown') {
+      this._button = e1.button;
+
+      if (this._touch && this._button != 0) {
+        return;
+      }
+
+      ;
+
+      if (this._touch) {
+        this._touch.cancel();
+      }
+
+      ;
+      this._touch = new Imba.Touch(e1, this);
+
+      this._touch.mousedown(e1, e1);
+    } else if (e1.type == 'mousemove') {
+      if (this._touch) {
+        this._touch.mousemove(e1, e1);
+      }
+
+      ;
+    } else if (e1.type == 'mouseup') {
+      this._button = -1;
+
+      if (this._touch && this._touch.button() == e1.button) {
+        this._touch.mouseup(e1, e1);
+
+        this._touch = null;
+      }
+
+      ;
+    }
+
+    ;
+  } else if (this._touch) {
+    this._touch.idle();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Pointer.prototype.x = function () {
+  return this._event.x;
+};
+
+Imba.Pointer.prototype.y = function () {
+  return this._event.y;
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Imba = __webpack_require__(1),
+    _1 = Imba.createElement;
+
+__webpack_require__(15);
+
+var Todo = __webpack_require__(16).Todo;
+
+var App = Imba.defineTag('App', function (tag) {
+  tag.prototype.render = function () {
+    var $ = this.$;
+    return this.$open(0).setChildren($.$ = $.$ || [_1('p', $, 0, this).setContent(['Web playground built on ', _1('a', $, 1, 0).setHref('http://imba.io/').setText('imba'), '. Source code see ', _1('a', $, 2, 0).setHref('https://github.com/Cygra/imba_playground').setText('Github'), '.'], 2), _1('ul', $, 3, this).setContent($[4] || _1('li', $, 4, 3).setContent($[5] || _1('a', $, 5, 4).setRouteTo('/imba_playground/todo').setText('Todo'), 2), 2), _1(Todo, $, 6, this).setRoute('/imba_playground/todo')], 2).synced(($[1].end(), $[2].end(), $[5].end(), $[6].end(), true));
+  };
+});
+Imba.mount(_1(App).end());
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var Imba = __webpack_require__(0);
+
+var activate = false;
+var ns = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : null;
+
+if (ns && ns.Imba) {
+  console.warn("Imba v" + ns.Imba.VERSION + " is already loaded.");
+  Imba = ns.Imba;
+} else if (ns) {
+  ns.Imba = Imba;
+  activate = true;
+
+  if (ns.define && ns.define.amd) {
+    ns.define("imba", [], function () {
+      return Imba;
+    });
+  }
+
+  ;
+}
+
+;
+module.exports = Imba;
+
+if (true) {
+  __webpack_require__(6);
+
+  __webpack_require__(7);
+}
+
+;
+
+if (activate) {
+  Imba.EventManager.activate();
+}
+
+;
+
+if (false) {}
+
+;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _typeof(obj) { if (typeof Symbol === "function" && _typeof(Symbol.iterator) === "symbol") { _typeof = function (_typeof2) { function _typeof(_x) { return _typeof2.apply(this, arguments); } _typeof.toString = function () { return _typeof2.toString(); }; return _typeof; }(function (obj) { return typeof obj === "undefined" ? "undefined" : _typeof(obj); }); } else { _typeof = function (_typeof3) { function _typeof(_x2) { return _typeof3.apply(this, arguments); } _typeof.toString = function () { return _typeof3.toString(); }; return _typeof; }(function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj); }); } return _typeof(obj); }
+
+var g; // This works in non-strict mode
+
+g = function () {
+  return this;
+}();
+
+try {
+  // This works if eval is allowed (see CSP)
+  g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+  // This works if the window reference is available
+  if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+} // g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+
+module.exports = g;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+var requestAnimationFrame;
+var cancelAnimationFrame;
+
+if (false) {}
+
+;
+
+if (true) {
+  cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitRequestAnimationFrame;
+  requestAnimationFrame = window.requestAnimationFrame;
+  requestAnimationFrame || (requestAnimationFrame = window.webkitRequestAnimationFrame);
+  requestAnimationFrame || (requestAnimationFrame = window.mozRequestAnimationFrame);
+  requestAnimationFrame || (requestAnimationFrame = function (blk) {
+    return setTimeout(blk, 1000 / 60);
+  });
+}
+
+;
+
+function Ticker() {
+  var self = this;
+  self._queue = [];
+  self._stage = -1;
+  self._scheduled = false;
+
+  self._ticker = function (e) {
+    self._scheduled = false;
+    return self.tick(e);
+  };
+
+  self;
+}
+
+;
+
+Ticker.prototype.stage = function (v) {
+  return this._stage;
+};
+
+Ticker.prototype.setStage = function (v) {
+  this._stage = v;
+  return this;
+};
+
+Ticker.prototype.queue = function (v) {
+  return this._queue;
+};
+
+Ticker.prototype.setQueue = function (v) {
+  this._queue = v;
+  return this;
+};
+
+Ticker.prototype.add = function (item, force) {
+  if (force || this._queue.indexOf(item) == -1) {
+    this._queue.push(item);
+  }
+
+  ;
+
+  if (!this._scheduled) {
+    return this.schedule();
+  }
+
+  ;
+};
+
+Ticker.prototype.tick = function (timestamp) {
+  var items = this._queue;
+
+  if (!this._ts) {
+    this._ts = timestamp;
+  }
+
+  ;
+  this._dt = timestamp - this._ts;
+  this._ts = timestamp;
+  this._queue = [];
+  this._stage = 1;
+  this.before();
+
+  if (items.length) {
+    for (let i = 0, ary = iter$(items), len = ary.length, item; i < len; i++) {
+      item = ary[i];
+
+      if (item instanceof Function) {
+        item(this._dt, this);
+      } else if (item.tick) {
+        item.tick(this._dt, this);
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  this._stage = 2;
+  this.after();
+  this._stage = this._scheduled ? 0 : -1;
+  return this;
+};
+
+Ticker.prototype.schedule = function () {
+  if (!this._scheduled) {
+    this._scheduled = true;
+
+    if (this._stage == -1) {
+      this._stage = 0;
+    }
+
+    ;
+    requestAnimationFrame(this._ticker);
+  }
+
+  ;
+  return this;
+};
+
+Ticker.prototype.before = function () {
+  return this;
+};
+
+Ticker.prototype.after = function () {
+  if (Imba.TagManager) {
+    Imba.TagManager.refresh();
+  }
+
+  ;
+  return this;
+};
+
+Imba.TICKER = new Ticker();
+Imba.SCHEDULERS = [];
+
+Imba.ticker = function () {
+  return Imba.TICKER;
+};
+
+Imba.requestAnimationFrame = function (callback) {
+  return requestAnimationFrame(callback);
+};
+
+Imba.cancelAnimationFrame = function (id) {
+  return cancelAnimationFrame(id);
+};
+
+var commitQueue = 0;
+
+Imba.commit = function (params) {
+  commitQueue++;
+  Imba.emit(Imba, 'commit', params != undefined ? [params] : undefined);
+
+  if (--commitQueue == 0) {
+    Imba.TagManager && Imba.TagManager.refresh();
+  }
+
+  ;
+  return;
+};
+
+Imba.Scheduler = function Scheduler(target) {
+  var self = this;
+  self._id = counter++;
+  self._target = target;
+  self._marked = false;
+  self._active = false;
+
+  self._marker = function () {
+    return self.mark();
+  };
+
+  self._ticker = function (e) {
+    return self.tick(e);
+  };
+
+  self._dt = 0;
+  self._frame = {};
+  self._scheduled = false;
+  self._timestamp = 0;
+  self._ticks = 0;
+  self._flushes = 0;
+  self.onevent = self.onevent.bind(self);
+  self;
+};
+
+var counter = 0;
+
+Imba.Scheduler.event = function (e) {
+  return Imba.emit(Imba, 'event', e);
+};
+
+Imba.Scheduler.prototype.__raf = {
+  watch: 'rafDidSet',
+  name: 'raf'
+};
+
+Imba.Scheduler.prototype.raf = function (v) {
+  return this._raf;
+};
+
+Imba.Scheduler.prototype.setRaf = function (v) {
+  var a = this.raf();
+
+  if (v != a) {
+    this._raf = v;
+  }
+
+  if (v != a) {
+    this.rafDidSet && this.rafDidSet(v, a, this.__raf);
+  }
+
+  return this;
+};
+
+Imba.Scheduler.prototype.__interval = {
+  watch: 'intervalDidSet',
+  name: 'interval'
+};
+
+Imba.Scheduler.prototype.interval = function (v) {
+  return this._interval;
+};
+
+Imba.Scheduler.prototype.setInterval = function (v) {
+  var a = this.interval();
+
+  if (v != a) {
+    this._interval = v;
+  }
+
+  if (v != a) {
+    this.intervalDidSet && this.intervalDidSet(v, a, this.__interval);
+  }
+
+  return this;
+};
+
+Imba.Scheduler.prototype.__events = {
+  watch: 'eventsDidSet',
+  name: 'events'
+};
+
+Imba.Scheduler.prototype.events = function (v) {
+  return this._events;
+};
+
+Imba.Scheduler.prototype.setEvents = function (v) {
+  var a = this.events();
+
+  if (v != a) {
+    this._events = v;
+  }
+
+  if (v != a) {
+    this.eventsDidSet && this.eventsDidSet(v, a, this.__events);
+  }
+
+  return this;
+};
+
+Imba.Scheduler.prototype.marked = function (v) {
+  return this._marked;
+};
+
+Imba.Scheduler.prototype.setMarked = function (v) {
+  this._marked = v;
+  return this;
+};
+
+Imba.Scheduler.prototype.rafDidSet = function (bool) {
+  if (bool && this._active) this.requestTick();
+  return this;
+};
+
+Imba.Scheduler.prototype.intervalDidSet = function (time) {
+  clearInterval(this._intervalId);
+  this._intervalId = null;
+
+  if (time && this._active) {
+    this._intervalId = setInterval(this.oninterval.bind(this), time);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.eventsDidSet = function (new$, prev) {
+  if (this._active && new$ && !prev) {
+    return Imba.listen(Imba, 'commit', this, 'onevent');
+  } else if (!new$ && prev) {
+    return Imba.unlisten(Imba, 'commit', this, 'onevent');
+  }
+
+  ;
+};
+
+Imba.Scheduler.prototype.active = function () {
+  return this._active;
+};
+
+Imba.Scheduler.prototype.dt = function () {
+  return this._dt;
+};
+
+Imba.Scheduler.prototype.configure = function (options) {
+  var v_;
+  if (options === undefined) options = {};
+
+  if (options.raf != undefined) {
+    this.setRaf(v_ = options.raf), v_;
+  }
+
+  ;
+
+  if (options.interval != undefined) {
+    this.setInterval(v_ = options.interval), v_;
+  }
+
+  ;
+
+  if (options.events != undefined) {
+    this.setEvents(v_ = options.events), v_;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.mark = function () {
+  this._marked = true;
+
+  if (!this._scheduled) {
+    this.requestTick();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.flush = function () {
+  this._flushes++;
+
+  this._target.tick(this);
+
+  this._marked = false;
+  return this;
+};
+
+Imba.Scheduler.prototype.tick = function (delta, ticker) {
+  this._ticks++;
+  this._dt = delta;
+
+  if (ticker) {
+    this._scheduled = false;
+  }
+
+  ;
+  this.flush();
+
+  if (this._raf && this._active) {
+    this.requestTick();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.requestTick = function () {
+  if (!this._scheduled) {
+    this._scheduled = true;
+    Imba.TICKER.add(this);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.activate = function (immediate) {
+  if (immediate === undefined) immediate = true;
+
+  if (!this._active) {
+    this._active = true;
+    this._commit = this._target.commit;
+
+    this._target.commit = function () {
+      return this;
+    };
+
+    this._target && this._target.flag && this._target.flag('scheduled_');
+    Imba.SCHEDULERS.push(this);
+
+    if (this._events) {
+      Imba.listen(Imba, 'commit', this, 'onevent');
+    }
+
+    ;
+
+    if (this._interval && !this._intervalId) {
+      this._intervalId = setInterval(this.oninterval.bind(this), this._interval);
+    }
+
+    ;
+
+    if (immediate) {
+      this.tick(0);
+    } else if (this._raf) {
+      this.requestTick();
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.deactivate = function () {
+  if (this._active) {
+    this._active = false;
+    this._target.commit = this._commit;
+    let idx = Imba.SCHEDULERS.indexOf(this);
+
+    if (idx >= 0) {
+      Imba.SCHEDULERS.splice(idx, 1);
+    }
+
+    ;
+
+    if (this._events) {
+      Imba.unlisten(Imba, 'commit', this, 'onevent');
+    }
+
+    ;
+
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+      this._intervalId = null;
+    }
+
+    ;
+    this._target && this._target.unflag && this._target.unflag('scheduled_');
+  }
+
+  ;
+  return this;
+};
+
+Imba.Scheduler.prototype.track = function () {
+  return this._marker;
+};
+
+Imba.Scheduler.prototype.oninterval = function () {
+  this.tick();
+  Imba.TagManager.refresh();
+  return this;
+};
+
+Imba.Scheduler.prototype.onevent = function (event) {
+  if (!this._events || this._marked) {
+    return this;
+  }
+
+  ;
+
+  if (this._events instanceof Function) {
+    if (this._events(event, this)) this.mark();
+  } else if (this._events instanceof Array) {
+    if (this._events.indexOf(event && event.type || event) >= 0) {
+      this.mark();
+    }
+
+    ;
+  } else {
+    this.mark();
+  }
+
+  ;
+  return this;
+};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Imba = __webpack_require__(0);
+
+__webpack_require__(8);
+
+__webpack_require__(9);
+
+Imba.TagManager = new Imba.TagManagerClass();
+
+__webpack_require__(10);
+
+__webpack_require__(11);
+
+__webpack_require__(2);
+
+__webpack_require__(12);
+
+__webpack_require__(13);
+
+if (true) {
+  __webpack_require__(14);
+}
+
+;
+
+if (false) {}
+
+;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+Imba.TagManagerClass = function TagManagerClass() {
+  this._inserts = 0;
+  this._removes = 0;
+  this._mounted = [];
+  this._mountables = 0;
+  this._unmountables = 0;
+  this._unmounting = 0;
+  this;
+};
+
+Imba.TagManagerClass.prototype.mounted = function () {
+  return this._mounted;
+};
+
+Imba.TagManagerClass.prototype.insert = function (node, parent) {
+  this._inserts++;
+
+  if (node && node.mount) {
+    this.regMountable(node);
+  }
+
+  ;
+  return;
+};
+
+Imba.TagManagerClass.prototype.remove = function (node, parent) {
+  return this._removes++;
+};
+
+Imba.TagManagerClass.prototype.changes = function () {
+  return this._inserts + this._removes;
+};
+
+Imba.TagManagerClass.prototype.mount = function (node) {
+  return;
+};
+
+Imba.TagManagerClass.prototype.refresh = function (force) {
+  if (force === undefined) force = false;
+
+  if (false) {}
+
+  ;
+
+  if (!force && this.changes() == 0) {
+    return;
+  }
+
+  ;
+
+  if (this._inserts && this._mountables > this._mounted.length || force) {
+    this.tryMount();
+  }
+
+  ;
+
+  if ((this._removes || force) && this._mounted.length) {
+    this.tryUnmount();
+  }
+
+  ;
+  this._inserts = 0;
+  this._removes = 0;
+  return this;
+};
+
+Imba.TagManagerClass.prototype.unmount = function (node) {
+  return this;
+};
+
+Imba.TagManagerClass.prototype.regMountable = function (node) {
+  if (!(node.FLAGS & Imba.TAG_MOUNTABLE)) {
+    node.FLAGS |= Imba.TAG_MOUNTABLE;
+    return this._mountables++;
+  }
+
+  ;
+};
+
+Imba.TagManagerClass.prototype.tryMount = function () {
+  var count = 0;
+  var root = document.body;
+  var items = root.querySelectorAll('.__mount');
+
+  for (let i = 0, ary = iter$(items), len = ary.length, el; i < len; i++) {
+    el = ary[i];
+
+    if (el && el._tag) {
+      if (this._mounted.indexOf(el._tag) == -1) {
+        this.mountNode(el._tag);
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.TagManagerClass.prototype.mountNode = function (node) {
+  if (this._mounted.indexOf(node) == -1) {
+    this.regMountable(node);
+
+    this._mounted.push(node);
+
+    node.FLAGS |= Imba.TAG_MOUNTED;
+
+    if (node.mount) {
+      node.mount();
+    }
+
+    ;
+  }
+
+  ;
+  return;
+};
+
+Imba.TagManagerClass.prototype.tryUnmount = function () {
+  this._unmounting++;
+  var unmount = [];
+  var root = document.body;
+
+  for (let i = 0, items = iter$(this._mounted), len = items.length, item; i < len; i++) {
+    item = items[i];
+
+    if (!item) {
+      continue;
+    }
+
+    ;
+
+    if (!document.documentElement.contains(item._dom)) {
+      unmount.push(item);
+      this._mounted[i] = null;
+    }
+
+    ;
+  }
+
+  ;
+  this._unmounting--;
+
+  if (unmount.length) {
+    this._mounted = this._mounted.filter(function (item) {
+      return item && unmount.indexOf(item) == -1;
+    });
+
+    for (let i = 0, len = unmount.length, item; i < len; i++) {
+      item = unmount[i];
+      item.FLAGS = item.FLAGS & ~Imba.TAG_MOUNTED;
+
+      if (item.unmount && item._dom) {
+        item.unmount();
+      } else if (item._scheduler) {
+        item.unschedule();
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+__webpack_require__(2);
+
+var native$ = ['keydown', 'keyup', 'keypress', 'textInput', 'input', 'change', 'submit', 'focusin', 'focusout', 'focus', 'blur', 'contextmenu', 'selectstart', 'dblclick', 'selectionchange', 'mousewheel', 'wheel', 'scroll', 'beforecopy', 'copy', 'beforepaste', 'paste', 'beforecut', 'cut', 'dragstart', 'drag', 'dragend', 'dragenter', 'dragover', 'dragleave', 'dragexit', 'drop', 'mouseup', 'mousedown', 'mouseenter', 'mouseleave', 'mouseout', 'mouseover', 'mousemove'];
+
+Imba.EventManager = function EventManager(node, pars) {
+  var self = this;
+  if (!pars || pars.constructor !== Object) pars = {};
+  var events = pars.events !== undefined ? pars.events : [];
+  self._shimFocusEvents = true && window.netscape && node.onfocusin === undefined;
+  self.setRoot(node);
+  self.setListeners([]);
+  self.setDelegators({});
+  self.setDelegator(function (e) {
+    self.delegate(e);
+    return true;
+  });
+
+  for (let i = 0, items = iter$(events), len = items.length; i < len; i++) {
+    self.register(items[i]);
+  }
+
+  ;
+  return self;
+};
+
+Imba.EventManager.prototype.root = function (v) {
+  return this._root;
+};
+
+Imba.EventManager.prototype.setRoot = function (v) {
+  this._root = v;
+  return this;
+};
+
+Imba.EventManager.prototype.count = function (v) {
+  return this._count;
+};
+
+Imba.EventManager.prototype.setCount = function (v) {
+  this._count = v;
+  return this;
+};
+
+Imba.EventManager.prototype.__enabled = {
+  'default': false,
+  watch: 'enabledDidSet',
+  name: 'enabled'
+};
+
+Imba.EventManager.prototype.enabled = function (v) {
+  return this._enabled;
+};
+
+Imba.EventManager.prototype.setEnabled = function (v) {
+  var a = this.enabled();
+
+  if (v != a) {
+    this._enabled = v;
+  }
+
+  if (v != a) {
+    this.enabledDidSet && this.enabledDidSet(v, a, this.__enabled);
+  }
+
+  return this;
+};
+
+Imba.EventManager.prototype._enabled = false;
+
+Imba.EventManager.prototype.listeners = function (v) {
+  return this._listeners;
+};
+
+Imba.EventManager.prototype.setListeners = function (v) {
+  this._listeners = v;
+  return this;
+};
+
+Imba.EventManager.prototype.delegators = function (v) {
+  return this._delegators;
+};
+
+Imba.EventManager.prototype.setDelegators = function (v) {
+  this._delegators = v;
+  return this;
+};
+
+Imba.EventManager.prototype.delegator = function (v) {
+  return this._delegator;
+};
+
+Imba.EventManager.prototype.setDelegator = function (v) {
+  this._delegator = v;
+  return this;
+};
+
+var initialBind = [];
+
+Imba.EventManager.prototype.enabledDidSet = function (bool) {
+  bool ? this.onenable() : this.ondisable();
+  return this;
+};
+
+Imba.EventManager.bind = function (name) {
+  if (Imba.Events) {
+    return Imba.Events.autoregister(name);
+  } else if (initialBind.indexOf(name) == -1 && native$.indexOf(name) >= 0) {
+    return initialBind.push(name);
+  }
+
+  ;
+};
+
+Imba.EventManager.activate = function () {
+  var Imba_;
+
+  if (Imba.Events) {
+    return Imba.Events;
+  }
+
+  ;
+  Imba.Events = new Imba.EventManager(Imba.document(), {
+    events: []
+  });
+
+  if (false) {}
+
+  ;
+  Imba.POINTER || (Imba.POINTER = new Imba.Pointer());
+  var hasTouchEvents = window && window.ontouchstart !== undefined;
+
+  if (hasTouchEvents) {
+    Imba.Events.listen('touchstart', function (e) {
+      return Imba.Touch.ontouchstart(e);
+    });
+    Imba.Events.listen('touchmove', function (e) {
+      return Imba.Touch.ontouchmove(e);
+    });
+    Imba.Events.listen('touchend', function (e) {
+      return Imba.Touch.ontouchend(e);
+    });
+    Imba.Events.listen('touchcancel', function (e) {
+      return Imba.Touch.ontouchcancel(e);
+    });
+  }
+
+  ;
+  Imba.Events.register('click', function (e) {
+    // Only for main mousebutton, no?
+    if (e.timeStamp - Imba.Touch.LastTimestamp > Imba.Touch.TapTimeout) {
+      e._imbaSimulatedTap = true;
+      var tap = new Imba.Event(e);
+      tap.setType('tap');
+      tap.process();
+
+      if (tap._responder && tap.defaultPrevented) {
+        return e.preventDefault();
+      }
+
+      ;
+    }
+
+    ;
+    return Imba.Events.delegate(e);
+  });
+  Imba.Events.listen('mousedown', function (e) {
+    if (e.timeStamp - Imba.Touch.LastTimestamp > Imba.Touch.TapTimeout) {
+      if (Imba.POINTER) {
+        return Imba.POINTER.update(e).process();
+      }
+
+      ;
+    }
+
+    ;
+  });
+  Imba.Events.listen('mouseup', function (e) {
+    if (e.timeStamp - Imba.Touch.LastTimestamp > Imba.Touch.TapTimeout) {
+      if (Imba.POINTER) {
+        return Imba.POINTER.update(e).process();
+      }
+
+      ;
+    }
+
+    ;
+  });
+  Imba.Events.register(['mousedown', 'mouseup']);
+  Imba.Events.register(initialBind);
+  Imba.Events.setEnabled(true);
+  return Imba.Events;
+};
+
+Imba.EventManager.prototype.register = function (name, handler) {
+  if (handler === undefined) handler = true;
+
+  if (name instanceof Array) {
+    for (let i = 0, items = iter$(name), len = items.length; i < len; i++) {
+      this.register(items[i], handler);
+    }
+
+    ;
+    return this;
+  }
+
+  ;
+
+  if (this.delegators()[name]) {
+    return this;
+  }
+
+  ;
+  var fn = this.delegators()[name] = handler instanceof Function ? handler : this.delegator();
+
+  if (this.enabled()) {
+    return this.root().addEventListener(name, fn, true);
+  }
+
+  ;
+};
+
+Imba.EventManager.prototype.autoregister = function (name) {
+  if (native$.indexOf(name) == -1) {
+    return this;
+  }
+
+  ;
+  return this.register(name);
+};
+
+Imba.EventManager.prototype.listen = function (name, handler, capture) {
+  if (capture === undefined) capture = true;
+  this.listeners().push([name, handler, capture]);
+
+  if (this.enabled()) {
+    this.root().addEventListener(name, handler, capture);
+  }
+
+  ;
+  return this;
+};
+
+Imba.EventManager.prototype.delegate = function (e) {
+  var event = Imba.Event.wrap(e);
+  event.process();
+
+  if (this._shimFocusEvents) {
+    if (e.type == 'focus') {
+      Imba.Event.wrap(e).setType('focusin').process();
+    } else if (e.type == 'blur') {
+      Imba.Event.wrap(e).setType('focusout').process();
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.EventManager.prototype.create = function (type, target, pars) {
+  if (!pars || pars.constructor !== Object) pars = {};
+  var data = pars.data !== undefined ? pars.data : null;
+  var source = pars.source !== undefined ? pars.source : null;
+  var event = Imba.Event.wrap({
+    type: type,
+    target: target
+  });
+
+  if (data) {
+    event.setData(data), data;
+  }
+
+  ;
+
+  if (source) {
+    event.setSource(source), source;
+  }
+
+  ;
+  return event;
+};
+
+Imba.EventManager.prototype.trigger = function () {
+  return this.create.apply(this, arguments).process();
+};
+
+Imba.EventManager.prototype.onenable = function () {
+  for (let o = this.delegators(), handler, i = 0, keys = Object.keys(o), l = keys.length, name; i < l; i++) {
+    name = keys[i];
+    handler = o[name];
+    this.root().addEventListener(name, handler, true);
+  }
+
+  ;
+
+  for (let i = 0, items = iter$(this.listeners()), len = items.length, item; i < len; i++) {
+    item = items[i];
+    this.root().addEventListener(item[0], item[1], item[2]);
+  }
+
+  ;
+
+  if (true) {
+    window.addEventListener('hashchange', Imba.commit);
+    window.addEventListener('popstate', Imba.commit);
+  }
+
+  ;
+  return this;
+};
+
+Imba.EventManager.prototype.ondisable = function () {
+  for (let o = this.delegators(), handler, i = 0, keys = Object.keys(o), l = keys.length, name; i < l; i++) {
+    name = keys[i];
+    handler = o[name];
+    this.root().removeEventListener(name, handler, true);
+  }
+
+  ;
+
+  for (let i = 0, items = iter$(this.listeners()), len = items.length, item; i < len; i++) {
+    item = items[i];
+    this.root().removeEventListener(item[0], item[1], item[2]);
+  }
+
+  ;
+
+  if (true) {
+    window.removeEventListener('hashchange', Imba.commit);
+    window.removeEventListener('popstate', Imba.commit);
+  }
+
+  ;
+  return this;
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+Imba.CSSKeyMap = {};
+Imba.TAG_BUILT = 1;
+Imba.TAG_SETUP = 2;
+Imba.TAG_MOUNTING = 4;
+Imba.TAG_MOUNTED = 8;
+Imba.TAG_SCHEDULED = 16;
+Imba.TAG_AWAKENED = 32;
+Imba.TAG_MOUNTABLE = 64;
+
+Imba.document = function () {
+  return window.document;
+};
+
+Imba.root = function () {
+  return Imba.getTagForDom(Imba.document().body);
+};
+
+Imba.static = function (items, typ, nr) {
+  items._type = typ;
+  items.static = nr;
+  return items;
+};
+
+Imba.mount = function (node, into) {
+  into || (into = Imba.document().body);
+  into.appendChild(node.dom());
+  Imba.TagManager.insert(node, into);
+  node.scheduler().configure({
+    events: true
+  }).activate(false);
+  Imba.TagManager.refresh();
+  return node;
+};
+
+Imba.createTextNode = function (node) {
+  if (node && node.nodeType == 3) {
+    return node;
+  }
+
+  ;
+  return Imba.document().createTextNode(node);
+};
+
+Imba.Tag = function Tag(dom, ctx) {
+  this.setDom(dom);
+  this.$ = TagCache.build(this);
+  this.$up = this._owner_ = ctx;
+  this._tree_ = null;
+  this.FLAGS = 0;
+  this.build();
+  this;
+};
+
+Imba.Tag.buildNode = function () {
+  var dom = Imba.document().createElement(this._nodeType || 'div');
+
+  if (this._classes) {
+    var cls = this._classes.join(" ");
+
+    if (cls) {
+      dom.className = cls;
+    }
+
+    ;
+  }
+
+  ;
+  return dom;
+};
+
+Imba.Tag.createNode = function () {
+  var proto = this._protoDom || (this._protoDom = this.buildNode());
+  return proto.cloneNode(false);
+};
+
+Imba.Tag.build = function (ctx) {
+  return new this(this.createNode(), ctx);
+};
+
+Imba.Tag.dom = function () {
+  return this._protoDom || (this._protoDom = this.buildNode());
+};
+
+Imba.Tag.end = function () {
+  return this.commit(0);
+};
+
+Imba.Tag.inherit = function (child) {
+  child._protoDom = null;
+
+  if (this._nodeType) {
+    child._nodeType = this._nodeType;
+    child._classes = this._classes.slice();
+
+    if (child._flagName) {
+      return child._classes.push(child._flagName);
+    }
+
+    ;
+  } else {
+    child._nodeType = child._name;
+    child._flagName = null;
+    return child._classes = [];
+  }
+
+  ;
+};
+
+Imba.Tag.prototype.optimizeTagStructure = function () {
+  if (false) {}
+
+  ;
+  var ctor = this.constructor;
+  let keys = Object.keys(this);
+
+  if (keys.indexOf('mount') >= 0) {
+    if (ctor._classes && ctor._classes.indexOf('__mount') == -1) {
+      ctor._classes.push('__mount');
+    }
+
+    ;
+
+    if (ctor._protoDom) {
+      ctor._protoDom.classList.add('__mount');
+    }
+
+    ;
+  }
+
+  ;
+
+  for (let i = 0, items = iter$(keys), len = items.length, key; i < len; i++) {
+    key = items[i];
+
+    if (/^on/.test(key)) {
+      Imba.EventManager.bind(key.slice(2));
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.attr(Imba.Tag, 'name');
+Imba.attr(Imba.Tag, 'role');
+Imba.attr(Imba.Tag, 'tabindex');
+
+Imba.Tag.prototype.title = function (v) {
+  return this.getAttribute('title');
+};
+
+Imba.Tag.prototype.setTitle = function (v) {
+  this.setAttribute('title', v);
+  return this;
+};
+
+Imba.Tag.prototype.dom = function () {
+  return this._dom;
+};
+
+Imba.Tag.prototype.setDom = function (dom) {
+  dom._tag = this;
+  this._dom = this._slot_ = dom;
+  return this;
+};
+
+Imba.Tag.prototype.ref = function () {
+  return this._ref;
+};
+
+Imba.Tag.prototype.root = function () {
+  return this._owner_ ? this._owner_.root() : this;
+};
+
+Imba.Tag.prototype.ref_ = function (ref) {
+  this.flag(this._ref = ref);
+  return this;
+};
+
+Imba.Tag.prototype.setData = function (data) {
+  this._data = data;
+  return this;
+};
+
+Imba.Tag.prototype.data = function () {
+  return this._data;
+};
+
+Imba.Tag.prototype.bindData = function (target, path, args) {
+  return this.setData(args ? target[path].apply(target, args) : target[path]);
+};
+
+Imba.Tag.prototype.setHtml = function (html) {
+  if (this.html() != html) {
+    this._dom.innerHTML = html;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.html = function () {
+  return this._dom.innerHTML;
+};
+
+Imba.Tag.prototype.on$ = function (slot, handler, context) {
+  let handlers = this._on_ || (this._on_ = []);
+  let prev = handlers[slot];
+
+  if (slot < 0) {
+    if (prev == undefined) {
+      slot = handlers[slot] = handlers.length;
+    } else {
+      slot = prev;
+    }
+
+    ;
+    prev = handlers[slot];
+  }
+
+  ;
+  handlers[slot] = handler;
+
+  if (prev) {
+    handler.state = prev.state;
+  } else {
+    handler.state = {
+      context: context
+    };
+
+    if (true) {
+      Imba.EventManager.bind(handler[0]);
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.setId = function (id) {
+  if (id != null) {
+    this.dom().id = id;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.id = function () {
+  return this.dom().id;
+};
+
+Imba.Tag.prototype.setAttribute = function (name, value) {
+  var old = this.dom().getAttribute(name);
+
+  if (old == value) {
+    value;
+  } else if (value != null && value !== false) {
+    this.dom().setAttribute(name, value);
+  } else {
+    this.dom().removeAttribute(name);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.setNestedAttr = function (ns, name, value, modifiers) {
+  if (this[ns + 'SetAttribute']) {
+    this[ns + 'SetAttribute'](name, value, modifiers);
+  } else {
+    this.setAttributeNS(ns, name, value);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.setAttributeNS = function (ns, name, value) {
+  var old = this.getAttributeNS(ns, name);
+
+  if (old != value) {
+    if (value != null && value !== false) {
+      this.dom().setAttributeNS(ns, name, value);
+    } else {
+      this.dom().removeAttributeNS(ns, name);
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.removeAttribute = function (name) {
+  return this.dom().removeAttribute(name);
+};
+
+Imba.Tag.prototype.getAttribute = function (name) {
+  return this.dom().getAttribute(name);
+};
+
+Imba.Tag.prototype.getAttributeNS = function (ns, name) {
+  return this.dom().getAttributeNS(ns, name);
+};
+
+Imba.Tag.prototype.set = function (key, value, mods) {
+  let setter = Imba.toSetter(key);
+
+  if (this[setter] instanceof Function) {
+    this[setter](value, mods);
+  } else {
+    this._dom.setAttribute(key, value);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.get = function (key) {
+  return this._dom.getAttribute(key);
+};
+
+Imba.Tag.prototype.setContent = function (content, type) {
+  this.setChildren(content, type);
+  return this;
+};
+
+Imba.Tag.prototype.setChildren = function (nodes, type) {
+  // overridden on client by reconciler
+  this._tree_ = nodes;
+  return this;
+};
+
+Imba.Tag.prototype.setTemplate = function (template) {
+  if (!this._template) {
+    if (this.render == Imba.Tag.prototype.render) {
+      this.render = this.renderTemplate;
+    }
+
+    ;
+  }
+
+  ;
+  this.template = this._template = template;
+  return this;
+};
+
+Imba.Tag.prototype.template = function () {
+  return null;
+};
+
+Imba.Tag.prototype.renderTemplate = function () {
+  var body = this.template();
+
+  if (body != this) {
+    this.setChildren(body);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.removeChild = function (child) {
+  var par = this.dom();
+  var el = child._slot_ || child;
+
+  if (el && el.parentNode == par) {
+    Imba.TagManager.remove(el._tag || el, this);
+    par.removeChild(el);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.removeAllChildren = function () {
+  if (this._dom.firstChild) {
+    var el;
+
+    while (el = this._dom.firstChild) {
+      true && Imba.TagManager.remove(el._tag || el, this);
+
+      this._dom.removeChild(el);
+    }
+
+    ;
+  }
+
+  ;
+  this._tree_ = this._text_ = null;
+  return this;
+};
+
+Imba.Tag.prototype.appendChild = function (node) {
+  if (typeof node == 'string' || node instanceof String) {
+    this.dom().appendChild(Imba.document().createTextNode(node));
+  } else if (node) {
+    this.dom().appendChild(node._slot_ || node);
+    Imba.TagManager.insert(node._tag || node, this);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.insertBefore = function (node, rel) {
+  if (typeof node == 'string' || node instanceof String) {
+    node = Imba.document().createTextNode(node);
+  }
+
+  ;
+
+  if (node && rel) {
+    this.dom().insertBefore(node._slot_ || node, rel._slot_ || rel);
+    Imba.TagManager.insert(node._tag || node, this);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.detachFromParent = function () {
+  if (this._slot_ == this._dom) {
+    this._slot_ = this._dom._placeholder_ || (this._dom._placeholder_ = Imba.document().createComment("node"));
+    this._slot_._tag || (this._slot_._tag = this);
+
+    if (this._dom.parentNode) {
+      Imba.TagManager.remove(this, this._dom.parentNode);
+
+      this._dom.parentNode.replaceChild(this._slot_, this._dom);
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.attachToParent = function () {
+  if (this._slot_ != this._dom) {
+    let prev = this._slot_;
+    this._slot_ = this._dom;
+
+    if (prev && prev.parentNode) {
+      Imba.TagManager.insert(this);
+      prev.parentNode.replaceChild(this._dom, prev);
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.orphanize = function () {
+  var par;
+
+  if (par = this.parent()) {
+    par.removeChild(this);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.text = function (v) {
+  return this._dom.textContent;
+};
+
+Imba.Tag.prototype.setText = function (txt) {
+  this._tree_ = txt;
+  this._dom.textContent = txt == null || this.text() === false ? '' : txt;
+  this;
+  return this;
+};
+
+Imba.Tag.prototype.dataset = function (key, val) {
+  if (key instanceof Object) {
+    for (let v, i = 0, keys = Object.keys(key), l = keys.length, k; i < l; i++) {
+      k = keys[i];
+      v = key[k];
+      this.dataset(k, v);
+    }
+
+    ;
+    return this;
+  }
+
+  ;
+
+  if (arguments.length == 2) {
+    this.setAttribute("data-" + key, val);
+    return this;
+  }
+
+  ;
+
+  if (key) {
+    return this.getAttribute("data-" + key);
+  }
+
+  ;
+  var dataset = this.dom().dataset;
+
+  if (!dataset) {
+    dataset = {};
+
+    for (let i = 0, items = iter$(this.dom().attributes), len = items.length, atr; i < len; i++) {
+      atr = items[i];
+
+      if (atr.name.substr(0, 5) == 'data-') {
+        dataset[Imba.toCamelCase(atr.name.slice(5))] = atr.value;
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  return dataset;
+};
+
+Imba.Tag.prototype.render = function () {
+  return this;
+};
+
+Imba.Tag.prototype.build = function () {
+  return this;
+};
+
+Imba.Tag.prototype.setup = function () {
+  return this;
+};
+
+Imba.Tag.prototype.commit = function () {
+  if (this.beforeRender() !== false) this.render();
+  return this;
+};
+
+Imba.Tag.prototype.beforeRender = function () {
+  return this;
+};
+
+Imba.Tag.prototype.tick = function () {
+  if (this.beforeRender() !== false) this.render();
+  return this;
+};
+
+Imba.Tag.prototype.end = function () {
+  this.setup();
+  this.commit(0);
+  this.end = Imba.Tag.end;
+  return this;
+};
+
+Imba.Tag.prototype.$open = function (context) {
+  if (context != this._context_) {
+    this._tree_ = null;
+    this._context_ = context;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.synced = function () {
+  return this;
+};
+
+Imba.Tag.prototype.awaken = function () {
+  return this;
+};
+
+Imba.Tag.prototype.flags = function () {
+  return this._dom.classList;
+};
+
+Imba.Tag.prototype.flag = function (name, toggler) {
+  // it is most natural to treat a second undefined argument as a no-switch
+  // so we need to check the arguments-length
+  if (arguments.length == 2) {
+    if (this._dom.classList.contains(name) != !!toggler) {
+      this._dom.classList.toggle(name);
+    }
+
+    ;
+  } else {
+    // firefox will trigger a change if adding existing class
+    if (!this._dom.classList.contains(name)) {
+      this._dom.classList.add(name);
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.unflag = function (name) {
+  this._dom.classList.remove(name);
+
+  return this;
+};
+
+Imba.Tag.prototype.toggleFlag = function (name) {
+  this._dom.classList.toggle(name);
+
+  return this;
+};
+
+Imba.Tag.prototype.hasFlag = function (name) {
+  return this._dom.classList.contains(name);
+};
+
+Imba.Tag.prototype.flagIf = function (flag, bool) {
+  var f = this._flags_ || (this._flags_ = {});
+  let prev = f[flag];
+
+  if (bool && !prev) {
+    this._dom.classList.add(flag);
+
+    f[flag] = true;
+  } else if (prev && !bool) {
+    this._dom.classList.remove(flag);
+
+    f[flag] = false;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.setFlag = function (name, value) {
+  let flags = this._namedFlags_ || (this._namedFlags_ = {});
+  let prev = flags[name];
+
+  if (prev != value) {
+    if (prev) {
+      this.unflag(prev);
+    }
+
+    ;
+
+    if (value) {
+      this.flag(value);
+    }
+
+    ;
+    flags[name] = value;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.scheduler = function () {
+  return this._scheduler == null ? this._scheduler = new Imba.Scheduler(this) : this._scheduler;
+};
+
+Imba.Tag.prototype.schedule = function (options) {
+  if (options === undefined) options = {
+    events: true
+  };
+  this.scheduler().configure(options).activate();
+  return this;
+};
+
+Imba.Tag.prototype.unschedule = function () {
+  if (this._scheduler) {
+    this.scheduler().deactivate();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.parent = function () {
+  return Imba.getTagForDom(this.dom().parentNode);
+};
+
+Imba.Tag.prototype.children = function (sel) {
+  let res = [];
+
+  for (let i = 0, items = iter$(this._dom.children), len = items.length, item; i < len; i++) {
+    item = items[i];
+    res.push(item._tag || Imba.getTagForDom(item));
+  }
+
+  ;
+  return res;
+};
+
+Imba.Tag.prototype.querySelector = function (q) {
+  return Imba.getTagForDom(this._dom.querySelector(q));
+};
+
+Imba.Tag.prototype.querySelectorAll = function (q) {
+  var items = [];
+
+  for (let i = 0, ary = iter$(this._dom.querySelectorAll(q)), len = ary.length; i < len; i++) {
+    items.push(Imba.getTagForDom(ary[i]));
+  }
+
+  ;
+  return items;
+};
+
+Imba.Tag.prototype.matches = function (sel) {
+  var fn;
+
+  if (sel instanceof Function) {
+    return sel(this);
+  }
+
+  ;
+
+  if (sel.query instanceof Function) {
+    sel = sel.query();
+  }
+
+  ;
+
+  if (fn = this._dom.matches || this._dom.matchesSelector || this._dom.webkitMatchesSelector || this._dom.msMatchesSelector || this._dom.mozMatchesSelector) {
+    return fn.call(this._dom, sel);
+  }
+
+  ;
+};
+
+Imba.Tag.prototype.closest = function (sel) {
+  return Imba.getTagForDom(this._dom.closest(sel));
+};
+
+Imba.Tag.prototype.contains = function (node) {
+  return this.dom().contains(node._dom || node);
+};
+
+Imba.Tag.prototype.log = function () {
+  var $0 = arguments,
+      i = $0.length;
+  var args = new Array(i > 0 ? i : 0);
+
+  while (i > 0) args[i - 1] = $0[--i];
+
+  args.unshift(console);
+  Function.prototype.call.apply(console.log, args);
+  return this;
+};
+
+Imba.Tag.prototype.css = function (key, val, mod) {
+  if (key instanceof Object) {
+    for (let v, i = 0, keys = Object.keys(key), l = keys.length, k; i < l; i++) {
+      k = keys[i];
+      v = key[k];
+      this.css(k, v);
+    }
+
+    ;
+    return this;
+  }
+
+  ;
+  var name = Imba.CSSKeyMap[key] || key;
+
+  if (val == null) {
+    this.dom().style.removeProperty(name);
+  } else if (val == undefined && arguments.length == 1) {
+    return this.dom().style[name];
+  } else if (name.match(/^--/)) {
+    this.dom().style.setProperty(name, val);
+  } else {
+    if ((typeof val == 'number' || val instanceof Number) && (name.match(/width|height|left|right|top|bottom/) || mod && mod.px)) {
+      this.dom().style[name] = val + "px";
+    } else {
+      this.dom().style[name] = val;
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Tag.prototype.setStyle = function (style) {
+  return this.setAttribute('style', style);
+};
+
+Imba.Tag.prototype.style = function () {
+  return this.getAttribute('style');
+};
+
+Imba.Tag.prototype.trigger = function (name, data) {
+  if (data === undefined) data = {};
+  return true && Imba.Events.trigger(name, this, {
+    data: data
+  });
+};
+
+Imba.Tag.prototype.focus = function () {
+  this.dom().focus();
+  return this;
+};
+
+Imba.Tag.prototype.blur = function () {
+  this.dom().blur();
+  return this;
+};
+
+Imba.Tag.prototype.toString = function () {
+  return this.dom().outerHTML;
+};
+
+Imba.Tag.prototype.initialize = Imba.Tag;
+
+Imba.SVGTag = function SVGTag() {
+  return Imba.Tag.apply(this, arguments);
+};
+
+Imba.subclass(Imba.SVGTag, Imba.Tag);
+
+Imba.SVGTag.namespaceURI = function () {
+  return "http://www.w3.org/2000/svg";
+};
+
+Imba.SVGTag.buildNode = function () {
+  var dom = Imba.document().createElementNS(this.namespaceURI(), this._nodeType);
+
+  if (this._classes) {
+    var cls = this._classes.join(" ");
+
+    if (cls) {
+      dom.className.baseVal = cls;
+    }
+
+    ;
+  }
+
+  ;
+  return dom;
+};
+
+Imba.SVGTag.inherit = function (child) {
+  child._protoDom = null;
+
+  if (this == Imba.SVGTag) {
+    child._nodeType = child._name;
+    return child._classes = [];
+  } else {
+    child._nodeType = this._nodeType;
+
+    var className = "_" + child._name.replace(/_/g, '-');
+
+    return child._classes = (this._classes || []).concat(className);
+  }
+
+  ;
+};
+
+Imba.HTML_TAGS = "a abbr address area article aside audio b base bdi bdo big blockquote body br button canvas caption cite code col colgroup data datalist dd del details dfn div dl dt em embed fieldset figcaption figure footer form h1 h2 h3 h4 h5 h6 head header hr html i iframe img input ins kbd keygen label legend li link main map mark menu menuitem meta meter nav noscript object ol optgroup option output p param pre progress q rp rt ruby s samp script section select small source span strong style sub summary sup table tbody td textarea tfoot th thead time title tr track u ul var video wbr".split(" ");
+Imba.HTML_TAGS_UNSAFE = "article aside header section".split(" ");
+Imba.HTML_ATTRS = {
+  a: "href target hreflang media download rel type ping referrerpolicy",
+  audio: "autoplay controls crossorigin loop muted preload src",
+  area: "alt coords download href hreflang ping referrerpolicy rel shape target",
+  base: "href target",
+  video: "autoplay buffered controls crossorigin height loop muted preload poster src width playsinline",
+  fieldset: "disabled form name",
+  form: "method action enctype autocomplete target",
+  button: "autofocus type form formaction formenctype formmethod formnovalidate formtarget value name",
+  embed: "height src type width",
+  input: "accept disabled form list max maxlength min minlength pattern required size step type",
+  label: "accesskey for form",
+  img: "alt src srcset crossorigin decoding height importance intrinsicsize ismap referrerpolicy sizes width usemap",
+  link: "rel type href media",
+  iframe: "allow allowfullscreen allowpaymentrequest height importance name referrerpolicy sandbox src srcdoc width",
+  meta: "property content charset desc",
+  map: "name",
+  optgroup: "label",
+  option: "label",
+  output: "for form",
+  object: "type data width height",
+  param: "name type value valuetype",
+  progress: "max",
+  script: "src type async defer crossorigin integrity nonce language nomodule",
+  select: "size form multiple",
+  source: "sizes src srcset type media",
+  textarea: "rows cols minlength maxlength form wrap",
+  track: "default kind label src srclang",
+  td: "colspan rowspan headers",
+  th: "colspan rowspan"
+};
+Imba.HTML_PROPS = {
+  input: "autofocus autocomplete autocapitalize autocorrect value placeholder required disabled multiple checked readOnly spellcheck",
+  textarea: "autofocus autocomplete autocapitalize autocorrect value placeholder required disabled multiple checked readOnly spellcheck",
+  form: "novalidate",
+  fieldset: "disabled",
+  button: "disabled",
+  select: "autofocus disabled required readOnly multiple",
+  option: "disabled selected value",
+  optgroup: "disabled",
+  progress: "value",
+  fieldset: "disabled",
+  canvas: "width height"
+};
+
+var extender = function (obj, sup) {
+  for (let v, i = 0, keys = Object.keys(sup), l = keys.length, k; i < l; i++) {
+    k = keys[i];
+    v = sup[k];
+    obj[k] == null ? obj[k] = v : obj[k];
+  }
+
+  ;
+  obj.prototype = Object.create(sup.prototype);
+  obj.__super__ = obj.prototype.__super__ = sup.prototype;
+  obj.prototype.constructor = obj;
+
+  if (sup.inherit) {
+    sup.inherit(obj);
+  }
+
+  ;
+  return obj;
+};
+
+function Tag() {
+  return function (dom, ctx) {
+    this.initialize(dom, ctx);
+    return this;
+  };
+}
+
+;
+
+Imba.Tags = function Tags() {
+  this;
+};
+
+Imba.Tags.prototype.__clone = function (ns) {
+  var clone = Object.create(this);
+  clone._parent = this;
+  return clone;
+};
+
+Imba.Tags.prototype.ns = function (name) {
+  return this['_' + name.toUpperCase()] || this.defineNamespace(name);
+};
+
+Imba.Tags.prototype.defineNamespace = function (name) {
+  var clone = Object.create(this);
+  clone._parent = this;
+  clone._ns = name;
+  this['_' + name.toUpperCase()] = clone;
+  return clone;
+};
+
+Imba.Tags.prototype.baseType = function (name, ns) {
+  return Imba.indexOf(name, Imba.HTML_TAGS) >= 0 ? 'element' : 'div';
+};
+
+Imba.Tags.prototype.defineTag = function (fullName, supr, body) {
+  if (body == undefined && typeof supr == 'function') body = supr, supr = '';
+  if (supr == undefined) supr = '';
+
+  if (body && body._nodeType) {
+    supr = body;
+    body = null;
+  }
+
+  ;
+
+  if (this[fullName]) {
+    console.log("tag already exists?", fullName);
+  }
+
+  ;
+  var ns;
+  var name = fullName;
+  let nsidx = name.indexOf(':');
+
+  if (nsidx >= 0) {
+    ns = fullName.substr(0, nsidx);
+    name = fullName.substr(nsidx + 1);
+
+    if (ns == 'svg' && !supr) {
+      supr = 'svg:element';
+    }
+
+    ;
+  }
+
+  ;
+  supr || (supr = this.baseType(fullName));
+  let supertype = typeof supr == 'string' || supr instanceof String ? this.findTagType(supr) : supr;
+  let tagtype = Tag();
+  tagtype._name = name;
+  tagtype._flagName = null;
+
+  if (name[0] == '#') {
+    Imba.SINGLETONS[name.slice(1)] = tagtype;
+    this[name] = tagtype;
+  } else if (name[0] == name[0].toUpperCase()) {
+    tagtype._flagName = name;
+  } else {
+    tagtype._flagName = "_" + fullName.replace(/[_\:]/g, '-');
+    this[fullName] = tagtype;
+  }
+
+  ;
+  extender(tagtype, supertype);
+
+  if (body) {
+    body.call(tagtype, tagtype, tagtype.TAGS || this);
+
+    if (tagtype.defined) {
+      tagtype.defined();
+    }
+
+    ;
+    this.optimizeTag(tagtype);
+  }
+
+  ;
+  return tagtype;
+};
+
+Imba.Tags.prototype.defineSingleton = function (name, supr, body) {
+  return this.defineTag(name, supr, body);
+};
+
+Imba.Tags.prototype.extendTag = function (name, supr, body) {
+  if (body == undefined && typeof supr == 'function') body = supr, supr = '';
+  if (supr == undefined) supr = '';
+  var klass = typeof name == 'string' || name instanceof String ? this.findTagType(name) : name;
+
+  if (body) {
+    body && body.call(klass, klass, klass.prototype);
+  }
+
+  ;
+
+  if (klass.extended) {
+    klass.extended();
+  }
+
+  ;
+  this.optimizeTag(klass);
+  return klass;
+};
+
+Imba.Tags.prototype.optimizeTag = function (tagtype) {
+  var prototype_;
+  return (prototype_ = tagtype.prototype) && prototype_.optimizeTagStructure && prototype_.optimizeTagStructure();
+};
+
+Imba.Tags.prototype.findTagType = function (type) {
+  var attrs, props;
+  let klass = this[type];
+
+  if (!klass) {
+    if (type.substr(0, 4) == 'svg:') {
+      klass = this.defineTag(type, 'svg:element');
+    } else if (Imba.HTML_TAGS.indexOf(type) >= 0) {
+      klass = this.defineTag(type, 'element');
+
+      if (attrs = Imba.HTML_ATTRS[type]) {
+        for (let i = 0, items = iter$(attrs.split(" ")), len = items.length; i < len; i++) {
+          Imba.attr(klass, items[i]);
+        }
+
+        ;
+      }
+
+      ;
+
+      if (props = Imba.HTML_PROPS[type]) {
+        for (let i = 0, items = iter$(props.split(" ")), len = items.length; i < len; i++) {
+          Imba.attr(klass, items[i], {
+            dom: true
+          });
+        }
+
+        ;
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  return klass;
+};
+
+Imba.createElement = function (name, ctx, ref, pref) {
+  var type = name;
+  var parent;
+
+  if (name instanceof Function) {
+    type = name;
+  } else {
+    if (null) {}
+
+    ;
+    type = Imba.TAGS.findTagType(name);
+  }
+
+  ;
+
+  if (ctx instanceof TagMap) {
+    parent = ctx.par$;
+  } else if (pref instanceof Imba.Tag) {
+    parent = pref;
+  } else {
+    parent = ctx && pref != undefined ? ctx[pref] : ctx && ctx._tag || ctx;
+  }
+
+  ;
+  var node = type.build(parent);
+
+  if (ctx instanceof TagMap) {
+    ctx.i$++;
+    node.$key = ref;
+  }
+
+  ;
+
+  if (ctx && ref != undefined) {
+    ctx[ref] = node;
+  }
+
+  ;
+  return node;
+};
+
+Imba.createTagCache = function (owner) {
+  var item = [];
+  item._tag = owner;
+  return item;
+  var par = this.pref() != undefined ? this.ctx()[this.pref()] : this.ctx()._tag;
+  var node = new TagMap(this.ctx(), this.ref(), par);
+  this.ctx()[this.ref()] = node;
+  return node;
+};
+
+Imba.createTagMap = function (ctx, ref, pref) {
+  var par = pref != undefined ? pref : ctx._tag;
+  var node = new TagMap(ctx, ref, par);
+  ctx[ref] = node;
+  return node;
+};
+
+Imba.createTagList = function (ctx, ref, pref) {
+  var node = [];
+  node._type = 4;
+  node._tag = pref != undefined ? pref : ctx._tag;
+  ctx[ref] = node;
+  return node;
+};
+
+Imba.createTagLoopResult = function (ctx, ref, pref) {
+  var node = [];
+  node._type = 5;
+  node.cache = {
+    i$: 0
+  };
+  return node;
+};
+
+function TagCache(owner) {
+  this._tag = owner;
+  this;
+}
+
+;
+
+TagCache.build = function (owner) {
+  var item = [];
+  item._tag = owner;
+  return item;
+};
+
+function TagMap(cache, ref, par) {
+  this.cache$ = cache;
+  this.key$ = ref;
+  this.par$ = par;
+  this.i$ = 0;
+}
+
+;
+
+TagMap.prototype.$iter = function () {
+  var item = [];
+  item._type = 5;
+  item.cache = this;
+  return item;
+};
+
+TagMap.prototype.$prune = function (items) {
+  let cache = this.cache$;
+  let key = this.key$;
+  let clone = new TagMap(cache, key, this.par$);
+
+  for (let i = 0, ary = iter$(items), len = ary.length, item; i < len; i++) {
+    item = ary[i];
+    clone[item.key$] = item;
+  }
+
+  ;
+  clone.i$ = items.length;
+  return cache[key] = clone;
+};
+
+Imba.TagMap = TagMap;
+Imba.TagCache = TagCache;
+Imba.SINGLETONS = {};
+Imba.TAGS = new Imba.Tags();
+Imba.TAGS.element = Imba.TAGS.htmlelement = Imba.Tag;
+Imba.TAGS['svg:element'] = Imba.SVGTag;
+
+Imba.defineTag = function (name, supr, body) {
+  if (body == undefined && typeof supr == 'function') body = supr, supr = '';
+  if (supr == undefined) supr = '';
+  return Imba.TAGS.defineTag(name, supr, body);
+};
+
+Imba.defineSingletonTag = function (id, supr, body) {
+  if (body == undefined && typeof supr == 'function') body = supr, supr = 'div';
+  if (supr == undefined) supr = 'div';
+  return Imba.TAGS.defineTag(this.name(), supr, body);
+};
+
+Imba.extendTag = function (name, body) {
+  return Imba.TAGS.extendTag(name, body);
+};
+
+Imba.getTagSingleton = function (id) {
+  var klass;
+  var dom, node;
+
+  if (klass = Imba.SINGLETONS[id]) {
+    if (klass && klass.Instance) {
+      return klass.Instance;
+    }
+
+    ;
+
+    if (dom = Imba.document().getElementById(id)) {
+      // we have a live instance - when finding it through a selector we should awake it, no?
+      // console.log('creating the singleton from existing node in dom?',id,type)
+      node = klass.Instance = new klass(dom);
+      node.awaken(dom);
+      return node;
+    }
+
+    ;
+    dom = klass.createNode();
+    dom.id = id;
+    node = klass.Instance = new klass(dom);
+    node.end().awaken(dom);
+    return node;
+  } else if (dom = Imba.document().getElementById(id)) {
+    return Imba.getTagForDom(dom);
+  }
+
+  ;
+};
+
+var svgSupport = typeof SVGElement !== 'undefined';
+
+Imba.getTagForDom = function (dom) {
+  if (!dom) {
+    return null;
+  }
+
+  ;
+
+  if (dom._dom) {
+    return dom;
+  }
+
+  ;
+
+  if (dom._tag) {
+    return dom._tag;
+  }
+
+  ;
+
+  if (!dom.nodeName) {
+    return null;
+  }
+
+  ;
+  var name = dom.nodeName.toLowerCase();
+  var type = name;
+  var ns = Imba.TAGS;
+
+  if (dom.id && Imba.SINGLETONS[dom.id]) {
+    return Imba.getTagSingleton(dom.id);
+  }
+
+  ;
+
+  if (svgSupport && dom instanceof SVGElement) {
+    type = ns.findTagType("svg:" + name);
+  } else if (Imba.HTML_TAGS.indexOf(name) >= 0) {
+    type = ns.findTagType(name);
+  } else {
+    type = Imba.Tag;
+  }
+
+  ;
+  return new type(dom, null).awaken(dom);
+};
+
+if (false) {
+  var styles = window.getComputedStyle(document.documentElement, '');
+
+  for (let i = 0, items = iter$(styles), len = items.length, prefixed; i < len; i++) {
+    prefixed = items[i];
+    var unprefixed = prefixed.replace(/^-(webkit|ms|moz|o|blink)-/, '');
+    var camelCase = unprefixed.replace(/-(\w)/g, function (m, a) {
+      return a.toUpperCase();
+    });
+
+    if (prefixed != unprefixed) {
+      if (styles.hasOwnProperty(unprefixed)) {
+        continue;
+      }
+
+      ;
+    }
+
+    ;
+    Imba.CSSKeyMap[unprefixed] = Imba.CSSKeyMap[camelCase] = prefixed;
+  }
+
+  ;
+
+  if (!document.documentElement.classList) {
+    Imba.extendTag('element', function (tag) {
+      tag.prototype.hasFlag = function (ref) {
+        return new RegExp('(^|\\s)' + ref + '(\\s|$)').test(this._dom.className);
+      };
+
+      tag.prototype.addFlag = function (ref) {
+        if (this.hasFlag(ref)) {
+          return this;
+        }
+
+        ;
+        this._dom.className += (this._dom.className ? ' ' : '') + ref;
+        return this;
+      };
+
+      tag.prototype.unflag = function (ref) {
+        if (!this.hasFlag(ref)) {
+          return this;
+        }
+
+        ;
+        var regex = new RegExp('(^|\\s)*' + ref + '(\\s|$)*', 'g');
+        this._dom.className = this._dom.className.replace(regex, '');
+        return this;
+      };
+
+      tag.prototype.toggleFlag = function (ref) {
+        return this.hasFlag(ref) ? this.unflag(ref) : this.flag(ref);
+      };
+
+      tag.prototype.flag = function (ref, bool) {
+        if (arguments.length == 2 && !!bool === false) {
+          return this.unflag(ref);
+        }
+
+        ;
+        return this.addFlag(ref);
+      };
+    });
+  }
+
+  ;
+}
+
+;
+Imba.Tag;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+Imba.defineTag('fragment', 'element', function (tag) {
+  tag.createNode = function () {
+    return Imba.document().createDocumentFragment();
+  };
+});
+Imba.extendTag('html', function (tag) {
+  tag.prototype.parent = function () {
+    return null;
+  };
+});
+Imba.extendTag('canvas', function (tag) {
+  tag.prototype.context = function (type) {
+    if (type === undefined) type = '2d';
+    return this.dom().getContext(type);
+  };
+});
+
+function DataProxy(node, path, args) {
+  this._node = node;
+  this._path = path;
+  this._args = args;
+
+  if (this._args) {
+    this._setter = Imba.toSetter(this._path);
+  }
+
+  ;
+}
+
+;
+
+DataProxy.bind = function (receiver, data, path, args) {
+  let proxy = receiver._data || (receiver._data = new this(receiver, path, args));
+  proxy.bind(data, path, args);
+  return receiver;
+};
+
+DataProxy.prototype.bind = function (data, key, args) {
+  if (data != this._data) {
+    this._data = data;
+  }
+
+  ;
+  return this;
+};
+
+DataProxy.prototype.getFormValue = function () {
+  return this._setter ? this._data[this._path]() : this._data[this._path];
+};
+
+DataProxy.prototype.setFormValue = function (value) {
+  return this._setter ? this._data[this._setter](value) : this._data[this._path] = value;
+};
+
+var isArray = function (val) {
+  return val && val.splice && val.sort;
+};
+
+var isSimilarArray = function (a, b) {
+  let l = a.length,
+      i = 0;
+
+  if (l != b.length) {
+    return false;
+  }
+
+  ;
+
+  while (i++ < l) {
+    if (a[i] != b[i]) {
+      return false;
+    }
+
+    ;
+  }
+
+  ;
+  return true;
+};
+
+Imba.extendTag('input', function (tag) {
+  tag.prototype.lazy = function (v) {
+    return this._lazy;
+  };
+
+  tag.prototype.setLazy = function (v) {
+    this._lazy = v;
+    return this;
+  };
+
+  tag.prototype.number = function (v) {
+    return this._number;
+  };
+
+  tag.prototype.setNumber = function (v) {
+    this._number = v;
+    return this;
+  };
+
+  tag.prototype.bindData = function (target, path, args) {
+    DataProxy.bind(this, target, path, args);
+    return this;
+  };
+
+  tag.prototype.checked = function () {
+    return this._dom.checked;
+  };
+
+  tag.prototype.setChecked = function (value) {
+    if (!!value != this._dom.checked) {
+      this._dom.checked = !!value;
+    }
+
+    ;
+    return this;
+  };
+
+  tag.prototype.setValue = function (value, source) {
+    if (this._localValue == undefined || source == undefined) {
+      this.dom().value = this._value = value;
+      this._localValue = undefined;
+    }
+
+    ;
+    return this;
+  };
+
+  tag.prototype.setType = function (value) {
+    this.dom().type = this._type = value;
+    return this;
+  };
+
+  tag.prototype.value = function () {
+    let val = this._dom.value;
+    return this._number && val ? parseFloat(val) : val;
+  };
+
+  tag.prototype.oninput = function (e) {
+    let val = this._dom.value;
+    this._localValue = val;
+
+    if (this._data && !this.lazy() && this.type() != 'radio' && this.type() != 'checkbox') {
+      this._data.setFormValue(this.value(), this);
+    }
+
+    ;
+    return;
+  };
+
+  tag.prototype.onchange = function (e) {
+    this._modelValue = this._localValue = undefined;
+
+    if (!this.data()) {
+      return;
+    }
+
+    ;
+
+    if (this.type() == 'radio' || this.type() == 'checkbox') {
+      let checked = this.checked();
+
+      let mval = this._data.getFormValue(this);
+
+      let dval = this._value != undefined ? this._value : this.value();
+
+      if (this.type() == 'radio') {
+        return this._data.setFormValue(dval, this);
+      } else if (this.dom().value == 'on' || this.dom().value == undefined) {
+        return this._data.setFormValue(!!checked, this);
+      } else if (isArray(mval)) {
+        let idx = mval.indexOf(dval);
+
+        if (checked && idx == -1) {
+          return mval.push(dval);
+        } else if (!checked && idx >= 0) {
+          return mval.splice(idx, 1);
+        }
+
+        ;
+      } else {
+        return this._data.setFormValue(dval, this);
+      }
+
+      ;
+    } else {
+      return this._data.setFormValue(this.value());
+    }
+
+    ;
+  };
+
+  tag.prototype.onblur = function (e) {
+    return this._localValue = undefined;
+  };
+
+  tag.prototype.end = function () {
+    if (this._localValue !== undefined || !this._data) {
+      return this;
+    }
+
+    ;
+
+    let mval = this._data.getFormValue(this);
+
+    if (mval == this._modelValue) {
+      return this;
+    }
+
+    ;
+
+    if (!isArray(mval)) {
+      this._modelValue = mval;
+    }
+
+    ;
+
+    if (this.type() == 'radio' || this.type() == 'checkbox') {
+      let dval = this._value;
+      let checked = isArray(mval) ? mval.indexOf(dval) >= 0 : this.dom().value == 'on' || this.dom().value == undefined ? !!mval : mval == this._value;
+      this.setChecked(checked);
+    } else {
+      this._dom.value = mval;
+    }
+
+    ;
+    return this;
+  };
+});
+Imba.extendTag('textarea', function (tag) {
+  tag.prototype.lazy = function (v) {
+    return this._lazy;
+  };
+
+  tag.prototype.setLazy = function (v) {
+    this._lazy = v;
+    return this;
+  };
+
+  tag.prototype.bindData = function (target, path, args) {
+    DataProxy.bind(this, target, path, args);
+    return this;
+  };
+
+  tag.prototype.setValue = function (value, source) {
+    if (this._localValue == undefined || source == undefined) {
+      this.dom().value = value;
+      this._localValue = undefined;
+    }
+
+    ;
+    return this;
+  };
+
+  tag.prototype.oninput = function (e) {
+    let val = this._dom.value;
+    this._localValue = val;
+
+    if (this._data && !this.lazy()) {
+      return this._data.setFormValue(this.value(), this);
+    }
+
+    ;
+  };
+
+  tag.prototype.onchange = function (e) {
+    this._localValue = undefined;
+
+    if (this._data) {
+      return this._data.setFormValue(this.value(), this);
+    }
+
+    ;
+  };
+
+  tag.prototype.onblur = function (e) {
+    return this._localValue = undefined;
+  };
+
+  tag.prototype.render = function () {
+    if (this._localValue != undefined || !this._data) {
+      return;
+    }
+
+    ;
+
+    if (this._data) {
+      let dval = this._data.getFormValue(this);
+
+      this._dom.value = dval != undefined ? dval : '';
+    }
+
+    ;
+    return this;
+  };
+});
+Imba.extendTag('option', function (tag) {
+  tag.prototype.setValue = function (value) {
+    if (value != this._value) {
+      this.dom().value = this._value = value;
+    }
+
+    ;
+    return this;
+  };
+
+  tag.prototype.value = function () {
+    return this._value || this.dom().value;
+  };
+});
+Imba.extendTag('select', function (tag) {
+  tag.prototype.bindData = function (target, path, args) {
+    DataProxy.bind(this, target, path, args);
+    return this;
+  };
+
+  tag.prototype.setValue = function (value, syncing) {
+    let prev = this._value;
+    this._value = value;
+
+    if (!syncing) {
+      this.syncValue(value);
+    }
+
+    ;
+    return this;
+  };
+
+  tag.prototype.syncValue = function (value) {
+    let prev = this._syncValue;
+
+    if (this.multiple() && value instanceof Array) {
+      if (prev instanceof Array && isSimilarArray(prev, value)) {
+        return this;
+      }
+
+      ;
+      value = value.slice();
+    }
+
+    ;
+    this._syncValue = value;
+
+    if (typeof value == 'object') {
+      let mult = this.multiple() && value instanceof Array;
+
+      for (let i = 0, items = iter$(this.dom().options), len = items.length, opt; i < len; i++) {
+        opt = items[i];
+        let oval = opt._tag ? opt._tag.value() : opt.value;
+
+        if (mult) {
+          opt.selected = value.indexOf(oval) >= 0;
+        } else if (value == oval) {
+          this.dom().selectedIndex = i;
+          break;
+        }
+
+        ;
+      }
+
+      ;
+    } else {
+      this.dom().value = value;
+    }
+
+    ;
+    return this;
+  };
+
+  tag.prototype.value = function () {
+    if (this.multiple()) {
+      let res = [];
+
+      for (let i = 0, items = iter$(this.dom().selectedOptions), len = items.length, option; i < len; i++) {
+        option = items[i];
+        res.push(option._tag ? option._tag.value() : option.value);
+      }
+
+      ;
+      return res;
+    } else {
+      let opt = this.dom().selectedOptions[0];
+      return opt ? opt._tag ? opt._tag.value() : opt.value : null;
+    }
+
+    ;
+  };
+
+  tag.prototype.onchange = function (e) {
+    if (this._data) {
+      return this._data.setFormValue(this.value(), this);
+    }
+
+    ;
+  };
+
+  tag.prototype.end = function () {
+    if (this._data) {
+      this.setValue(this._data.getFormValue(this), 1);
+    }
+
+    ;
+
+    if (this._value != this._syncValue) {
+      this.syncValue(this._value);
+    }
+
+    ;
+    return this;
+  };
+});
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+Imba.Touch = function Touch(event, pointer) {
+  // @native  = false
+  this.setEvent(event);
+  this.setData({});
+  this.setActive(true);
+  this._button = event && event.button || 0;
+  this._suppress = false;
+  this._captured = false;
+  this.setBubble(false);
+  pointer = pointer;
+  this.setUpdates(0);
+  return this;
+};
+
+Imba.Touch.LastTimestamp = 0;
+Imba.Touch.TapTimeout = 50;
+var touches = [];
+var count = 0;
+var identifiers = {};
+
+Imba.Touch.count = function () {
+  return count;
+};
+
+Imba.Touch.lookup = function (item) {
+  return item && (item.__touch__ || identifiers[item.identifier]);
+};
+
+Imba.Touch.release = function (item, touch) {
+  var v_, $1;
+  v_ = identifiers[item.identifier], delete identifiers[item.identifier], v_;
+  $1 = item.__touch__, delete item.__touch__, $1;
+  return;
+};
+
+Imba.Touch.ontouchstart = function (e) {
+  for (let i = 0, items = iter$(e.changedTouches), len = items.length, t; i < len; i++) {
+    t = items[i];
+
+    if (this.lookup(t)) {
+      continue;
+    }
+
+    ;
+    var touch = identifiers[t.identifier] = new this(e);
+    t.__touch__ = touch;
+    touches.push(touch);
+    count++;
+    touch.touchstart(e, t);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.ontouchmove = function (e) {
+  var touch;
+
+  for (let i = 0, items = iter$(e.changedTouches), len = items.length, t; i < len; i++) {
+    t = items[i];
+
+    if (touch = this.lookup(t)) {
+      touch.touchmove(e, t);
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.ontouchend = function (e) {
+  var touch;
+
+  for (let i = 0, items = iter$(e.changedTouches), len = items.length, t; i < len; i++) {
+    t = items[i];
+
+    if (touch = this.lookup(t)) {
+      touch.touchend(e, t);
+      this.release(t, touch);
+      count--;
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.ontouchcancel = function (e) {
+  var touch;
+
+  for (let i = 0, items = iter$(e.changedTouches), len = items.length, t; i < len; i++) {
+    t = items[i];
+
+    if (touch = this.lookup(t)) {
+      touch.touchcancel(e, t);
+      this.release(t, touch);
+      count--;
+    }
+
+    ;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.onmousedown = function (e) {
+  return this;
+};
+
+Imba.Touch.onmousemove = function (e) {
+  return this;
+};
+
+Imba.Touch.onmouseup = function (e) {
+  return this;
+};
+
+Imba.Touch.prototype.phase = function (v) {
+  return this._phase;
+};
+
+Imba.Touch.prototype.setPhase = function (v) {
+  this._phase = v;
+  return this;
+};
+
+Imba.Touch.prototype.active = function (v) {
+  return this._active;
+};
+
+Imba.Touch.prototype.setActive = function (v) {
+  this._active = v;
+  return this;
+};
+
+Imba.Touch.prototype.event = function (v) {
+  return this._event;
+};
+
+Imba.Touch.prototype.setEvent = function (v) {
+  this._event = v;
+  return this;
+};
+
+Imba.Touch.prototype.pointer = function (v) {
+  return this._pointer;
+};
+
+Imba.Touch.prototype.setPointer = function (v) {
+  this._pointer = v;
+  return this;
+};
+
+Imba.Touch.prototype.target = function (v) {
+  return this._target;
+};
+
+Imba.Touch.prototype.setTarget = function (v) {
+  this._target = v;
+  return this;
+};
+
+Imba.Touch.prototype.handler = function (v) {
+  return this._handler;
+};
+
+Imba.Touch.prototype.setHandler = function (v) {
+  this._handler = v;
+  return this;
+};
+
+Imba.Touch.prototype.updates = function (v) {
+  return this._updates;
+};
+
+Imba.Touch.prototype.setUpdates = function (v) {
+  this._updates = v;
+  return this;
+};
+
+Imba.Touch.prototype.suppress = function (v) {
+  return this._suppress;
+};
+
+Imba.Touch.prototype.setSuppress = function (v) {
+  this._suppress = v;
+  return this;
+};
+
+Imba.Touch.prototype.data = function (v) {
+  return this._data;
+};
+
+Imba.Touch.prototype.setData = function (v) {
+  this._data = v;
+  return this;
+};
+
+Imba.Touch.prototype.__bubble = {
+  chainable: true,
+  name: 'bubble'
+};
+
+Imba.Touch.prototype.bubble = function (v) {
+  return v !== undefined ? (this.setBubble(v), this) : this._bubble;
+};
+
+Imba.Touch.prototype.setBubble = function (v) {
+  this._bubble = v;
+  return this;
+};
+
+Imba.Touch.prototype.timestamp = function (v) {
+  return this._timestamp;
+};
+
+Imba.Touch.prototype.setTimestamp = function (v) {
+  this._timestamp = v;
+  return this;
+};
+
+Imba.Touch.prototype.gestures = function (v) {
+  return this._gestures;
+};
+
+Imba.Touch.prototype.setGestures = function (v) {
+  this._gestures = v;
+  return this;
+};
+
+Imba.Touch.prototype.capture = function () {
+  this._captured = true;
+  this._event && this._event.stopPropagation();
+
+  if (!this._selblocker) {
+    this._selblocker = function (e) {
+      return e.preventDefault();
+    };
+
+    Imba.document().addEventListener('selectstart', this._selblocker, true);
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.prototype.isCaptured = function () {
+  return !!this._captured;
+};
+
+Imba.Touch.prototype.extend = function (plugin) {
+  // console.log "added gesture!!!"
+  this._gestures || (this._gestures = []);
+
+  this._gestures.push(plugin);
+
+  return this;
+};
+
+Imba.Touch.prototype.redirect = function (target) {
+  this._redirect = target;
+  return this;
+};
+
+Imba.Touch.prototype.suppress = function () {
+  // collision with the suppress property
+  this._active = false;
+  return this;
+};
+
+Imba.Touch.prototype.setSuppress = function (value) {
+  console.warn('Imba.Touch#suppress= is deprecated');
+  this._supress = value;
+  this;
+  return this;
+};
+
+Imba.Touch.prototype.touchstart = function (e, t) {
+  this._event = e;
+  this._touch = t;
+  this._button = 0;
+  this._x = t.clientX;
+  this._y = t.clientY;
+  this.began();
+  this.update();
+
+  if (e && this.isCaptured()) {
+    e.preventDefault();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.prototype.touchmove = function (e, t) {
+  this._event = e;
+  this._x = t.clientX;
+  this._y = t.clientY;
+  this.update();
+
+  if (e && this.isCaptured()) {
+    e.preventDefault();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.prototype.touchend = function (e, t) {
+  this._event = e;
+  this._x = t.clientX;
+  this._y = t.clientY;
+  this.ended();
+  Imba.Touch.LastTimestamp = e.timeStamp;
+
+  if (this._maxdr < 20) {
+    var tap = new Imba.Event(e);
+    tap.setType('tap');
+    tap.process();
+  }
+
+  ;
+
+  if (e && this.isCaptured()) {
+    e.preventDefault();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.prototype.touchcancel = function (e, t) {
+  return this.cancel();
+};
+
+Imba.Touch.prototype.mousedown = function (e, t) {
+  var self = this;
+  self._event = e;
+  self._button = e.button;
+  self._x = t.clientX;
+  self._y = t.clientY;
+  self.began();
+  self.update();
+
+  self._mousemove = function (e) {
+    return self.mousemove(e, e);
+  };
+
+  Imba.document().addEventListener('mousemove', self._mousemove, true);
+  return self;
+};
+
+Imba.Touch.prototype.mousemove = function (e, t) {
+  this._x = t.clientX;
+  this._y = t.clientY;
+  this._event = e;
+
+  if (this.isCaptured()) {
+    e.preventDefault();
+  }
+
+  ;
+  this.update();
+  this.move();
+  return this;
+};
+
+Imba.Touch.prototype.mouseup = function (e, t) {
+  this._x = t.clientX;
+  this._y = t.clientY;
+  this.ended();
+  return this;
+};
+
+Imba.Touch.prototype.idle = function () {
+  return this.update();
+};
+
+Imba.Touch.prototype.began = function () {
+  this._timestamp = Date.now();
+  this._maxdr = this._dr = 0;
+  this._x0 = this._x;
+  this._y0 = this._y;
+  var dom = this.event().target;
+  var node = null;
+  this._sourceTarget = dom && Imba.getTagForDom(dom);
+
+  while (dom) {
+    node = Imba.getTagForDom(dom);
+
+    if (node && node.ontouchstart) {
+      this._bubble = false;
+      this.setTarget(node);
+      this.target().ontouchstart(this);
+
+      if (!this._bubble) {
+        break;
+      }
+
+      ;
+    }
+
+    ;
+    dom = dom.parentNode;
+  }
+
+  ;
+  this._updates++;
+  return this;
+};
+
+Imba.Touch.prototype.update = function () {
+  var target_;
+
+  if (!this._active || this._cancelled) {
+    return this;
+  }
+
+  ;
+  var dr = Math.sqrt(this.dx() * this.dx() + this.dy() * this.dy());
+
+  if (dr > this._dr) {
+    this._maxdr = dr;
+  }
+
+  ;
+  this._dr = dr;
+
+  if (this._redirect) {
+    if (this._target && this._target.ontouchcancel) {
+      this._target.ontouchcancel(this);
+    }
+
+    ;
+    this.setTarget(this._redirect);
+    this._redirect = null;
+
+    if (this.target().ontouchstart) {
+      this.target().ontouchstart(this);
+    }
+
+    ;
+
+    if (this._redirect) {
+      return this.update();
+    }
+
+    ;
+  }
+
+  ;
+  this._updates++;
+
+  if (this._gestures) {
+    for (let i = 0, items = iter$(this._gestures), len = items.length; i < len; i++) {
+      items[i].ontouchupdate(this);
+    }
+
+    ;
+  }
+
+  ;
+  (target_ = this.target()) && target_.ontouchupdate && target_.ontouchupdate(this);
+  if (this._redirect) this.update();
+  return this;
+};
+
+Imba.Touch.prototype.move = function () {
+  var target_;
+
+  if (!this._active || this._cancelled) {
+    return this;
+  }
+
+  ;
+
+  if (this._gestures) {
+    for (let i = 0, items = iter$(this._gestures), len = items.length, g; i < len; i++) {
+      g = items[i];
+
+      if (g.ontouchmove) {
+        g.ontouchmove(this, this._event);
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  (target_ = this.target()) && target_.ontouchmove && target_.ontouchmove(this, this._event);
+  return this;
+};
+
+Imba.Touch.prototype.ended = function () {
+  var target_;
+
+  if (!this._active || this._cancelled) {
+    return this;
+  }
+
+  ;
+  this._updates++;
+
+  if (this._gestures) {
+    for (let i = 0, items = iter$(this._gestures), len = items.length; i < len; i++) {
+      items[i].ontouchend(this);
+    }
+
+    ;
+  }
+
+  ;
+  (target_ = this.target()) && target_.ontouchend && target_.ontouchend(this);
+  this.cleanup_();
+  return this;
+};
+
+Imba.Touch.prototype.cancel = function () {
+  if (!this._cancelled) {
+    this._cancelled = true;
+    this.cancelled();
+    this.cleanup_();
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.prototype.cancelled = function () {
+  var target_;
+
+  if (!this._active) {
+    return this;
+  }
+
+  ;
+  this._cancelled = true;
+  this._updates++;
+
+  if (this._gestures) {
+    for (let i = 0, items = iter$(this._gestures), len = items.length, g; i < len; i++) {
+      g = items[i];
+
+      if (g.ontouchcancel) {
+        g.ontouchcancel(this);
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+  (target_ = this.target()) && target_.ontouchcancel && target_.ontouchcancel(this);
+  return this;
+};
+
+Imba.Touch.prototype.cleanup_ = function () {
+  if (this._mousemove) {
+    Imba.document().removeEventListener('mousemove', this._mousemove, true);
+    this._mousemove = null;
+  }
+
+  ;
+
+  if (this._selblocker) {
+    Imba.document().removeEventListener('selectstart', this._selblocker, true);
+    this._selblocker = null;
+  }
+
+  ;
+  return this;
+};
+
+Imba.Touch.prototype.dr = function () {
+  return this._dr;
+};
+
+Imba.Touch.prototype.dx = function () {
+  return this._x - this._x0;
+};
+
+Imba.Touch.prototype.dy = function () {
+  return this._y - this._y0;
+};
+
+Imba.Touch.prototype.x0 = function () {
+  return this._x0;
+};
+
+Imba.Touch.prototype.y0 = function () {
+  return this._y0;
+};
+
+Imba.Touch.prototype.x = function () {
+  return this._x;
+};
+
+Imba.Touch.prototype.y = function () {
+  return this._y;
+};
+
+Imba.Touch.prototype.tx = function () {
+  this._targetBox || (this._targetBox = this._target.dom().getBoundingClientRect());
+  return this._x - this._targetBox.left;
+};
+
+Imba.Touch.prototype.ty = function () {
+  this._targetBox || (this._targetBox = this._target.dom().getBoundingClientRect());
+  return this._y - this._targetBox.top;
+};
+
+Imba.Touch.prototype.button = function () {
+  return this._button;
+};
+
+Imba.Touch.prototype.sourceTarget = function () {
+  return this._sourceTarget;
+};
+
+Imba.Touch.prototype.elapsed = function () {
+  return Date.now() - this._timestamp;
+};
+
+Imba.TouchGesture = function TouchGesture() {};
+
+Imba.TouchGesture.prototype.__active = {
+  'default': false,
+  name: 'active'
+};
+
+Imba.TouchGesture.prototype.active = function (v) {
+  return this._active;
+};
+
+Imba.TouchGesture.prototype.setActive = function (v) {
+  this._active = v;
+  return this;
+};
+
+Imba.TouchGesture.prototype._active = false;
+
+Imba.TouchGesture.prototype.ontouchstart = function (e) {
+  return this;
+};
+
+Imba.TouchGesture.prototype.ontouchupdate = function (e) {
+  return this;
+};
+
+Imba.TouchGesture.prototype.ontouchend = function (e) {
+  return this;
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(0);
+
+var keyCodes = {
+  esc: 27,
+  tab: 9,
+  enter: 13,
+  space: 32,
+  up: 38,
+  down: 40
+};
+var el = Imba.Tag.prototype;
+
+el.stopModifier = function (e) {
+  return e.stop() || true;
+};
+
+el.preventModifier = function (e) {
+  return e.prevent() || true;
+};
+
+el.silenceModifier = function (e) {
+  return e.silence() || true;
+};
+
+el.bubbleModifier = function (e) {
+  return e.bubble(true) || true;
+};
+
+el.ctrlModifier = function (e) {
+  return e.event().ctrlKey == true;
+};
+
+el.altModifier = function (e) {
+  return e.event().altKey == true;
+};
+
+el.shiftModifier = function (e) {
+  return e.event().shiftKey == true;
+};
+
+el.metaModifier = function (e) {
+  return e.event().metaKey == true;
+};
+
+el.keyModifier = function (key, e) {
+  return e.keyCode() ? e.keyCode() == key : true;
+};
+
+el.delModifier = function (e) {
+  return e.keyCode() ? e.keyCode() == 8 || e.keyCode() == 46 : true;
+};
+
+el.selfModifier = function (e) {
+  return e.event().target == this._dom;
+};
+
+el.leftModifier = function (e) {
+  return e.button() != undefined ? e.button() === 0 : el.keyModifier(37, e);
+};
+
+el.rightModifier = function (e) {
+  return e.button() != undefined ? e.button() === 2 : el.keyModifier(39, e);
+};
+
+el.middleModifier = function (e) {
+  return e.button() != undefined ? e.button() === 1 : true;
+};
+
+el.getHandler = function (str, event) {
+  if (this[str]) {
+    return this;
+  }
+
+  ;
+};
+
+Imba.Event = function Event(e) {
+  this.setEvent(e);
+  this._bubble = true;
+};
+
+Imba.Event.prototype.event = function (v) {
+  return this._event;
+};
+
+Imba.Event.prototype.setEvent = function (v) {
+  this._event = v;
+  return this;
+};
+
+Imba.Event.prototype.prefix = function (v) {
+  return this._prefix;
+};
+
+Imba.Event.prototype.setPrefix = function (v) {
+  this._prefix = v;
+  return this;
+};
+
+Imba.Event.prototype.source = function (v) {
+  return this._source;
+};
+
+Imba.Event.prototype.setSource = function (v) {
+  this._source = v;
+  return this;
+};
+
+Imba.Event.prototype.data = function (v) {
+  return this._data;
+};
+
+Imba.Event.prototype.setData = function (v) {
+  this._data = v;
+  return this;
+};
+
+Imba.Event.prototype.responder = function (v) {
+  return this._responder;
+};
+
+Imba.Event.prototype.setResponder = function (v) {
+  this._responder = v;
+  return this;
+};
+
+Imba.Event.wrap = function (e) {
+  return new this(e);
+};
+
+Imba.Event.prototype.setType = function (type) {
+  this._type = type;
+  this;
+  return this;
+};
+
+Imba.Event.prototype.type = function () {
+  return this._type || this.event().type;
+};
+
+Imba.Event.prototype.native = function () {
+  return this._event;
+};
+
+Imba.Event.prototype.name = function () {
+  return this._name || (this._name = this.type().toLowerCase().replace(/\:/g, ''));
+};
+
+Imba.Event.prototype.bubble = function (v) {
+  if (v != undefined) {
+    this.setBubble(v);
+    return this;
+  }
+
+  ;
+  return this._bubble;
+};
+
+Imba.Event.prototype.setBubble = function (v) {
+  this._bubble = v;
+  return this;
+  return this;
+};
+
+Imba.Event.prototype.stop = function () {
+  this.setBubble(false);
+  return this;
+};
+
+Imba.Event.prototype.stopPropagation = function () {
+  return this.stop();
+};
+
+Imba.Event.prototype.halt = function () {
+  return this.stop();
+};
+
+Imba.Event.prototype.prevent = function () {
+  if (this.event().preventDefault) {
+    this.event().preventDefault();
+  } else {
+    this.event().defaultPrevented = true;
+  }
+
+  ;
+  this.defaultPrevented = true;
+  return this;
+};
+
+Imba.Event.prototype.preventDefault = function () {
+  console.warn("Event#preventDefault is deprecated - use Event#prevent");
+  return this.prevent();
+};
+
+Imba.Event.prototype.isPrevented = function () {
+  return this.event() && this.event().defaultPrevented;
+};
+
+Imba.Event.prototype.cancel = function () {
+  console.warn("Event#cancel is deprecated - use Event#prevent");
+  return this.prevent();
+};
+
+Imba.Event.prototype.silence = function () {
+  this._silenced = true;
+  return this;
+};
+
+Imba.Event.prototype.isSilenced = function () {
+  return !!this._silenced;
+};
+
+Imba.Event.prototype.target = function () {
+  return Imba.getTagForDom(this.event()._target || this.event().target);
+};
+
+Imba.Event.prototype.responder = function () {
+  return this._responder;
+};
+
+Imba.Event.prototype.redirect = function (node) {
+  this._redirect = node;
+  return this;
+};
+
+Imba.Event.prototype.processHandlers = function (node, handlers) {
+  let i = 1;
+  let l = handlers.length;
+  let bubble = this._bubble;
+  let state = handlers.state || (handlers.state = {});
+  let result;
+
+  if (bubble) {
+    this._bubble = 1;
+  }
+
+  ;
+
+  while (i < l) {
+    let isMod = false;
+    let handler = handlers[i++];
+    let params = null;
+    let context = node;
+
+    if (handler instanceof Array) {
+      params = handler.slice(1);
+      handler = handler[0];
+    }
+
+    ;
+
+    if (typeof handler == 'string') {
+      if (keyCodes[handler]) {
+        params = [keyCodes[handler]];
+        handler = 'key';
+      }
+
+      ;
+      let mod = handler + 'Modifier';
+
+      if (node[mod]) {
+        isMod = true;
+        params = (params || []).concat([this, state]);
+        handler = node[mod];
+      }
+
+      ;
+    }
+
+    ;
+
+    if (typeof handler == 'string') {
+      let el = node;
+      let fn = null;
+      let ctx = state.context;
+
+      if (ctx) {
+        if (ctx.getHandler instanceof Function) {
+          ctx = ctx.getHandler(handler, this);
+        }
+
+        ;
+
+        if (ctx[handler] instanceof Function) {
+          handler = fn = ctx[handler];
+          context = ctx;
+        }
+
+        ;
+      }
+
+      ;
+
+      if (!fn) {
+        console.warn("event " + this.type() + ": could not find '" + handler + "' in context", ctx);
+      }
+
+      ;
+    }
+
+    ;
+
+    if (handler instanceof Function) {
+      // what if we actually call stop inside function?
+      // do we still want to continue the chain?
+      let res = handler.apply(context, params || [this]);
+
+      if (!isMod) {
+        this._responder || (this._responder = node);
+      }
+
+      ;
+
+      if (res == false) {
+        // console.log "returned false - breaking"
+        break;
+      }
+
+      ;
+
+      if (res && !this._silenced && res.then instanceof Function) {
+        res.then(Imba.commit);
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+
+  if (this._bubble === 1) {
+    this._bubble = bubble;
+  }
+
+  ;
+  return null;
+};
+
+Imba.Event.prototype.process = function () {
+  var name = this.name();
+  var meth = "on" + (this._prefix || '') + name;
+  var args = null;
+  var domtarget = this.event()._target || this.event().target;
+  var domnode = domtarget._responder || domtarget;
+  var result;
+  var handlers;
+
+  while (domnode) {
+    this._redirect = null;
+    let node = domnode._dom ? domnode : domnode._tag;
+
+    if (node) {
+      if (handlers = node._on_) {
+        for (let i = 0, items = iter$(handlers), len = items.length, handler; i < len; i++) {
+          handler = items[i];
+
+          if (!handler) {
+            continue;
+          }
+
+          ;
+          let hname = handler[0];
+
+          if (name == handler[0] && this.bubble()) {
+            this.processHandlers(node, handler);
+          }
+
+          ;
+        }
+
+        ;
+
+        if (!this.bubble()) {
+          break;
+        }
+
+        ;
+      }
+
+      ;
+
+      if (this.bubble() && node[meth] instanceof Function) {
+        this._responder || (this._responder = node);
+        this._silenced = false;
+        result = args ? node[meth].apply(node, args) : node[meth](this, this.data());
+      }
+
+      ;
+
+      if (node.onevent) {
+        node.onevent(this);
+      }
+
+      ;
+    }
+
+    ;
+
+    if (!(this.bubble() && (domnode = this._redirect || (node ? node.parent() : domnode.parentNode)))) {
+      break;
+    }
+
+    ;
+  }
+
+  ;
+  this.processed();
+
+  if (result && result.then instanceof Function) {
+    result.then(this.processed.bind(this));
+  }
+
+  ;
+  return this;
+};
+
+Imba.Event.prototype.processed = function () {
+  if (!this._silenced && this._responder) {
+    Imba.emit(Imba, 'event', [this]);
+    Imba.commit(this.event());
+  }
+
+  ;
+  return this;
+};
+
+Imba.Event.prototype.x = function () {
+  return this.native().x;
+};
+
+Imba.Event.prototype.y = function () {
+  return this.native().y;
+};
+
+Imba.Event.prototype.button = function () {
+  return this.native().button;
+};
+
+Imba.Event.prototype.keyCode = function () {
+  return this.native().keyCode;
+};
+
+Imba.Event.prototype.ctrl = function () {
+  return this.native().ctrlKey;
+};
+
+Imba.Event.prototype.alt = function () {
+  return this.native().altKey;
+};
+
+Imba.Event.prototype.shift = function () {
+  return this.native().shiftKey;
+};
+
+Imba.Event.prototype.meta = function () {
+  return this.native().metaKey;
+};
+
+Imba.Event.prototype.key = function () {
+  return this.native().key;
+};
+
+Imba.Event.prototype.which = function () {
+  return this.event().which;
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+var self = {}; // externs;
+
+var Imba = __webpack_require__(0);
+
+var removeNested = function (root, node, caret) {
+  // if node/nodes isa String
+  // 	we need to use the caret to remove elements
+  // 	for now we will simply not support this
+  if (node instanceof Array) {
+    for (let i = 0, items = iter$(node), len = items.length; i < len; i++) {
+      removeNested(root, items[i], caret);
+    }
+
+    ;
+  } else if (node && node._slot_) {
+    root.removeChild(node);
+  } else if (node != null) {
+    // what if this is not null?!?!?
+    // take a chance and remove a text-elementng
+    let next = caret ? caret.nextSibling : root._dom.firstChild;
+
+    if (next instanceof Text && next.textContent == node) {
+      root.removeChild(next);
+    } else {
+      throw 'cannot remove string';
+    }
+
+    ;
+  }
+
+  ;
+  return caret;
+};
+
+var appendNested = function (root, node) {
+  if (node instanceof Array) {
+    let i = 0;
+    let c = node.taglen;
+    let k = c != null ? node.domlen = c : node.length;
+
+    while (i < k) {
+      appendNested(root, node[i++]);
+    }
+
+    ;
+  } else if (node && node._dom) {
+    root.appendChild(node);
+  } else if (node != null && node !== false) {
+    root.appendChild(Imba.createTextNode(node));
+  }
+
+  ;
+  return;
+};
+
+var insertNestedBefore = function (root, node, before) {
+  if (node instanceof Array) {
+    let i = 0;
+    let c = node.taglen;
+    let k = c != null ? node.domlen = c : node.length;
+
+    while (i < k) {
+      insertNestedBefore(root, node[i++], before);
+    }
+
+    ;
+  } else if (node && node._dom) {
+    root.insertBefore(node, before);
+  } else if (node != null && node !== false) {
+    root.insertBefore(Imba.createTextNode(node), before);
+  }
+
+  ;
+  return before;
+};
+
+self.insertNestedAfter = function (root, node, after) {
+  var before = after ? after.nextSibling : root._dom.firstChild;
+
+  if (before) {
+    insertNestedBefore(root, node, before);
+    return before.previousSibling;
+  } else {
+    appendNested(root, node);
+    return root._dom.lastChild;
+  }
+
+  ;
+};
+
+var reconcileCollectionChanges = function (root, new$, old, caret) {
+  var newLen = new$.length;
+  var lastNew = new$[newLen - 1];
+  var newPosition = [];
+  var prevChain = [];
+  var lengthChain = [];
+  var maxChainLength = 0;
+  var maxChainEnd = 0;
+  var hasTextNodes = false;
+  var newPos;
+
+  for (let idx = 0, items = iter$(old), len = items.length, node; idx < len; idx++) {
+    // special case for Text nodes
+    node = items[idx];
+
+    if (node && node.nodeType == 3) {
+      newPos = new$.indexOf(node.textContent);
+
+      if (newPos >= 0) {
+        new$[newPos] = node;
+      }
+
+      ;
+      hasTextNodes = true;
+    } else {
+      newPos = new$.indexOf(node);
+    }
+
+    ;
+    newPosition.push(newPos);
+
+    if (newPos == -1) {
+      root.removeChild(node);
+      prevChain.push(-1);
+      lengthChain.push(-1);
+      continue;
+    }
+
+    ;
+    var prevIdx = newPosition.length - 2;
+
+    while (prevIdx >= 0) {
+      if (newPosition[prevIdx] == -1) {
+        prevIdx--;
+      } else if (newPos > newPosition[prevIdx]) {
+        // Yay, we're bigger than the previous!
+        break;
+      } else {
+        // Nope, let's walk back the chain
+        prevIdx = prevChain[prevIdx];
+      }
+
+      ;
+    }
+
+    ;
+    prevChain.push(prevIdx);
+    var currLength = prevIdx == -1 ? 0 : lengthChain[prevIdx] + 1;
+
+    if (currLength > maxChainLength) {
+      maxChainLength = currLength;
+      maxChainEnd = idx;
+    }
+
+    ;
+    lengthChain.push(currLength);
+  }
+
+  ;
+  var stickyNodes = [];
+  var cursor = newPosition.length - 1;
+
+  while (cursor >= 0) {
+    if (cursor == maxChainEnd && newPosition[cursor] != -1) {
+      stickyNodes[newPosition[cursor]] = true;
+      maxChainEnd = prevChain[maxChainEnd];
+    }
+
+    ;
+    cursor -= 1;
+  }
+
+  ;
+
+  for (let idx = 0, items = iter$(new$), len = items.length, node; idx < len; idx++) {
+    node = items[idx];
+
+    if (!stickyNodes[idx]) {
+      // create textnode for string, and update the array
+      if (!(node && node._dom)) {
+        node = new$[idx] = Imba.createTextNode(node);
+      }
+
+      ;
+      var after = new$[idx - 1];
+      self.insertNestedAfter(root, node, after && after._slot_ || after || caret);
+    }
+
+    ;
+    caret = node._slot_ || caret && caret.nextSibling || root._dom.firstChild;
+  }
+
+  ;
+  return lastNew && lastNew._slot_ || caret;
+};
+
+var reconcileCollection = function (root, new$, old, caret) {
+  var k = new$.length;
+  var i = k;
+  var last = new$[k - 1];
+
+  if (k == old.length && new$[0] === old[0]) {
+    // running through to compare
+    while (i--) {
+      if (new$[i] !== old[i]) {
+        break;
+      }
+
+      ;
+    }
+
+    ;
+  }
+
+  ;
+
+  if (i == -1) {
+    return last && last._slot_ || last || caret;
+  } else {
+    return reconcileCollectionChanges(root, new$, old, caret);
+  }
+
+  ;
+};
+
+var reconcileLoop = function (root, new$, old, caret) {
+  var nl = new$.length;
+  var ol = old.length;
+  var cl = new$.cache.i$;
+  var i = 0,
+      d = nl - ol;
+
+  while (i < ol && i < nl && new$[i] === old[i]) {
+    i++;
+  }
+
+  ;
+
+  if (cl > 1000 && cl - nl > 500) {
+    new$.cache.$prune(new$);
+  }
+
+  ;
+
+  if (d > 0 && i == ol) {
+    // added at end
+    while (i < nl) {
+      root.appendChild(new$[i++]);
+    }
+
+    ;
+    return;
+  } else if (d > 0) {
+    let i1 = nl;
+
+    while (i1 > i && new$[i1 - 1] === old[i1 - 1 - d]) {
+      i1--;
+    }
+
+    ;
+
+    if (d == i1 - i) {
+      let before = old[i]._slot_;
+
+      while (i < i1) {
+        root.insertBefore(new$[i++], before);
+      }
+
+      ;
+      return;
+    }
+
+    ;
+  } else if (d < 0 && i == nl) {
+    // removed at end
+    while (i < ol) {
+      root.removeChild(old[i++]);
+    }
+
+    ;
+    return;
+  } else if (d < 0) {
+    let i1 = ol;
+
+    while (i1 > i && new$[i1 - 1 + d] === old[i1 - 1]) {
+      i1--;
+    }
+
+    ;
+
+    if (d == i - i1) {
+      while (i < i1) {
+        root.removeChild(old[i++]);
+      }
+
+      ;
+      return;
+    }
+
+    ;
+  } else if (i == nl) {
+    return;
+  }
+
+  ;
+  return reconcileCollectionChanges(root, new$, old, caret);
+};
+
+var reconcileIndexedArray = function (root, array, old, caret) {
+  var newLen = array.taglen;
+  var prevLen = array.domlen || 0;
+  var last = newLen ? array[newLen - 1] : null;
+
+  if (prevLen > newLen) {
+    while (prevLen > newLen) {
+      var item = array[--prevLen];
+      root.removeChild(item._slot_);
+    }
+
+    ;
+  } else if (newLen > prevLen) {
+    // find the item to insert before
+    let prevLast = prevLen ? array[prevLen - 1]._slot_ : caret;
+    let before = prevLast ? prevLast.nextSibling : root._dom.firstChild;
+
+    while (prevLen < newLen) {
+      let node = array[prevLen++];
+      before ? root.insertBefore(node._slot_, before) : root.appendChild(node._slot_);
+    }
+
+    ;
+  }
+
+  ;
+  array.domlen = newLen;
+  return last ? last._slot_ : caret;
+};
+
+var reconcileNested = function (root, new$, old, caret) {
+  // var skipnew = new == null or new === false or new === true
+  var newIsNull = new$ == null || new$ === false;
+  var oldIsNull = old == null || old === false;
+
+  if (new$ === old) {
+    // remember that the caret must be an actual dom element
+    // we should instead move the actual caret? - trust
+    if (newIsNull) {
+      return caret;
+    } else if (new$._slot_) {
+      return new$._slot_;
+    } else if (new$ instanceof Array && new$.taglen != null) {
+      return reconcileIndexedArray(root, new$, old, caret);
+    } else {
+      return caret ? caret.nextSibling : root._dom.firstChild;
+    }
+
+    ;
+  } else if (new$ instanceof Array) {
+    if (old instanceof Array) {
+      // look for slot instead?
+      let typ = new$.static;
+
+      if (typ || old.static) {
+        // if the static is not nested - we could get a hint from compiler
+        // and just skip it
+        if (typ == old.static) {
+          // should also include a reference?
+          for (let i = 0, items = iter$(new$), len = items.length; i < len; i++) {
+            // this is where we could do the triple equal directly
+            caret = reconcileNested(root, items[i], old[i], caret);
+          }
+
+          ;
+          return caret;
+        } else {
+          removeNested(root, old, caret);
+        }
+
+        ;
+      } else {
+        // Could use optimized loop if we know that it only consists of nodes
+        return reconcileCollection(root, new$, old, caret);
+      }
+
+      ;
+    } else if (!oldIsNull) {
+      if (old._slot_) {
+        root.removeChild(old);
+      } else {
+        // old was a string-like object?
+        root.removeChild(caret ? caret.nextSibling : root._dom.firstChild);
+      }
+
+      ;
+    }
+
+    ;
+    return self.insertNestedAfter(root, new$, caret);
+  } else if (!newIsNull && new$._slot_) {
+    if (!oldIsNull) {
+      removeNested(root, old, caret);
+    }
+
+    ;
+    return self.insertNestedAfter(root, new$, caret);
+  } else if (newIsNull) {
+    if (!oldIsNull) {
+      removeNested(root, old, caret);
+    }
+
+    ;
+    return caret;
+  } else {
+    // if old did not exist we need to add a new directly
+    let nextNode;
+
+    if (old instanceof Array) {
+      removeNested(root, old, caret);
+    } else if (old && old._slot_) {
+      root.removeChild(old);
+    } else if (!oldIsNull) {
+      // ...
+      nextNode = caret ? caret.nextSibling : root._dom.firstChild;
+
+      if (nextNode instanceof Text && nextNode.textContent != new$) {
+        nextNode.textContent = new$;
+        return nextNode;
+      }
+
+      ;
+    }
+
+    ;
+    return self.insertNestedAfter(root, new$, caret);
+  }
+
+  ;
+};
+
+Imba.extendTag('element', function (tag) {
+  // 1 - static shape - unknown content
+  // 2 - static shape and static children
+  // 3 - single item
+  // 4 - optimized array - only length will change
+  // 5 - optimized collection
+  // 6 - text only
+  tag.prototype.setChildren = function (new$, typ) {
+    // if typeof new == 'string'
+    // 	return self.text = new
+    var old = this._tree_;
+
+    if (new$ === old && (!new$ || new$.taglen == undefined)) {
+      return this;
+    }
+
+    ;
+
+    if (!old && typ != 3) {
+      this.removeAllChildren();
+      appendNested(this, new$);
+    } else if (typ == 1) {
+      let caret = null;
+
+      for (let i = 0, items = iter$(new$), len = items.length; i < len; i++) {
+        caret = reconcileNested(this, items[i], old[i], caret);
+      }
+
+      ;
+    } else if (typ == 2) {
+      return this;
+    } else if (typ == 3) {
+      let ntyp = typeof new$;
+
+      if (ntyp != 'object') {
+        return this.setText(new$);
+      }
+
+      ;
+
+      if (new$ && new$._dom) {
+        this.removeAllChildren();
+        this.appendChild(new$);
+      } else if (new$ instanceof Array) {
+        if (new$._type == 5 && old && old._type == 5) {
+          reconcileLoop(this, new$, old, null);
+        } else if (old instanceof Array) {
+          reconcileNested(this, new$, old, null);
+        } else {
+          this.removeAllChildren();
+          appendNested(this, new$);
+        }
+
+        ;
+      } else {
+        return this.setText(new$);
+      }
+
+      ;
+    } else if (typ == 4) {
+      reconcileIndexedArray(this, new$, old, null);
+    } else if (typ == 5) {
+      reconcileLoop(this, new$, old, null);
+    } else if (new$ instanceof Array && old instanceof Array) {
+      reconcileNested(this, new$, old, null);
+    } else {
+      // what if text?
+      this.removeAllChildren();
+      appendNested(this, new$);
+    }
+
+    ;
+    this._tree_ = new$;
+    return this;
+  };
+
+  tag.prototype.content = function () {
+    return this._content || this.children().toArray();
+  };
+
+  tag.prototype.setText = function (text) {
+    if (text != this._tree_) {
+      var val = text === null || text === false ? '' : text;
+      (this._text_ || this._dom).textContent = val;
+      this._text_ || (this._text_ = this._dom.firstChild);
+      this._tree_ = text;
+    }
+
+    ;
+    return this;
+  };
+});
+var proto = Imba.Tag.prototype;
+proto.setContent = proto.setChildren;
+var apple = typeof navigator != 'undefined' && (navigator.vendor || '').indexOf('Apple') == 0;
+
+if (apple) {
+  proto.setText = function (text) {
+    if (text != this._tree_) {
+      this._dom.textContent = text === null || text === false ? '' : text;
+      this._tree_ = text;
+    }
+
+    ;
+    return this;
+  };
+}
+
+;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: TypeError: Cannot read property 'bindings' of null\n    at Scope.moveBindingTo (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/scope/index.js:867:13)\n    at BlockScoping.updateScopeInfo (/Users/wbh/imba_playground/node_modules/babel-plugin-transform-es2015-block-scoping/lib/index.js:364:17)\n    at BlockScoping.run (/Users/wbh/imba_playground/node_modules/babel-plugin-transform-es2015-block-scoping/lib/index.js:330:12)\n    at PluginPass.BlockStatementSwitchStatementProgram (/Users/wbh/imba_playground/node_modules/babel-plugin-transform-es2015-block-scoping/lib/index.js:70:24)\n    at newFn (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/visitors.js:193:21)\n    at NodePath._call (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/path/context.js:53:20)\n    at NodePath.call (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/path/context.js:40:17)\n    at NodePath.visit (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/path/context.js:88:12)\n    at TraversalContext.visitQueue (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/context.js:118:16)\n    at TraversalContext.visitSingle (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/context.js:90:19)\n    at TraversalContext.visit (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/context.js:146:19)\n    at Function.traverse.node (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/index.js:94:17)\n    at traverse (/Users/wbh/imba_playground/node_modules/@babel/traverse/lib/index.js:76:12)\n    at transformFile (/Users/wbh/imba_playground/node_modules/@babel/core/lib/transformation/index.js:88:29)\n    at runSync (/Users/wbh/imba_playground/node_modules/@babel/core/lib/transformation/index.js:45:3)\n    at runAsync (/Users/wbh/imba_playground/node_modules/@babel/core/lib/transformation/index.js:35:14)\n    at process.nextTick (/Users/wbh/imba_playground/node_modules/@babel/core/lib/transform.js:34:34)\n    at process.internalTickCallback (internal/process/next_tick.js:70:11)");
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a) {
+  return a ? a.toArray ? a.toArray() : a : [];
+}
+
+;
+
+var Imba = __webpack_require__(1),
+    _2 = Imba.createTagList,
+    _1 = Imba.createElement;
+
+var Title = __webpack_require__(17).Title;
+
+var list = {
+  items: []
+};
+var Todo = Imba.defineTag('Todo', function (tag) {
+  tag.prototype.getCurrentTime = function () {
+    var date = new Date();
+    return "" + date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() + "-" + date.getHours() + ":" + date.getMinutes();
+  };
+
+  tag.prototype.addItem = function () {
+    if (!this.data().content) {
+      return;
+    }
+
+    ;
+    list.items.push({
+      content: this.data().content,
+      createdAt: this.getCurrentTime(),
+      done: false
+    });
+    return this.data().content = '';
+  };
+
+  tag.prototype.toggleItem = function (index) {
+    return list.items[index].done = !list.items[index].done;
+  };
+
+  tag.prototype.render = function () {
+    var $ = this.$,
+        self = this;
+    return self.$open(0).setData(list).setChildren($.$ = $.$ || [_1(Title, $, 0, self), _1('header', $, 1, self).setContent([_1('input', $, 2, 1).on$(0, ['keyup', 'enter', 'addItem'], self).setPlaceholder('here').css('margin-right', '10px'), _1('button', $, 3, 1).on$(0, ['click', 'addItem'], self).setText('Add TODO')], 2), _1('ul', $, 4, self)], 2).synced(($[0].end(), $[2].bindData(self.data(), 'content').end(), $[4].setContent(function tagLoop($0) {
+      var t0;
+
+      for (let index = 0, items = iter$(self.data().items), len = $0.taglen = items.length, item; index < len; index++) {
+        item = items[index];
+
+        (t0 = $0[index] || (t0 = _1('li', $0, index)).setContent(t0.$.A || _1('span', t0.$, 'A', t0), 2)).on$(0, ['click', ['toggleItem', index]], self).end((t0.$.A.css('color', "" + (item.done ? '#999' : '#000')).css('text-decoration', "" + (item.done ? 'line-through' : 'none')).setContent([item.content, t0.$.B || _1('span', t0.$, 'B', 'A').css('color', '#999')], 1).end((t0.$.B.setText(" ---@ " + item.createdAt).end(), true)), true));
+      }
+
+      ;
+      return $0;
+    }($[5] || _2($, 5, $[4])), 4), true));
+  };
+});
+exports.Todo = Todo;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Imba = __webpack_require__(1);
+
+var Title = Imba.defineTag('Title', function (tag) {
+  tag.prototype.render = function () {
+    return this.$open(0).setText('Todo List').synced();
+  };
+});
+exports.Title = Title;
+
+/***/ })
+/******/ ]);

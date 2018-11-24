@@ -16,5 +16,11 @@
     "imba-router": "^0.2.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "babel-preset-env": "^1.7.0"
   }
 }
